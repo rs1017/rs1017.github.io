@@ -81,10 +81,57 @@ tags: [tag1, tag2, tag3]
 
 ### Optional Front Matter
 ```yaml
-image: /path/to/image.png       # Featured image
+image:
+  path: /assets/img/posts/YYYY-MM-DD-포스트명/thumbnail.jpg
+  alt: 썸네일 설명
 pin: true                       # Pin post to top of home page
 math: true                      # Enable MathJax
 mermaid: true                   # Enable Mermaid diagrams
+```
+
+## Image & Media Management
+
+### Folder Structure
+```
+assets/img/
+├── avatar.jpg              # 시스템용 (사이드바 프로필)
+├── favicons/               # 시스템용 (파비콘)
+├── common/                 # 공용 이미지 (여러 포스트에서 사용)
+└── posts/                  # 포스트별 이미지
+    └── YYYY-MM-DD-포스트명/
+        ├── thumbnail.jpg   # 대표 이미지
+        ├── 01-screenshot.png
+        ├── 02-diagram.png
+        └── demo.mp4        # 영상
+```
+
+### Image Syntax (Chirpy)
+```markdown
+# 기본 이미지
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png)
+
+# 그림자 효과
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png){: .shadow }
+
+# 캡션 추가
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png)
+_이미지 캡션_
+
+# 크기 조절
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png){: width="500" }
+
+# 정렬
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png){: .left }
+![설명](/assets/img/posts/YYYY-MM-DD-포스트명/image.png){: .right }
+```
+
+### Video Embedding
+```markdown
+# 로컬 비디오
+{% include embed/video.html src='/assets/img/posts/YYYY-MM-DD-포스트명/video.mp4' %}
+
+# YouTube
+{% include embed/youtube.html id='유튜브ID' %}
 ```
 
 ## New Features in v7
