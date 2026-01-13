@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Jekyll-based static blog using the **Chirpy theme** (jekyll-theme-chirpy v7.4+), hosted on GitHub Pages at https://naksupapa.github.io. The blog language is Korean (`lang: ko`).
+This is a Jekyll-based static blog using the **Chirpy theme** (jekyll-theme-chirpy v4.3.4), hosted on GitHub Pages at https://naksupapa.github.io. The blog language is Korean (`lang: ko`).
 
 ## Common Commands
 
@@ -52,16 +52,16 @@ The Chirpy theme is installed as a gem (`jekyll-theme-chirpy`). To customize the
 - Copy files to local project to override (e.g., `_layouts/`, `_includes/`, `_sass/`)
 
 > **IMPORTANT: DO NOT upgrade jekyll-theme-chirpy**
-> - 현재 버전(v7.4+)에 맞춰 `_includes/`, `_sass/` 등 커스터마이징이 많이 되어 있음
+> - 현재 버전(v4.3.4)에 맞춰 `_includes/`, `_sass/` 등 커스터마이징이 많이 되어 있음
 > - 테마 업그레이드 시 커스터마이징 파일과 충돌하여 사이트가 깨질 수 있음
 > - `bundle update jekyll-theme-chirpy` 절대 실행 금지
+> - Bootstrap 4 + jQuery 사용 중 (v5 이상 버전과 호환되지 않음)
 
 ### Key Configuration
 - `_config.yml` - Main Jekyll configuration
 - Post permalink format: `/posts/:title/`
 - Theme mode: User-selectable (toggle in sidebar) - leave `theme_mode` empty in config
 - Auto-generated TOC for posts
-- PWA support enabled by default
 
 ### Custom Plugin
 - `_plugins/posts-lastmod-hook.rb` - Automatically sets post `last_modified_at` from git history (only if post has >1 commit)
@@ -150,13 +150,6 @@ _이미지 캡션_
 ### Image Notes
 - Lazy loading 비활성화됨 (`_includes/refactor-content.html` 수정)
 - 이미지가 바로 로드됨 (data-src 대신 src 사용)
-
-## New Features in v7
-
-- **PWA Support**: Installable web app with offline caching
-- **Multiple Analytics**: Google Analytics, GoatCounter, Umami, Matomo, Cloudflare, Fathom
-- **Multiple Comment Systems**: Disqus, Utterances, Giscus
-- **Improved Performance**: Bootstrap CSS improvements, optimized JavaScript
 
 ## Troubleshooting
 
