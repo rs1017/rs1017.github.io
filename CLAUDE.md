@@ -17,23 +17,23 @@ npm install                     # Install Node.js dependencies (required for JS 
 ### Development
 ```bash
 bundle exec jekyll serve        # Start local dev server (http://localhost:4000)
-npx gulp dev                    # Watch and rebuild JavaScript (development mode)
+npm run dev                     # Watch and rebuild JavaScript (development mode)
 ```
 
 ### Build
 ```bash
+npm run build                                     # Build minified JavaScript
 bundle exec jekyll b                              # Build site to _site/
-JEKYLL_ENV=production bundle exec jekyll b        # Production build
-npx gulp                                          # Build minified JavaScript
+JEKYLL_ENV=production bundle exec jekyll b        # Production build (used in CI)
 ```
 
 ### Testing
 ```bash
-bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
+bundle exec htmlproofer _site --disable-external --allow-hash-href
 ```
 
 ### Deployment
-Deployment runs automatically via GitHub Actions on push to main branch. The `tools/deploy.sh` script is for CI use only (requires `GITHUB_ACTION` environment variable).
+Deployment runs automatically via GitHub Actions (`.github/workflows/pages-deploy.yml`) on push to main branch.
 
 ## Architecture
 
@@ -53,10 +53,16 @@ Deployment runs automatically via GitHub Actions on push to main branch. The `to
 - Output: `assets/js/dist/` (minified bundles)
 - Config: `gulpfile.js/index.js` and `gulpfile.js/tasks/js.js`
 
+### Theme Customization
+The Chirpy theme is installed as a gem (`jekyll-theme-chirpy`). To customize theme files:
+- Use `bundle info --path jekyll-theme-chirpy` to find theme source location
+- Copy files to local project to override (e.g., `_layouts/`, `_includes/`, `_sass/`)
+- Style customization: `_sass/variables-hook.scss`
+
 ### Key Configuration
 - `_config.yml` - Main Jekyll configuration
 - Post permalink format: `/posts/:title/`
-- Dark theme mode enabled by default
+- Theme mode: User-selectable (toggle in sidebar) - leave `theme_mode` empty in config
 - Auto-generated TOC for posts
 
 ### Custom Plugin
@@ -79,3 +85,11 @@ tags: [tag1, tag2, tag3]
 
 - `future: true` is enabled in `_config.yml`, so future-dated posts will be published
 - Posts automatically get TOC and comments enabled via defaults in `_config.yml`
+
+### Optional Front Matter
+```yaml
+image: /path/to/image.png       # Featured image
+pin: true                       # Pin post to top of home page
+math: true                      # Enable MathJax
+mermaid: true                   # Enable Mermaid diagrams
+```
