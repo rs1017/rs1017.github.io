@@ -1,6 +1,6 @@
 ---
 title: MCP(Model Context Protocol) 완벽 가이드 - AI 에이전트의 새로운 표준
-author: naksupapa
+author: rs1017
 date: 2026-01-13 13:00:00 +0900
 categories: [AI, Protocol]
 tags: [mcp, model-context-protocol, anthropic, ai-agent, claude, openai]
