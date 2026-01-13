@@ -53,8 +53,7 @@
 
   {% assign _content = _content | replace: '<img src="/', img_path_replacement %}
 
-  <!-- lazy-load disabled - images load immediately -->
-  <!-- {% assign _content = _content | replace: '<img src="', '<img data-proofer-ignore data-src="' %} -->
+  <!-- lazy-load disabled for immediate image loading -->
 
   <!-- add image placehoder to prevent layout reflow -->
 
