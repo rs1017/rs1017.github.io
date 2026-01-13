@@ -42,19 +42,8 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3   # reads from a '.ruby-version' or '.tools-version' file if 'ruby-version' is omitted
+          ruby-version: 3.3
           bundler-cache: true
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install npm dependencies
-        run: npm install
-
-      - name: Build JavaScript assets
-        run: npx gulp
 
       - name: Build site
         run: bundle exec jekyll b -d "_site${{ steps.pages.outputs.base_path }}"
@@ -68,6 +57,7 @@ jobs:
             --ignore-status-codes "999" \
             --allow-hash-href \
             --ignore-urls "/^http:\/\/127.0.0.1/,/^http:\/\/0.0.0.0/,/^http:\/\/localhost/"
+
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
