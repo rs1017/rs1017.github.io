@@ -41,8 +41,7 @@ sudo apt install -y build-essential cmake gdb
 3. WSL 배포판 선택 (Ubuntu-22.04)
 4. CMake, C Compiler, C++ Compiler가 자동 감지되는지 확인
 
-![WSL Toolchain 설정](/assets/img/posts/clion-wsl-toolchain.png){: .shadow }
-_CLion WSL Toolchain 설정 화면_
+<!-- 이미지: WSL Toolchain 설정 화면 -->
 
 ### 1.3 CMake 프로파일 설정
 
