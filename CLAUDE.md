@@ -105,6 +105,11 @@ assets/img/
         └── demo.mp4        # 영상
 ```
 
+### Post Creation Workflow
+1. `/new-post 제목` - 템플릿 파일 + 이미지 폴더 생성
+2. 이미지 폴더에 이미지 저장 (`assets/img/posts/YYYY-MM-DD-제목/`)
+3. `/write-post 제목` - 이미지 참조하여 내용 작성
+
 ### Image Syntax (Chirpy)
 ```markdown
 # 기본 이미지
