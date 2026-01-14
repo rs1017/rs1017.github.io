@@ -1,0 +1,19 @@
+{
+  "name": "naksupapa-blog",
+  "version": "1.0.0",
+  "description": "Jekyll blog with Chirpy theme",
+  "scripts": {
+    "build": "gulp",
+    "dev": "gulp dev"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-insert": "^0.5.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
