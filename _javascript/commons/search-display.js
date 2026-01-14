@@ -97,13 +97,15 @@ $(function() {
     return btnCancel.hasClass("loaded");
   }
 
-  btnSearchTrigger.click(function() {
+  btnSearchTrigger.on("click touchend", function(e) {
+    e.preventDefault();
     mobileSearchBar.on();
     resultSwitch.on();
     input.focus();
   });
 
-  btnCancel.click(function() {
+  btnCancel.on("click touchend", function(e) {
+    e.preventDefault();
     mobileSearchBar.off();
     resultSwitch.off();
   });

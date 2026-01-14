@@ -23,8 +23,14 @@ $(function() {
 
   }());
 
-  $("#sidebar-trigger").click(sidebarUtil.toggle);
+  $("#sidebar-trigger").on("click touchend", function(e) {
+    e.preventDefault();
+    sidebarUtil.toggle();
+  });
 
-  $("#mask").click(sidebarUtil.toggle);
+  $("#mask").on("click touchend", function(e) {
+    e.preventDefault();
+    sidebarUtil.toggle();
+  });
 
 });

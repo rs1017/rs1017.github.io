@@ -903,6 +903,11 @@ $sidebar-display: "sidebar-display";
 #sidebar-trigger,
 #search-trigger {
   display: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #search-wrapper {
