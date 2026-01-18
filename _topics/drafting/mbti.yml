@@ -436,6 +436,56 @@ storyboard:
     infographics: 1
     illustrations: 2
 
+media:
+  - id: img-01
+    type: image
+    description: "MBTI 대화하는 사람들"
+    prompt: "Young Korean friends having coffee and chatting about MBTI personality types, cafe setting, warm lighting, modern Korean style, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted"
+    path: /assets/img/posts/2026-01-19-mbti/mbti-conversation.jpg
+    status: generated
+
+  - id: img-02
+    type: diagram
+    description: "4가지 선호 경향 다이어그램"
+    prompt: "Clean infographic diagram showing four MBTI dimensions EI SN TF JP, minimalist design, pastel colors, professional chart style, labeled in English, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted, text in other languages"
+    path: /assets/img/posts/2026-01-19-mbti/four-dimensions.jpg
+    status: generated
+
+  - id: img-03
+    type: infographic
+    description: "16가지 유형 인포그래픽"
+    prompt: "Colorful infographic showing 16 MBTI personality types in a 4x4 grid, with icons representing each type, modern flat design, professional, purple green blue yellow color coding by group, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted"
+    path: /assets/img/posts/2026-01-19-mbti/16-types-infographic.jpg
+    status: generated
+
+  - id: img-04
+    type: chart
+    description: "MBTI 궁합표"
+    prompt: "MBTI compatibility chart matrix showing relationship matches between 16 personality types, colorful heatmap style green yellow orange red, professional infographic, clean table design, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted"
+    path: /assets/img/posts/2026-01-19-mbti/compatibility-chart.jpg
+    status: generated
+
+  - id: img-05
+    type: image
+    description: "실생활 활용 장면"
+    prompt: "Korean office team meeting discussion, diverse coworkers collaborating around table, modern workplace, warm professional atmosphere, bright lighting, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted"
+    path: /assets/img/posts/2026-01-19-mbti/real-life-application.jpg
+    status: generated
+
+  - id: img-06
+    type: diagram
+    description: "MBTI vs Big5 비교"
+    prompt: "Educational comparison infographic MBTI versus Big Five personality models, two column layout, left side showing MBTI 4 dimensions 16 types, right side showing Big5 OCEAN model 5 traits spectrum scale, professional clean design, blue and gray colors, high quality, sharp focus, detailed, 4k, ultra detailed, crisp"
+    prompt_negative: "blurry, fuzzy, low quality, pixelated, noisy, distorted, promotional content, logos, watermarks"
+    path: /assets/img/posts/2026-01-19-mbti/mbti-vs-big5.jpg
+    status: pending
+    trello_card: null
+
   production_notes: |
     이미지 생성 순서 권장:
     1. 16가지 유형 인포그래픽 (가장 중요)
