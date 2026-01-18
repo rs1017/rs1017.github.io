@@ -211,3 +211,83 @@ layout: page
 | `/related-posts 제목` | 관련 포스트 추천 |
 
 전체 워크플로우는 `.claude/BLOG-WORKFLOW.md` 참조.
+
+## 블로그 자동화 파이프라인
+
+AI 에이전트를 활용한 블로그 포스트 자동 작성 시스템입니다.
+
+### 에이전트 목록
+
+| 에이전트 | 역할 | 파일 |
+|----------|------|------|
+| **topic-selector** | 사용자와 협업하여 주제 수집/선정 | `.claude/agents/topic-selector.md` |
+| **topic-researcher** | 인터넷 서치로 자료 수집 | `.claude/agents/topic-researcher.md` |
+| **storyboard-creator** | 콘티 작성, 이미지/영상 프롬프트 생성 | `.claude/agents/storyboard-creator.md` |
+| **post-writer** | 실제 마크다운 게시글 작성 | `.claude/agents/post-writer.md` |
+| **post-reviewer** | 품질 검토, 승인/반려, 배포 | `.claude/agents/post-reviewer.md` |
+
+### 워크플로우
+
+```
+[topic-selector] → [topic-researcher] → [storyboard-creator] → [post-writer] → [post-reviewer]
+       ↑                                                                              ↓
+       └──────────────────────────── 반려 시 (60점 미만) ─────────────────────────────┘
+```
+
+### 주제 관리 폴더 (`_topics/`)
+
+```
+_topics/
+├── pending/      # 수집된 주제 (선정 대기)
+├── selected/     # 선정 완료 (리서치 대기)
+├── researched/   # 리서치 완료 (콘티 대기)
+├── drafting/     # 콘티/작성 진행 중
+└── review/       # 리뷰 대기
+```
+
+> **Note**: `_topics/` 폴더는 Jekyll 빌드에서 제외됨 (`_config.yml` exclude)
+
+### 주제 파일 상태 흐름
+
+```
+pending → selected → researched → drafting → review → published
+                ↑                                ↓
+                └────────────── rejected ────────┘
+```
+
+자세한 워크플로우는 `.claude/workflows/auto-blog-pipeline.md` 참조.
+
+## MCP 서버 (미디어 생성)
+
+Claude Desktop과 연동하여 이미지/영상을 자동 생성하는 MCP 서버입니다.
+
+### 서버 목록
+
+| 서버 | 용도 | API | 비용 |
+|------|------|-----|------|
+| **image-generator** | 이미지 생성 | Pollinations.ai | 무료 |
+| **video-generator** | 영상 생성 | Hugging Face Space | 무료 |
+
+### 설치 및 설정
+
+```bash
+# 패키지 설치
+pip install mcp gradio_client
+
+# Claude Desktop 설정 파일 위치
+# Windows: %APPDATA%\Claude\claude_desktop_config.json
+```
+
+설정 예제: `.claude/mcp-servers/mcp-config.example.json`
+
+### 사용 가능한 도구
+
+**image-generator:**
+- `generate_image` - 프롬프트로 이미지 생성
+- `generate_image_variations` - 여러 이미지 변형 생성
+
+**video-generator:**
+- `generate_video` - 프롬프트로 영상 생성 (ltx-video, modelscope, animatediff)
+- `generate_video_from_image` - 이미지 기반 영상 생성
+
+자세한 내용은 `.claude/mcp-servers/README.md` 참조.
