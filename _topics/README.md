@@ -5,7 +5,7 @@
 ## 폴더 구조
 
 ```
-_data/topics/
+.claude/topics/
 ├── pending/      # 수집된 주제 (선정 대기)
 ├── selected/     # 선정 완료 (리서치 대기)
 ├── researched/   # 리서치 완료 (콘티 작성 대기)
