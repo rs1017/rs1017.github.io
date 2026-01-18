@@ -1,0 +1,218 @@
+id: mbti
+title: MBTI 성격 유형의 이해
+status: researched
+created_date: 2026-01-19
+source: trello
+trello_card_id: 696d29b0f3a5c6a65b55c106
+
+keywords:
+  - MBTI
+  - 성격유형
+  - 심리검사
+  - 자기이해
+
+category: 라이프스타일
+target_audience: MBTI에 관심 있는 일반 독자
+
+notes: |
+  트렐로에서 선정된 주제.
+  MBTI 성격 유형에 대한 이해와 활용법을 다룰 예정.
+
+research:
+  completed_date: 2026-01-19
+  researcher: topic-researcher
+
+  sources:
+    - url: https://www.gklibrarykor.com/1338/
+      title: MBTI 성향 및 16가지 유형별 특징 총정리
+      type: blog
+      relevance: high
+      key_points:
+        - MBTI 4가지 선호 경향 상세 설명 (E/I, S/N, T/F, J/P)
+        - 16가지 유형별 특징과 성격 분석
+        - 각 유형의 장단점과 직업 적합성
+        - 한국어로 잘 정리된 실용적 정보
+
+    - url: https://www.16personalities.com/personality-types
+      title: Personality Types - 16Personalities
+      type: official_doc
+      relevance: high
+      key_points:
+        - MBTI 공식 테스트 제공 사이트
+        - 각 성격 유형의 세부 특성 설명
+        - 영문 기반 글로벌 표준 정보
+
+    - url: https://testmoa.com/mbti-compatibility/
+      title: MBTI 궁합표 최신 - 256가지 궁합
+      type: blog
+      relevance: high
+      key_points:
+        - 16가지 유형 간 256가지 궁합 정보
+        - 궁합 판단 기준과 원리 설명
+        - E/I는 반대가 좋고, J/P도 반대가 좋음
+        - S/N과 T/F가 궁합에 가장 중요한 요소
+        - 최상/최악 궁합 판단법 제시
+
+    - url: https://brunch.co.kr/@kuy06154/4
+      title: MBTI는 유사과학일 뿐일까 - 신뢰도와 타당도의 문제
+      type: blog
+      relevance: high
+      key_points:
+        - MBTI의 과학적 근거 부족 비판
+        - 재검사 신뢰성 문제 (39-76%가 다른 결과)
+        - 학술계의 부정적 평가
+        - 융 자신도 이항 선택의 한계 인정
+        - Big5 성격 모델이 더 과학적 대안
+
+    - url: https://namu.wiki/w/마이어스-브릭스 유형 지표
+      title: 마이어스-브릭스 유형 지표 - 나무위키
+      type: wiki
+      relevance: high
+      key_points:
+        - MBTI의 역사와 개발 배경
+        - 16가지 유형의 상세 설명
+        - 비판과 옹호 의견 모두 포함
+        - 한국에서의 MBTI 유행 현상 분석
+
+    - url: https://www.keyzard.cc/leader_dinosaur/nb/224137567800
+      title: 왜 MBTI별로 직장 인간관계가 이렇게 극과 극일까
+      type: blog
+      relevance: medium
+      key_points:
+        - 직장에서의 MBTI 활용법
+        - 유형별 업무 스타일과 소통 방식
+        - MZ세대의 MBTI 활용 트렌드
+
+    - url: http://kospomagazine.co.kr/page/vol125/view.php?idx=140
+      title: MBTI 속에 흐르는 나의 연애 스타일
+      type: magazine
+      relevance: medium
+      key_points:
+        - 연애에서의 MBTI 활용
+        - 유형별 연애 스타일 특징
+        - 부부상담에서의 MBTI 활용 사례
+        - 재미와 참고용으로 접근 권장
+
+    - url: https://testmoa.com/mbti-science-discuss/
+      title: MBTI 과학일까 유사과학일까 - 신뢰성 판단
+      type: blog
+      relevance: high
+      key_points:
+        - MBTI의 과학성 논쟁 정리
+        - 심리학계의 평가와 의견
+        - 실용적 활용 가능성과 한계
+        - 조직/아이스브레이킹용으로는 유용
+
+  summary: |
+    MBTI 성격 유형 검사에 대한 종합 리서치를 완료했습니다.
+
+    MBTI는 4가지 선호 경향(E/I, S/N, T/F, J/P)의 조합으로 16가지 성격 유형을 분류하는
+    심리 검사 도구입니다. 칼 융의 이론을 기반으로 마이어스와 브릭스가 개발했으며,
+    현재 한국에서 특히 MZ세대를 중심으로 큰 인기를 얻고 있습니다.
+
+    각 유형은 고유한 특징과 장단점을 가지며, 직장, 연애, 인간관계 등 다양한 분야에서
+    활용되고 있습니다. 궁합 분석에서는 S/N과 T/F가 가장 중요한 요소이며,
+    E/I와 J/P는 서로 반대인 것이 좋다는 원칙이 있습니다.
+
+    그러나 MBTI의 과학적 신뢰성에 대해서는 논란이 있습니다. 재검사 시 39-76%가
+    다른 결과를 받는다는 연구 결과가 있으며, 학술계에서는 "유사과학"이라는 비판도 존재합니다.
+    전문가들은 Big5 성격 모델이 더 과학적으로 검증되었다고 평가합니다.
+
+    결론적으로 MBTI는 자기 이해와 타인과의 소통을 위한 "참고 도구"로 활용하되,
+    절대적 진실로 받아들이기보다는 재미와 실용성 차원에서 접근하는 것이 바람직합니다.
+
+  outline:
+    - section: 도입 - MBTI란 무엇인가
+      type: intro
+      key_message: MBTI의 정의, 역사, 한국에서의 인기
+      subsections:
+        - MBTI의 탄생 배경과 개발자
+        - 4가지 선호 경향의 의미
+        - MZ세대와 MBTI 열풍
+
+    - section: 16가지 성격 유형 이해하기
+      type: main
+      key_message: 각 유형의 특징과 장단점
+      subsections:
+        - 분석가 그룹 (INTJ, INTP, ENTJ, ENTP)
+        - 외교관 그룹 (INFJ, INFP, ENFJ, ENFP)
+        - 관리자 그룹 (ISTJ, ISFJ, ESTJ, ESFJ)
+        - 탐험가 그룹 (ISTP, ISFP, ESTP, ESFP)
+      code_examples: false
+      recommended_media:
+        - 16가지 유형 인포그래픽
+        - 유형별 특징 비교 표
+
+    - section: MBTI 궁합의 모든 것
+      type: main
+      key_message: 유형별 궁합과 관계 이해
+      subsections:
+        - 궁합 판단의 4가지 원칙
+        - 최상의 궁합 조합
+        - 최악의 궁합과 극복 방법
+        - 연애/직장에서의 궁합 활용
+      recommended_media:
+        - MBTI 궁합표 다이어그램
+
+    - section: 실생활 활용법
+      type: case_study
+      key_message: 직장, 연애, 일상에서 MBTI 활용하기
+      subsections:
+        - 직장에서의 MBTI - 업무 스타일과 소통
+        - 연애에서의 MBTI - 관계 이해와 발전
+        - 자기 이해와 성장 도구로 활용하기
+      recommended_media:
+        - 실제 활용 사례 스토리
+
+    - section: MBTI의 과학성 논쟁
+      type: analysis
+      key_message: 신뢰성과 한계를 알고 현명하게 활용하기
+      subsections:
+        - 과학적 근거 부족 비판
+        - 재검사 신뢰성 문제
+        - 학술계의 평가와 Big5 대안
+        - 한국MBTI연구소의 반박
+        - 실용적 활용 가능성
+
+    - section: 마무리 - MBTI와 함께 성장하기
+      type: conclusion
+      key_message: MBTI를 현명하게 활용하는 자세
+      subsections:
+        - MBTI는 참고 도구, 절대적 진실 아님
+        - 자기 이해의 시작점으로 활용
+        - 타인 이해와 소통의 매개체
+        - 재미와 실용성의 균형
+
+  recommended_media:
+    - type: infographic
+      description: MBTI 16가지 유형 한눈에 보기
+    - type: diagram
+      description: 4가지 선호 경향 설명 다이어그램
+    - type: table
+      description: 유형별 장단점 비교 표
+    - type: chart
+      description: MBTI 궁합표 (256가지 조합)
+    - type: image
+      description: 유형별 대표 캐릭터 또는 유명인
+    - type: diagram
+      description: MBTI vs Big5 비교 다이어그램
+
+  writing_tips:
+    - 한국 독자 친화적인 톤앤매너 유지
+    - 과학적 비판과 실용적 활용의 균형 잡기
+    - MZ세대 공감 포인트 활용
+    - 절대화하지 않고 참고 도구로 제시
+    - 실생활 예시와 사례 풍부하게 포함
+    - 유머러스하면서도 신뢰감 있는 서술
+
+  seo_keywords:
+    - MBTI 16가지 유형
+    - MBTI 테스트
+    - MBTI 궁합
+    - MBTI 성격유형
+    - MBTI 신뢰성
+    - MBTI 활용법
+    - MBTI 연애
+    - MBTI 직장
+    - INFJ INTJ ENFP INFP
+    - 성격유형검사
