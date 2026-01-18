@@ -5,6 +5,9 @@ date: 2026-01-19 12:00:00 +0900
 categories: [라이프스타일]
 tags: [날씨, 기상예보, 생활팁, 한파대비]
 description: 기상청 중기예보 활용법부터 겨울철 생활 노하우, 한파 대비 안전 수칙까지. 2주간 날씨 전망과 함께 알아보는 스마트한 겨울나기 완벽 가이드입니다.
+image:
+  path: /assets/img/posts/2026-01-19-two-week-weather/thumbnail.jpg
+  alt: 2주간 날씨 예보와 겨울철 생활 가이드
 ---
 
 ## 2주 날씨를 미리 알면 좋은 이유
@@ -321,3 +324,15 @@ description: 기상청 중기예보 활용법부터 겨울철 생활 노하우, 
 - [국가건강정보포털](https://health.kdca.go.kr) - 한파 건강수칙
 
 겨울은 춥지만, 미리 준비하고 현명하게 대처한다면 안전하고 따뜻하게 보낼 수 있습니다. 날씨 정보를 잘 활용하여 건강하고 즐거운 겨울 되시기 바랍니다.
+
+---
+
+## 참고 자료
+
+- [서울 1월 날씨 - AccuWeather](https://www.accuweather.com/ko/kr/seoul/226081/january-weather/226081)
+- [기상청 중기예보 - 공공데이터포털](https://www.data.go.kr/data/15059468/openapi.do)
+- [해양 중기예보 - 기상청](https://www.weather.go.kr/w/ocean/forecast/mid-term-forecast.do)
+- [겨울 생존 가이드 - GQ Korea](https://gqkorea.co.kr/2025/11/22/유독-추위에-약한-이들을-위한-겨울-생존-가이드-7)
+- [한파 건강수칙 - 질병관리청](https://health.kdca.go.kr/healthinfo/biz/health/gnrlzHealthInfo/gnrlzHealthInfo/gnrlzHealthInfoView.do?cntnts_sn=2048)
+- [한파 대비 행동요령 - 국민재난안전포털](https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/prevent06.html)
+- [1월 - 나무위키](https://namu.wiki/w/1월)

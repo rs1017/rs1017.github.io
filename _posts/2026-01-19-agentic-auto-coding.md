@@ -6,8 +6,8 @@ categories: [기술, AI]
 tags: [에이전틱코딩, AI에이전트, 자동화코딩, ClaudeCode, Devin]
 description: AI 에이전트가 계획, 코딩, 테스트, 배포까지 자율적으로 수행하는 에이전틱 코딩의 세계. Claude Code, Devin, Cursor 등 주요 도구 비교와 실전 활용법, 멀티 에이전트 워크플로우 패턴, 게임 서버 개발 사례까지 2026년 최신 트렌드를 소개합니다.
 image:
-  path: /assets/img/common/ai-coding-banner.jpg
-  alt: AI 에이전트가 코드를 작성하는 미래의 개발 환경
+  path: /assets/img/posts/2026-01-19-agentic-auto-coding/thumbnail.jpg
+  alt: AI 에이전트가 자율적으로 코딩하는 미래형 개발 환경
 ---
 
 ## AI 에이전트가 코드를 짠다 - 에이전틱 오토 코딩의 시대
@@ -1097,3 +1097,16 @@ AI가 만든 결과를 실행해보고, 수정하고, 배우면서 감을 익히
 3. **개발자의 역할**은 코드 타이핑에서 AI 팀 관리, 아키텍처 설계, 품질 검증으로 진화하고 있습니다.
 
 2026년은 에이전틱 AI의 해입니다. 지금 시작하세요. 미래는 AI와 협업하는 개발자의 것입니다.
+
+---
+
+## 참고 자료
+
+- [Best AI Coding Agents 2026 - Faros.ai](https://www.faros.ai/blog/best-ai-coding-agents-2026)
+- [5 Key Trends Shaping Agentic Development - The New Stack](https://thenewstack.io/5-key-trends-shaping-agentic-development-in-2026/)
+- [Claude Code를 가상 개발팀으로 - Medium](https://medium.com/@joe.njenga/i-tested-this-autonomous-framework-that-turns-claude-code-into-a-virtual-dev-team-a030ab702630)
+- [Introducing Devin - Cognition AI](https://cognition.ai/blog/introducing-devin)
+- [Claude Code Best Practices - Anthropic](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [유망한 에이전틱 AI 활용처 - CIO Korea](https://www.cio.com/article/3607002/유망한-에이전틱-ai-활용처는-전문가들이-지목.html)
+- [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai)
+- [Top AI Agentic Workflow Patterns - ByteByteGo](https://blog.bytebytego.com/p/top-ai-agentic-workflow-patterns)

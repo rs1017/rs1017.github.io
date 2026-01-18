@@ -5,6 +5,9 @@ date: 2026-01-19 13:00:00 +0900
 categories: [라이프스타일, 자기계발]
 tags: [동기부여, 자기계발, 마인드셋, 긍정심리, 번아웃극복]
 description: 무기력과 번아웃을 극복하고 삶의 활력을 되찾는 과학적이고 실천 가능한 동기부여 방법을 소개합니다. SMART 목표, 습관 쌓기, 긍정 심리학 등 4주 로드맵으로 오늘부터 시작하세요.
+image:
+  path: /assets/img/posts/2026-01-19-motivation-boost/thumbnail.jpg
+  alt: 삶의 활력과 동기부여를 되찾는 긍정 에너지
 ---
 
 ## 어느 날 문득, 모든 게 무기력해질 때
@@ -555,3 +558,15 @@ description: 무기력과 번아웃을 극복하고 삶의 활력을 되찾는 �
 ---
 
 **동기는 시작하게 하고, 습관은 계속하게 한다.**
+
+---
+
+## 참고 자료
+
+- [스스로에게 동기부여 하는 방법 5가지 - 위시켓](https://blog.wishket.com/스스로에게-동기부여-하는-방법-5가지/)
+- [Psychology of Motivation - Penn LPS](https://lpsonline.sas.upenn.edu/features/psychology-motivation-what-drives-us-succeed)
+- [How to Increase Intrinsic Motivation - Positive Psychology](https://positivepsychology.com/increase-intrinsic-motivation/)
+- [11 Key Tips on Getting and Staying Motivated - Psychology Today](https://www.psychologytoday.com/us/blog/being-your-best-self/202412/11-key-tips-on-getting-and-staying-motivated)
+- [삶의 활력을 다시 찾는 요령 5가지 - 코메디닷컴](https://kormedi.com/1220178/삶의-활력을-다시-찾는-요령-5가지/)
+- [번아웃에서 벗어나는 법 - 브런치](https://brunch.co.kr/@bookmir90/227)
+- [The Science of Motivation - Oura Ring](https://ouraring.com/blog/science-of-motivation/)

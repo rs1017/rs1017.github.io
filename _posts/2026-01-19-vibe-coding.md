@@ -5,6 +5,9 @@ date: 2026-01-19 11:00:00 +0900
 categories: [기술, AI]
 tags: [바이브코딩, AI코딩, ClaudeCode, Cursor, 개발워크플로우]
 description: Andrej Karpathy가 소개한 바이브 코딩의 개념부터 실전 적용까지. 2026년 개발자의 72%가 사용하는 AI 코딩 도구와 워크플로우를 상세히 분석합니다.
+image:
+  path: /assets/img/posts/2026-01-19-vibe-coding/thumbnail.jpg
+  alt: AI와 개발자가 협업하는 바이브 코딩
 ---
 
 ## 바이브 코딩이란 무엇인가?
@@ -830,3 +833,16 @@ AI는 강력한 도구일 뿐, 최종 판단은 사람의 몫입니다.
 현명한 개발자는 AI를 두려워하지 않고, 협력자로 받아들여 더 창의적이고 가치 있는 작업에 집중합니다.
 
 당신은 어떤 선택을 하시겠습니까?
+
+---
+
+## 참고 자료
+
+- [Vibe Coding - Wikipedia](https://en.wikipedia.org/wiki/Vibe_coding)
+- [Vibe Coding in 2026: The Complete Guide - Dev.to](https://dev.to/pockit_tools/vibe-coding-in-2026-the-complete-guide-to-ai-pair-programming-that-actually-works-42de)
+- [The Vibe Coding Revolution - Medium](https://medium.com/@techie.fellow/the-vibe-coding-revolution-why-2026-belongs-to-the-orchestrators-46b32d530133)
+- [바이브 코딩의 이해와 적용 - 삼성SDS](https://www.samsungsds.com/kr/insights/understanding-and-applying-vibe-coding.html)
+- [바이브 코딩 완벽 정리 - CodeTree](https://www.codetree.ai/blog/바이브-코딩-완벽-정리-뜻부터-툴-장점-실전-후기까지/)
+- [Vibe Coding with Claude Code - InfoWorld](https://www.infoworld.com/article/3853805/vibe-coding-with-claude-code.html)
+- [AI Coding Workflow - Addy Osmani](https://addyosmani.com/blog/ai-coding-workflow/)
+- [Vibe Coding with Cursor AI - Analytics Vidhya](https://www.analyticsvidhya.com/blog/2025/03/vibe-coding-with-cursor-ai/)
