@@ -29,7 +29,7 @@ jobs:
     - name: Run Daily Writer
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        BLOG_PROMPT_CONTEXT: ${{ secrets.BLOG_PROMPT_CONTEXT }}
+        BLOG_AGENTS_CONFIG: ${{ secrets.BLOG_AGENTS_CONFIG }}
       run: |
         python tools/daily_writer.py
 

@@ -4,6 +4,7 @@ import glob
 import random
 import time
 import re
+import json
 import argparse
 from google import genai
 from google.genai import types
@@ -15,19 +16,29 @@ import pytz
 BLOG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS_DIR = os.path.join(BLOG_DIR, "_posts")
 IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
-# Set your Gemini API Key in environment variables
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Blog Identity for Context (Default fallback if env var not set)
-DEFAULT_BLOG_CONTEXT = """
-Role: Expert Game Server Developer & Backend Engineer.
-Topics: Game Server Architecture, Backend Systems (Redis, DB, Networks), AI/ML (LLMs, Agents), Productivity.
-Tone: Professional, Insightful, "Knowledge-first" (No fluff, no thesis-style boring text).
+# Load Agents Configuration (JSON Secret)
+# This contains specific prompts for: topic-selector, post-writer, etc.
+AGENTS_CONFIG_JSON = os.environ.get("BLOG_AGENTS_CONFIG")
+AGENTS = {}
+if AGENTS_CONFIG_JSON:
+    try:
+        AGENTS = json.loads(AGENTS_CONFIG_JSON)
+    except json.JSONDecodeError:
+        print("Warning: Failed to parse BLOG_AGENTS_CONFIG. Using defaults.")
+
+# Fallback Prompts if JSON is missing
+DEFAULT_WRITER_PROMPT = """
+Role: Expert Game Server Developer.
+Task: Write a technical blog post.
 Language: Korean.
+Focus on: Game Server Architecture, Backend Systems, AI/ML.
 """
 
-# Load Prompt Context from Environment Variable (Secret)
-BLOG_CONTEXT = os.environ.get("BLOG_PROMPT_CONTEXT", DEFAULT_BLOG_CONTEXT)
+def get_agent_prompt(agent_name, fallback):
+    """Retrieve prompt from loaded JSON config or use fallback."""
+    return AGENTS.get(agent_name, fallback)
 
 def get_client():
     if not GENAI_API_KEY:
@@ -50,7 +61,7 @@ def get_existing_topics():
 def safe_generate_content(client, model, contents):
     """Citron-wrapped generation with retry for 429 errors."""
     max_retries = 5
-    base_delay = 10  # Start with 10s delay
+    base_delay = 10
 
     for attempt in range(max_retries):
         try:
@@ -70,12 +81,13 @@ def safe_generate_content(client, model, contents):
 
 def generate_topic(existing_topics):
     client = get_client()
-    
-    # Use 1.5-flash for better stability/quota than experimental models
     model_name = 'gemini-1.5-flash'
     
+    # Use topic-selector agent if available
+    agent_prompt = get_agent_prompt("topic-selector", DEFAULT_WRITER_PROMPT)
+    
     prompt = f"""
-    {BLOG_CONTEXT}
+    {agent_prompt}
     
     Task: Suggest ONE unique, specific technical blog post topic.
     
@@ -97,21 +109,19 @@ def generate_post_content(topic):
     client = get_client()
     model_name = 'gemini-1.5-flash'
     
+    # Use post-writer agent if available
+    agent_prompt = get_agent_prompt("post-writer", DEFAULT_WRITER_PROMPT)
+    
     prompt = f"""
-    {BLOG_CONTEXT}
+    {agent_prompt}
     
     Task: Write a technical blog post about "{topic}".
     
     Rules:
-    1. **Structure**: 
-       - Introduction (Hook)
-       - Key Concept 1 (Technical Detail)
-       - Key Concept 2 (Practical Application/Code example)
-       - Conclusion
-    2. **Content**: Focus strictly on transferring knowledge. Avoid fillers like "Hello everyone".
-    3. **Images**: You MUST include text description placeholders for images where appropriate, like `[IMAGE_DESC: A diagram showing X...]`.
-    4. **Format**: Markdown.
-    5. **Front Matter**: DO NOT include Jekyll front matter (I will add it programmatically). Just the body.
+    1. **Structure**: Introduction, Key Concepts, Code/Examples, Conclusion.
+    2. **Content**: Knowledge-first, no fluff.
+    3. **Images**: Include placeholders like `[IMAGE_DESC: ...]`.
+    4. **Format**: Markdown. No front matter.
     
     Write the post now.
     """
@@ -120,7 +130,6 @@ def generate_post_content(topic):
     return response.text
 
 def normalize_filename(title):
-    # Remove special chars, spaces to hyphens
     clean = re.sub(r'[^\w\s-]', '', title).strip().lower()
     return re.sub(r'[\s]+', '-', clean)
 
@@ -133,11 +142,9 @@ def main():
     print(f"Found {len(existing)} existing posts.")
     
     # 2. Generate New Topic
-    # Add a small delay/retry logic is handled inside
     new_topic = generate_topic(existing)
     print(f"Goal Topic: {new_topic}")
     
-    # Sleep to respect rate limits between calls
     time.sleep(5)
     
     # 3. Write Content
