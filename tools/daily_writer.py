@@ -33,7 +33,11 @@ if os.environ.get("GEMINI_API_KEY"):
 if os.environ.get("GEMINI_API_KEY2"):
     API_KEYS.append(os.environ.get("GEMINI_API_KEY2"))
 
-CURRENT_KEY_INDEX = 0
+# Randomly select starting API key
+if API_KEYS:
+    CURRENT_KEY_INDEX = random.randint(0, len(API_KEYS) - 1)
+else:
+    CURRENT_KEY_INDEX = 0
 
 # Model Fallback List (Pro models prioritized)
 MODEL_CANDIDATES = [
@@ -62,8 +66,8 @@ def switch_api_key():
     
     CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(API_KEYS)
     new_key = API_KEYS[CURRENT_KEY_INDEX]
-    masked_key = new_key[:5] + "..." + new_key[-5:]
-    print(f"  [System] Switching to API Key #{CURRENT_KEY_INDEX + 1} ({masked_key})", flush=True)
+    
+    print(f"  [System] Switching to API Key #{CURRENT_KEY_INDEX + 1}", flush=True)
     
     # Reconfigure with new key
     genai.configure(api_key=new_key)
@@ -104,6 +108,7 @@ def load_agent_prompt(agent_name: str) -> str:
 def configure_genai_initial():
     """Initial configuration of Gemini API."""
     key = get_current_api_key()
+    print(f"  [System] Using API Key #{CURRENT_KEY_INDEX + 1}", flush=True)
     genai.configure(api_key=key)
     
     # Validate and filter available models
