@@ -27,12 +27,13 @@ IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 AGENTS_DIR = os.path.join(BLOG_DIR, "_agents")
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Model Fallback List - 안정적인 모델 우선
+# Model Fallback List (Will be updated dynamically)
+# 1.5-flash-latest might be safer alias
 MODEL_CANDIDATES = [
-    "models/gemini-1.5-flash", 
-    "models/gemini-2.0-flash",
-    "models/gemini-1.5-pro",
-    "models/gemini-pro",
+    "models/gemini-1.5-flash-latest",
+    "models/gemini-2.0-flash-exp", 
+    "models/gemini-1.5-flash",
+    "models/gemini-1.5-pro-latest",
 ]
 WORKING_MODEL = None
 
@@ -72,6 +73,41 @@ def configure_genai():
     if not GENAI_API_KEY:
         raise ValueError("GEMINI_API_KEY environment variable is missing.")
     genai.configure(api_key=GENAI_API_KEY)
+    
+    # Dynamically find available models
+    print("[Init] Listing available models:", flush=True)
+    available_models = []
+    try:
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods:
+                print(f"  - {m.name}", flush=True)
+                available_models.append(m.name)
+    except Exception as e:
+        print(f"  Failed to list models: {e}", flush=True)
+
+    if available_models:
+        global MODEL_CANDIDATES
+        # Prioritize known good models if they exist in the available list
+        preferred = [
+            "models/gemini-1.5-flash", 
+            "models/gemini-1.5-flash-latest",
+            "models/gemini-2.0-flash-exp",
+            "models/gemini-1.5-pro",
+            "models/gemini-1.0-pro"  # Fallback for old libraries
+        ]
+        
+        # Filter preferred models that are actually available
+        valid_preferred = [m for m in preferred if m in available_models]
+        
+        # Add any other available models that aren't in preferred list
+        others = [m for m in available_models if m not in preferred]
+        
+        # New candidate list: Valid preferred first, then others
+        MODEL_CANDIDATES = valid_preferred + others
+        
+        print(f"[Init] Selected Model Candidates: {MODEL_CANDIDATES}", flush=True)
+    else:
+        print("[Init] Warning: Could not verify available models. Using defaults.", flush=True)
 
 
 def get_existing_topics() -> list:
@@ -90,15 +126,16 @@ def get_existing_topics() -> list:
 
 def safe_generate_content(contents: str) -> str:
     global WORKING_MODEL
-    max_retries = 3
-    base_delay = 5  # 대기 시간 증가
+    max_retries = 5  # retries 증가
+    base_delay = 10  # 기본 대기 시간 증가
     
-    # 이전에 성공한 모델이 있으면 그것부터 시도, 없으면 목록 순서대로
     models_to_try = [WORKING_MODEL] + [m for m in MODEL_CANDIDATES if m != WORKING_MODEL] if WORKING_MODEL else MODEL_CANDIDATES
 
     last_error = None
 
     for model_name in models_to_try:
+        if not model_name: continue
+        
         print(f"  [AI] Trying {model_name}...", flush=True)
         try:
             model = genai.GenerativeModel(model_name)
@@ -106,7 +143,7 @@ def safe_generate_content(contents: str) -> str:
                 try:
                     response = model.generate_content(contents)
                     if not response.text:
-                        raise Exception("Empty response")
+                        raise Exception("Empty response text")
                     
                     WORKING_MODEL = model_name
                     print(f"  [AI] Success with {model_name}", flush=True)
@@ -114,17 +151,31 @@ def safe_generate_content(contents: str) -> str:
                 except Exception as e:
                     last_error = e
                     error_str = str(e)
-                    print(f"    - Attempt {attempt+1} failed: {error_str}", flush=True)
                     
+                    # Rate Limit Handling
                     if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
-                        sleep_time = base_delay * (2 ** attempt) + random.uniform(1, 3)
-                        print(f"      Rating limited. Sleeping {sleep_time:.1f}s...", flush=True)
+                        # Extract suggested wait time if available (e.g., from logs)
+                        # Default aggressive backoff
+                        sleep_time = base_delay * (2 ** attempt) + random.uniform(5, 10)
+                        print(f"    - Rate limited (Attempt {attempt+1}). Sleeping {sleep_time:.1f}s...", flush=True)
                         time.sleep(sleep_time)
-                    elif "500" in error_str or "internal" in error_str.lower():
-                        time.sleep(base_delay)
-                    else:
-                        # 기타 에이러(404 등)는 재시도 없이 다음 모델로
+                    
+                    # Model Not Found Handling -> Break to try next model
+                    elif "404" in error_str or "not found" in error_str.lower():
+                        print(f"    - Model {model_name} not found. Switching...", flush=True)
                         break
+                    
+                    # 500 Server Error -> Retry same model
+                    elif "500" in error_str or "internal" in error_str.lower():
+                        print(f"    - Internal error. Retrying...", flush=True)
+                        time.sleep(base_delay)
+                    
+                    else:
+                        print(f"    - Error: {error_str}", flush=True)
+                        # Unknown error, maybe break to try next model?
+                        # For now, retry a bit
+                        time.sleep(base_delay)
+                        
         except Exception as e:
             print(f"  [AI] Failed to init {model_name}: {e}", flush=True)
             continue
@@ -215,7 +266,12 @@ def step_6_generate_images(content: str, asset_dir_path: str, asset_dir_name: st
     
     print(f"  Found {len(matches)} images", flush=True)
     image_agent_prompt = load_agent_prompt("image-generator")
-    image_model_name = "models/gemini-2.0-flash-exp-image-generation"
+    
+    # Image model usually needs specific name
+    # We will try to find a valid one
+    image_model_name = "models/gemini-2.0-flash-exp" # Often supports image gen
+    # Or specifically
+    # image_model_name = "models/gemini-1.5-pro-latest" 
     
     for idx, desc in enumerate(matches):
         filename = f"image_{idx+1}.jpg"
@@ -229,37 +285,54 @@ def step_6_generate_images(content: str, asset_dir_path: str, asset_dir_name: st
 Generate an image for: {desc}
 """
         try:
-            if generate_single_image(prompt, full_path, image_model_name):
+            # Try with current working model first if it supports images?
+            # Actually standard generate_content creates text. 
+            # We need a model that supports image generation.
+            # safe_generate_content returns text. We need a separate function.
+            if generate_single_image(prompt, full_path):
                 # Replace placeholder with markdown image
                 alt = desc[:50].replace('"', "'")
                 content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
             else:
-                # If generation fails, verify if file exists anyway (sometimes API returns error but file is saved)
-                if os.path.exists(full_path):
+                 if os.path.exists(full_path):
                      alt = desc[:50].replace('"', "'")
                      content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
-                else:
-                     print(f"  Skipping image {idx+1} due to generation failure", flush=True)
+                 else:
+                     print(f"  Skipping image {idx+1}", flush=True)
         except Exception as e:
              print(f"  Image generation error: {e}", flush=True)
              
-        time.sleep(5) # Increase delay for image generation
+        time.sleep(5) 
         
     return content
 
 
-def generate_single_image(prompt: str, output_path: str, model_name: str) -> bool:
+def generate_single_image(prompt: str, output_path: str) -> bool:
     print(f"  [IMG] Generating...", flush=True)
-    try:
-        model = genai.GenerativeModel(model_name)
-        response = model.generate_content(prompt, generation_config=genai.GenerationConfig(response_mime_type="image/jpeg"))
-        if response.parts:
-            import base64
-            with open(output_path, 'wb') as f:
-                f.write(base64.b64decode(response.parts[0].inline_data.data))
-            return True
-    except Exception as e:
-        print(f"  [IMG] Failed: {e}", flush=True)
+    
+    # Candidates for image generation
+    # Not all models support image generation. 
+    # Usually gemini-pro-vision (input) or specific imagen models (output).
+    # Gemini 2.0 Flash Exp reportedly supports image generation.
+    image_models = [
+        "models/gemini-2.0-flash-exp", 
+        "models/gemini-1.5-pro-latest"
+    ]
+    
+    for model_name in image_models:
+        try:
+            model = genai.GenerativeModel(model_name)
+            response = model.generate_content(prompt, generation_config=genai.GenerationConfig(response_mime_type="image/jpeg"))
+            if response.parts:
+                import base64
+                if hasattr(response.parts[0], 'inline_data'):
+                    with open(output_path, 'wb') as f:
+                        f.write(base64.b64decode(response.parts[0].inline_data.data))
+                    return True
+        except Exception as e:
+            # print(f"  [IMG] Failed with {model_name}: {e}")
+            pass
+            
     return False
 
 
@@ -291,7 +364,7 @@ def main():
         full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
         os.makedirs(full_asset_path, exist_ok=True)
         
-        # 4. Write (Agent generates Front Matter now)
+        # 4. Write
         draft = step_4_write_post(topic, storyboard, date_str, slug)
         
         # 5. Review
@@ -303,7 +376,7 @@ def main():
         # 7. Header Image
         print("\n>>> Step 7: Header Image", flush=True)
         header_prompt = f"Blog header image for topic: {topic}"
-        generate_single_image(header_prompt, os.path.join(full_asset_path, "main.jpg"), "models/gemini-2.0-flash-exp-image-generation")
+        generate_single_image(header_prompt, os.path.join(full_asset_path, "main.jpg"))
         
         # 8. Save
         filename = f"{date_str}-{slug}.md"
@@ -315,7 +388,6 @@ def main():
         
     except Exception as e:
         print(f"\n❌ Pipeline Failed: {e}", flush=True)
-        # Re-raise to show traceback in logs if needed
         raise
 
 if __name__ == "__main__":
