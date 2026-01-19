@@ -58,20 +58,26 @@ def safe_generate_content(client, model, contents):
     """Citron-wrapped generation with retry for 429 errors."""
     max_retries = 5
     base_delay = 2  # Short delay for Pro plan
+    
+    print(f"  [AI] Calling model '{model}' with input length: {len(contents)} chars...", flush=True)
 
     for attempt in range(max_retries):
         try:
+            start_time = time.time()
             response = client.models.generate_content(
                 model=model,
                 contents=contents
             )
+            elapsed = time.time() - start_time
+            print(f"  [AI] Success in {elapsed:.2f}s", flush=True)
             return response
         except Exception as e:
             if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
                 delay = base_delay * (1.5 ** attempt) + random.uniform(0, 1)
-                print(f"Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})")
+                print(f"  [AI] Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})", flush=True)
                 time.sleep(delay)
             else:
+                print(f"  [AI] Error: {e}", flush=True)
                 raise e
     raise Exception("Max retries exceeded for Gemini API.")
 

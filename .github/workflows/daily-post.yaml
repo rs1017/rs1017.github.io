@@ -31,7 +31,7 @@ jobs:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         BLOG_AGENTS_CONFIG: ${{ secrets.BLOG_AGENTS_CONFIG }}
       run: |
-        python tools/daily_writer.py
+        python -u tools/daily_writer.py
 
     - name: Commit and Push
       run: |
