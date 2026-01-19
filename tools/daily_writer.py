@@ -1,10 +1,16 @@
+#!/usr/bin/env python3
+"""
+Daily Blog Writer - AI 블로그 자동화 시스템
+역할: 파이프라인 흐름 제어 및 도구 실행 (이미지 생성 등)
+모든 판단과 창작은 _agents/*.md 에 정의된 에이전트에게 위임
+"""
+
 import os
 import datetime
 import glob
 import random
 import time
 import re
-import json
 import google.generativeai as genai
 import frontmatter
 from pathlib import Path
@@ -18,74 +24,57 @@ load_dotenv()
 BLOG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS_DIR = os.path.join(BLOG_DIR, "_posts")
 IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
+AGENTS_DIR = os.path.join(BLOG_DIR, "_agents")
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Model Fallback List (Will try in order until one works)
-# Updated based on actual API listing
+# Model Fallback List
 MODEL_CANDIDATES = [
     "models/gemini-2.0-flash",
     "models/gemini-flash-latest",
     "models/gemini-pro-latest",
     "models/gemini-2.5-flash",
-    "models/gemini-2.0-flash-exp",
 ]
-WORKING_MODEL = None  # Will be set after first successful call
+WORKING_MODEL = None
 
-# Load Agents Configuration (Priority: Env Var > Local File)
-AGENTS = {}
 
-def load_agents_config():
-    global AGENTS
-    # 1. Try Environment Variable
-    if os.environ.get("BLOG_AGENTS_CONFIG"):
-        try:
-            AGENTS = json.loads(os.environ.get("BLOG_AGENTS_CONFIG"))
-            print("Loaded agents from Environment Variable.", flush=True)
-            return
-        except json.JSONDecodeError:
-            print("Warning: Failed to parse BLOG_AGENTS_CONFIG env var.", flush=True)
+def load_agent_prompt(agent_name: str) -> str:
+    """Load agent prompt from _agents/{agent_name}.md file."""
+    # Also load concept.md to append to every agent
+    concept_file = os.path.join(AGENTS_DIR, "concept.md")
+    concept_content = ""
+    if os.path.exists(concept_file):
+        with open(concept_file, 'r', encoding='utf-8') as f:
+            concept_content = f.read()
 
-    # 2. Try Local File
-    local_json_path = os.path.join(BLOG_DIR, ".agent", "agents_prompts.json")
-    if os.path.exists(local_json_path):
-        try:
-            with open(local_json_path, 'r', encoding='utf-8') as f:
-                AGENTS = json.load(f)
-            print(f"Loaded agents from local file: {local_json_path}", flush=True)
-            return
-        except Exception as e:
-            print(f"Warning: Failed to load local agents file: {e}", flush=True)
-
-    print("Warning: No agents configuration found. Using empty defaults.", flush=True)
-
-def get_agent_prompt(agent_name):
-    """Retrieve prompt from loaded JSON config."""
-    prompt = AGENTS.get(agent_name)
-    if not prompt:
-        print(f"Warning: Agent '{agent_name}' not found in configuration.", flush=True)
+    agent_file = os.path.join(AGENTS_DIR, f"{agent_name}.md")
+    if not os.path.exists(agent_file):
+        print(f"Warning: Agent file not found: {agent_file}", flush=True)
         return f"You are acting as {agent_name}."
-    return prompt
+    
+    try:
+        with open(agent_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Remove Front Matter
+        if content.startswith('---'):
+            parts = content.split('---', 2)
+            if len(parts) >= 3:
+                content = parts[2].strip()
+        
+        # Append concept for context
+        return f"{content}\n\n---\n{concept_content}"
+    except Exception as e:
+        print(f"Error loading agent prompt: {e}", flush=True)
+        return f"You are acting as {agent_name}."
+
 
 def configure_genai():
     if not GENAI_API_KEY:
-        raise ValueError("GEMINI_API_KEY environment variable is missing. Check .env file or GitHub Secrets.")
+        raise ValueError("GEMINI_API_KEY environment variable is missing.")
     genai.configure(api_key=GENAI_API_KEY)
-    
-    # Debug: List available models
-    print("\n[Debug] Available Gemini Models:", flush=True)
-    try:
-        found_models = []
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods:
-                print(f" - {m.name}", flush=True)
-                found_models.append(m.name)
-        print("", flush=True)
-        return found_models
-    except Exception as e:
-        print(f"Failed to list models: {e}", flush=True)
-        return []
 
-def get_existing_topics():
+
+def get_existing_topics() -> list:
     topics = []
     files = glob.glob(os.path.join(POSTS_DIR, "*.md"))
     for f in files:
@@ -98,381 +87,204 @@ def get_existing_topics():
             continue
     return topics
 
-def safe_generate_content(contents):
-    """
-    Generation wrapper with model fallback and retry logic.
-    Tries multiple model names until one works.
-    """
+
+def safe_generate_content(contents: str) -> str:
     global WORKING_MODEL
     max_retries = 3
     base_delay = 2
-
-    # If we already found a working model, use it directly
     models_to_try = [WORKING_MODEL] if WORKING_MODEL else MODEL_CANDIDATES
 
     for model_name in models_to_try:
-        print(f"  [AI] Trying model '{model_name}' with input length: {len(contents)} chars...", flush=True)
-        
+        print(f"  [AI] Trying {model_name}...", flush=True)
         try:
             model = genai.GenerativeModel(model_name)
-        except Exception as e:
-            print(f"  [AI] Failed to initialize model '{model_name}': {e}", flush=True)
+            for attempt in range(max_retries):
+                try:
+                    response = model.generate_content(contents)
+                    WORKING_MODEL = model_name
+                    return response.text
+                except Exception as e:
+                    if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                        time.sleep(base_delay * (2 ** attempt))
+                    else:
+                        break
+        except:
             continue
+    raise Exception("All models failed.")
 
-        for attempt in range(max_retries):
-            try:
-                start_time = time.time()
-                response = model.generate_content(contents)
-                elapsed = time.time() - start_time
-                print(f"  [AI] Success with '{model_name}' in {elapsed:.2f}s", flush=True)
-                
-                # Remember this model for future calls
-                WORKING_MODEL = model_name
-                return response
-            except Exception as e:
-                error_str = str(e)
-                if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
-                    delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
-                    print(f"  [AI] Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})", flush=True)
-                    time.sleep(delay)
-                elif "404" in error_str or "NOT_FOUND" in error_str:
-                    print(f"  [AI] Model '{model_name}' not found (404). Trying next model...", flush=True)
-                    break  # Break inner retry loop, try next model
-                else:
-                    print(f"  [AI] Unexpected error: {e}", flush=True)
-                    break  # Try next model
+
+# === Pipeline Steps ===
+
+def step_1_select_topic(existing_topics: list) -> str:
+    print("\n>>> Step 1: Selecting Topic", flush=True)
+    prompt = f"""
+{load_agent_prompt("topic-selector")}
+
+Existing Topics: {existing_topics[-30:]}
+
+Output ONLY the topic title.
+"""
+    result = safe_generate_content(prompt)
+    return result.strip().replace('"', '').replace("'", '').strip()
+
+
+def step_2_research_topic(topic: str) -> str:
+    print("\n>>> Step 2: Researching Topic", flush=True)
+    prompt = f"""
+{load_agent_prompt("topic-researcher")}
+
+Topic: "{topic}"
+"""
+    return safe_generate_content(prompt)
+
+
+def step_3_create_storyboard(topic: str, research_notes: str) -> str:
+    print("\n>>> Step 3: Creating Storyboard", flush=True)
+    prompt = f"""
+{load_agent_prompt("storyboard-creator")}
+
+Topic: "{topic}"
+Research: {research_notes}
+"""
+    return safe_generate_content(prompt)
+
+
+def step_4_write_post(topic: str, storyboard: str, date_str: str, filename_slug: str) -> str:
+    print("\n>>> Step 4: Writing Post", flush=True)
     
-    raise Exception(f"All model candidates failed. Tried: {models_to_try}")
-
-# --- Pipeline Steps ---
-
-def step_1_select_topic(existing_topics):
-    print(">>> Step 1: Selecting Topic (topic-selector)", flush=True)
-    agent_prompt = get_agent_prompt("topic-selector")
+    # Provide context for Front Matter generation
+    context = f"""
+Current Date: {date_str}
+Filename Slug: {filename_slug}
+Expected Image Path format: /assets/img/posts/{date_str}-{filename_slug}/main.jpg
+"""
     
     prompt = f"""
-    {agent_prompt}
-    
-    Task: Use your expertise to Suggest ONE unique, specific technical blog post topic.
-    
-    Context:
-    - Target Audience: Backend Engineers, Game Developers.
-    - Existing Topics (Avoid these): {existing_topics[-30:]}
-    
-    CRITICAL RULES:
-    - Title must be 50 characters or less (Korean characters count as 1 each)
-    - Do NOT use colons (:) in the title
-    - Do NOT use quotes in the title
-    - Keep it concise but descriptive
-    
-    Output Format: ONLY the topic title in Korean. Nothing else.
-    """
-    
-    response = safe_generate_content(prompt)
-    topic = response.text.strip()
-    # Remove any quotes or problematic characters
-    topic = topic.replace('"', '').replace("'", '').strip()
-    # Truncate if too long
-    if len(topic) > 60:
-        topic = topic[:57] + "..."
-    print(f"Selected Topic: {topic}", flush=True)
-    return topic
+{load_agent_prompt("post-writer")}
 
-def step_2_research_topic(topic):
-    print(">>> Step 2: Researching Topic (topic-researcher)", flush=True)
-    agent_prompt = get_agent_prompt("topic-researcher")
-    
+Topic: "{topic}"
+Context: 
+{context}
+
+Storyboard:
+{storyboard}
+"""
+    return safe_generate_content(prompt)
+
+
+def step_5_review_post(draft_content: str) -> str:
+    print("\n>>> Step 5: Reviewing Post", flush=True)
     prompt = f"""
-    {agent_prompt}
-    
-    Task: Conduct deep research on the topic: "{topic}".
-    
-    Output Format:
-    - Key Technical Concepts
-    - Pros/Cons or Trade-offs
-    - Best Practices
-    - Code Snippet Ideas (Python/C#/Go)
-    
-    Provide comprehensive research notes usable by a writer.
-    """
-    
-    response = safe_generate_content(prompt)
-    research_notes = response.text
-    return research_notes
+{load_agent_prompt("post-reviewer")}
 
-def step_3_create_storyboard(topic, research_notes):
-    print(">>> Step 3: Creating Storyboard (storyboard-creator)", flush=True)
-    agent_prompt = get_agent_prompt("storyboard-creator")
+Draft Content:
+{draft_content}
+"""
+    result = safe_generate_content(prompt)
+    if "REJECTED" in result:
+        raise Exception(f"Post rejected: {result}")
     
-    prompt = f"""
-    {agent_prompt}
-    
-    Task: Create a content outline (storyboard) for the topic: "{topic}".
-    
-    Input Research:
-    {research_notes}
-    
-    Output Requirements:
-    - Define clear section headers
-    - Design 1 main image prompt (high quality)
-    - Outline flow: Hook -> Problem -> Solution -> Deep Dive -> Conclusion
-    """
-    
-    response = safe_generate_content(prompt)
-    storyboard = response.text
-    return storyboard
+    # Clean up review meta text if any remains
+    skip = ['Score:', 'APPROVE', 'Editor Review', '점수:']
+    return '\n'.join([l for l in result.split('\n') if not any(s in l for s in skip)]).strip()
 
-def step_4_write_post(topic, storyboard):
-    print(">>> Step 4: Writing Post (post-writer)", flush=True)
-    agent_prompt = get_agent_prompt("post-writer")
-    
-    prompt = f"""
-    {agent_prompt}
-    
-    Task: Write the full technical blog post for: "{topic}".
-    
-    Directives:
-    - Use the provided Storyboard as a guide.
-    - Tone: Professional, Knowledge-dense. No fluff.
-    - Format: Markdown.
-    - Include Code examples where planned.
-    - Include the Main Image Placeholder defined in the storyboard.
-    
-    Storyboard:
-    {storyboard}
-    """
-    
-    response = safe_generate_content(prompt)
-    draft_content = response.text
-    return draft_content
 
-def step_5_review_post(draft_content):
-    print(">>> Step 5: Reviewing Post (post-reviewer)", flush=True)
-    agent_prompt = get_agent_prompt("post-reviewer")
-    
-    prompt = f"""
-    {agent_prompt}
-    
-    Task: Review and finalize the following technical post.
-    
-    Review Criteria:
-    1. Is it technically accurate?
-    2. Is it free of fluff/filler?
-    3. Are code examples valid?
-    4. Is the tone appropriate?
-    
-    CRITICAL OUTPUT INSTRUCTIONS:
-    - If the post passes review, output ONLY the final polished markdown content.
-    - Do NOT include any review scores, ratings, or meta-commentary.
-    - Do NOT include phrases like "Score:", "APPROVE", "Editor Review", etc.
-    - Do NOT wrap the content in code blocks.
-    - Just output the clean, ready-to-publish blog post content.
-    - If the post fails review, output exactly "REJECTED: [Reason]" and nothing else.
-    
-    Draft Content:
-    {draft_content}
-    """
-    
-    response = safe_generate_content(prompt)
-    review_result = response.text.strip()
-    
-    if "REJECTED" in review_result:
-        raise Exception(f"Post Rejected by Reviewer: {review_result}")
-    
-    # Remove any accidentally included review metadata
-    lines = review_result.split('\n')
-    clean_lines = []
-    skip_patterns = ['Score:', 'APPROVE', 'Editor Review', '점수:', '결정:', '종합 평가:']
-    for line in lines:
-        if not any(pattern in line for pattern in skip_patterns):
-            clean_lines.append(line)
-    
-    return '\n'.join(clean_lines).strip()
-
-def normalize_filename(title):
-    clean = re.sub(r'[^\w\s-]', '', title).strip().lower()
-    return re.sub(r'[\s]+', '-', clean)
-
-def sanitize_yaml_title(title):
-    """Escape special characters for YAML front matter."""
-    # Remove or replace problematic characters
-    title = title.replace(':', ' -')  # Replace colon with dash
-    title = title.replace('"', "'")   # Replace double quotes
-    return title
-
-def extract_image_placeholders(content):
-    """Extract all [IMAGE_DESC: ...] placeholders from content."""
+def step_6_generate_images(content: str, asset_dir_path: str, asset_dir_name: str) -> str:
+    print("\n>>> Step 6: Generating Images", flush=True)
     pattern = r'\[IMAGE_DESC:\s*([^\]]+)\]'
     matches = re.findall(pattern, content)
-    return matches
-
-def generate_image_with_gemini(prompt, output_path):
-    """
-    Generate an image using Gemini's image generation model.
-    Returns True if successful, False otherwise.
-    """
-    print(f"  [IMG] Generating image for: {prompt[:50]}...", flush=True)
     
-    # Image generation model
+    print(f"  Found {len(matches)} images", flush=True)
+    image_agent_prompt = load_agent_prompt("image-generator")
     image_model_name = "models/gemini-2.0-flash-exp-image-generation"
     
-    try:
-        model = genai.GenerativeModel(image_model_name)
+    for idx, desc in enumerate(matches):
+        filename = f"image_{idx+1}.jpg"
+        full_path = os.path.join(asset_dir_path, filename)
+        web_path = f"/assets/img/posts/{asset_dir_name}/{filename}"
         
-        # Generate image
-        response = model.generate_content(
-            f"Generate a high-quality blog header image: {prompt}. Style: Modern, professional, tech-themed.",
-            generation_config=genai.GenerationConfig(
-                response_mime_type="image/jpeg"
-            )
-        )
-        
-        # Save image
-        if response.parts:
-            for part in response.parts:
-                if hasattr(part, 'inline_data') and part.inline_data:
-                    import base64
-                    image_data = base64.b64decode(part.inline_data.data)
-                    with open(output_path, 'wb') as f:
-                        f.write(image_data)
-                    print(f"  [IMG] Saved image to: {output_path}", flush=True)
-                    return True
-        
-        print(f"  [IMG] No image data in response", flush=True)
-        return False
-        
-    except Exception as e:
-        print(f"  [IMG] Image generation failed: {e}", flush=True)
-        return False
+        # Optimize prompt using agent guidelines
+        prompt = f"""
+{image_agent_prompt}
 
-def step_6_generate_images(content, asset_dir_path, asset_dir_name):
-    """
-    Find all [IMAGE_DESC: ...] placeholders, generate images, and replace with actual paths.
-    """
-    print(">>> Step 6: Generating Images (image-generator)", flush=True)
-    
-    placeholders = extract_image_placeholders(content)
-    
-    if not placeholders:
-        print("  No image placeholders found.", flush=True)
-        return content
-    
-    print(f"  Found {len(placeholders)} image placeholder(s).", flush=True)
-    
-    for idx, prompt in enumerate(placeholders):
-        image_filename = f"image_{idx + 1}.jpg"
-        image_full_path = os.path.join(asset_dir_path, image_filename)
-        web_path = f"/assets/img/posts/{asset_dir_name}/{image_filename}"
+Generate an image for: {desc}
+"""
+        try:
+            if generate_single_image(prompt, full_path, image_model_name):
+                # Replace placeholder with markdown image
+                alt = desc[:50].replace('"', "'")
+                content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
+        except:
+             content = content.replace(f"[IMAGE_DESC: {desc}]", "")
+        time.sleep(2)
         
-        success = generate_image_with_gemini(prompt, image_full_path)
-        
-        if success:
-            # Replace placeholder with actual image markdown
-            placeholder_pattern = rf'\[IMAGE_DESC:\s*{re.escape(prompt)}\]'
-            replacement = f'![{prompt[:50]}]({web_path})'
-            content = re.sub(placeholder_pattern, replacement, content)
-        else:
-            # If image generation fails, remove the placeholder
-            placeholder_pattern = rf'\[IMAGE_DESC:\s*{re.escape(prompt)}\]'
-            content = re.sub(placeholder_pattern, '', content)
-            print(f"  [IMG] Removed failed placeholder.", flush=True)
-        
-        time.sleep(2)  # Rate limit protection
-    
     return content
 
+
+def generate_single_image(prompt: str, output_path: str, model_name: str) -> bool:
+    print(f"  [IMG] Generating...", flush=True)
+    try:
+        model = genai.GenerativeModel(model_name)
+        response = model.generate_content(prompt, generation_config=genai.GenerationConfig(response_mime_type="image/jpeg"))
+        if response.parts:
+            import base64
+            with open(output_path, 'wb') as f:
+                f.write(base64.b64decode(response.parts[0].inline_data.data))
+            return True
+    except Exception as e:
+        print(f"  [IMG] Failed: {e}", flush=True)
+    return False
+
+
+def normalize_filename(title: str) -> str:
+    return re.sub(r'[\s]+', '-', re.sub(r'[^\w\s-]', '', title).strip().lower())
+
+
 def main():
-    print("=" * 60, flush=True)
-    print("Starting Daily Blog Automation (Full Pipeline)...", flush=True)
-    print("=" * 60, flush=True)
+    print("=== Daily Blog Writer Agent ===", flush=True)
+    configure_genai()
     
-    load_agents_config()
-    available_models = configure_genai()
-    
-    # 1. Topic Selection
+    # 1. Topic
     existing = get_existing_topics()
-    print(f"Found {len(existing)} existing posts.", flush=True)
     topic = step_1_select_topic(existing)
-    time.sleep(2)
     
     # 2. Research
-    research_notes = step_2_research_topic(topic)
-    time.sleep(2)
+    research = step_2_research_topic(topic)
     
     # 3. Storyboard
-    storyboard = step_3_create_storyboard(topic, research_notes)
-    time.sleep(2)
+    storyboard = step_3_create_storyboard(topic, research)
     
-    # 4. Drafting
-    draft_content = step_4_write_post(topic, storyboard)
-    time.sleep(2)
-    
-    # 5. Review & Finalize
-    final_content = step_5_review_post(draft_content)
-    
-    # 6. Prepare Asset Directory (needed for image generation)
+    # Prepare paths
     kst = pytz.timezone('Asia/Seoul')
-    today = datetime.datetime.now(kst)
-    date_str = today.strftime("%Y-%m-%d")
-    time_str = today.strftime("%H:%M:%S +0900")
-    
-    filename_slug = normalize_filename(topic)
-    if not filename_slug:
-        filename_slug = f"daily-tech-post-{int(time.time())}"
-        
-    asset_dir_name = f"{date_str}-{filename_slug}"
+    now = datetime.datetime.now(kst)
+    date_str = now.strftime("%Y-%m-%d")
+    slug = normalize_filename(topic) or f"post-{int(time.time())}"
+    asset_dir_name = f"{date_str}-{slug}"
     full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
     os.makedirs(full_asset_path, exist_ok=True)
     
-    # 7. Generate Images from [IMAGE_DESC: ...] placeholders
-    final_content = step_6_generate_images(final_content, full_asset_path, asset_dir_name)
-    time.sleep(2)
+    # 4. Write (Agent generates Front Matter now)
+    draft = step_4_write_post(topic, storyboard, date_str, slug)
     
-    # 8. Generate Main Header Image
-    print(">>> Step 7: Generating Main Header Image", flush=True)
-    main_image_path = os.path.join(full_asset_path, "main.jpg")
-    header_prompt = f"A professional tech blog header image for an article about: {topic}"
-    header_success = generate_image_with_gemini(header_prompt, main_image_path)
+    # 5. Review
+    final = step_5_review_post(draft)
     
-    # If header image generation fails, use default background
-    if not header_success:
-        default_bg = os.path.join(BLOG_DIR, "assets", "background.jpg")
-        if os.path.exists(default_bg):
-            import shutil
-            shutil.copy(default_bg, main_image_path)
-            print(f"  Used default background as fallback.", flush=True)
+    # 6. Images
+    final = step_6_generate_images(final, full_asset_path, asset_dir_name)
     
-    image_web_path = f"/assets/img/posts/{asset_dir_name}/main.jpg"
+    # 7. Header Image
+    print("\n>>> Step 7: Header Image", flush=True)
+    header_prompt = f"Blog header image for topic: {topic}"
+    generate_single_image(header_prompt, os.path.join(full_asset_path, "main.jpg"), "models/gemini-2.0-flash-exp-image-generation")
     
-    print(">>> Pipeline Completed Successfully.", flush=True)
-    
-    # 9. Save File with Front Matter
-    filename = f"{date_str}-{filename_slug}.md"
+    # 8. Save
+    filename = f"{date_str}-{slug}.md"
     filepath = os.path.join(POSTS_DIR, filename)
-    
-    safe_title = sanitize_yaml_title(topic)
-    if not final_content.startswith("---"):
-        final_content = f"""---
-layout: post
-title: "{safe_title}"
-date: {date_str} {time_str}
-categories: [Automation, AI]
-tags: [Gemini, AutoBlog, Pipeline]
-image:
-  path: {image_web_path}
-  alt: {safe_title}
----
-
-{final_content}
-
-*(This post was automatically generated by AI Agent Pipeline)*
-"""
-    
     with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(final_content)
+        f.write(final)
         
-    print(f"Successfully created post: {filepath}", flush=True)
-    print("=" * 60, flush=True)
+    print(f"\n✅ Created: {filepath}", flush=True)
+
 
 if __name__ == "__main__":
     main()

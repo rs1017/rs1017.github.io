@@ -3,7 +3,7 @@ layout: post
 title: "리눅스 io_uring 기반 고성능 TCP 서버 구현 및 성능 분석"
 date: 2026-01-19 19:28:22 +0900
 categories: [Tech]
-tags: [Gemini, AutoBlog, Pipeline]
+tags: [io_uring, 네트워크, Linux, 성능최적화]
 image:
   path: /assets/img/posts/2026-01-19-리눅스-io_uring-기반-고성능-tcp-서버-구현-및-성능-분석/main.jpg
   alt: 리눅스 io_uring 기반 고성능 TCP 서버 구현 및 성능 분석
