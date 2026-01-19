@@ -21,13 +21,13 @@ IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # Model Fallback List (Will try in order until one works)
+# Updated based on actual API listing
 MODEL_CANDIDATES = [
-    "gemini-1.5-flash",
-    "gemini-1.5-flash-latest",
-    "gemini-pro",
-    "gemini-1.0-pro",
-    "models/gemini-pro",
-    "models/gemini-1.5-flash",
+    "models/gemini-2.0-flash",
+    "models/gemini-flash-latest",
+    "models/gemini-pro-latest",
+    "models/gemini-2.5-flash",
+    "models/gemini-2.0-flash-exp",
 ]
 WORKING_MODEL = None  # Will be set after first successful call
 
