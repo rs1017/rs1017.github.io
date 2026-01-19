@@ -25,53 +25,17 @@ BLOG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS_DIR = os.path.join(BLOG_DIR, "_posts")
 IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 AGENTS_DIR = os.path.join(BLOG_DIR, "_agents")
+GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# API Keys Management
-API_KEYS = []
-if os.environ.get("GEMINI_API_KEY"):
-    API_KEYS.append(os.environ.get("GEMINI_API_KEY"))
-if os.environ.get("GEMINI_API_KEY2"):
-    API_KEYS.append(os.environ.get("GEMINI_API_KEY2"))
-
-# Randomly select starting API key
-if API_KEYS:
-    CURRENT_KEY_INDEX = random.randint(0, len(API_KEYS) - 1)
-else:
-    CURRENT_KEY_INDEX = 0
-
-# Model Fallback List (Pro models prioritized)
+# Model Candidates
 MODEL_CANDIDATES = [
-    "models/gemini-1.5-pro",          # Pro priority
+    "models/gemini-1.5-pro",
     "models/gemini-1.5-pro-latest",
-    "models/gemini-1.5-flash",        # Fallback to Flash
-    "models/gemini-1.5-flash-latest",
+    "models/gemini-1.5-flash", 
     "models/gemini-2.0-flash-exp",
-    "models/gemini-1.0-pro"           # Old reliable fallback
+    "models/gemini-1.0-pro"
 ]
 WORKING_MODEL = None
-
-
-def get_current_api_key():
-    if not API_KEYS:
-        raise ValueError("No GEMINI_API_KEY found in environment variables.")
-    return API_KEYS[CURRENT_KEY_INDEX]
-
-
-def switch_api_key():
-    """Switch to the next available API key."""
-    global CURRENT_KEY_INDEX
-    if len(API_KEYS) <= 1:
-        print("  [System] Only one API key available. Cannot switch.", flush=True)
-        return False
-    
-    CURRENT_KEY_INDEX = (CURRENT_KEY_INDEX + 1) % len(API_KEYS)
-    new_key = API_KEYS[CURRENT_KEY_INDEX]
-    
-    print(f"  [System] Switching to API Key #{CURRENT_KEY_INDEX + 1}", flush=True)
-    
-    # Reconfigure with new key
-    genai.configure(api_key=new_key)
-    return True
 
 
 def load_agent_prompt(agent_name: str) -> str:
@@ -107,9 +71,10 @@ def load_agent_prompt(agent_name: str) -> str:
 
 def configure_genai_initial():
     """Initial configuration of Gemini API."""
-    key = get_current_api_key()
-    print(f"  [System] Using API Key #{CURRENT_KEY_INDEX + 1}", flush=True)
-    genai.configure(api_key=key)
+    if not GENAI_API_KEY:
+        raise ValueError("GEMINI_API_KEY environment variable is missing.")
+    
+    genai.configure(api_key=GENAI_API_KEY)
     
     # Validate and filter available models
     print("[Init] Checking available models...", flush=True)
@@ -117,7 +82,6 @@ def configure_genai_initial():
     try:
         for m in genai.list_models():
             if 'generateContent' in m.supported_generation_methods:
-                # print(f"  - {m.name}", flush=True)
                 available_models.append(m.name)
     except Exception as e:
         print(f"  Failed to list models: {e}", flush=True)
@@ -125,12 +89,8 @@ def configure_genai_initial():
     if available_models:
         global MODEL_CANDIDATES
         # Intersect defined candidates with available models
-        # But keep the order of MODEL_CANDIDATES (priority)
         valid_candidates = [m for m in MODEL_CANDIDATES if m in available_models]
-        
-        # Add any other available models at the end just in case
         others = [m for m in available_models if m not in valid_candidates]
-        
         MODEL_CANDIDATES = valid_candidates + others
         print(f"[Init] Valid Model Candidates: {MODEL_CANDIDATES[:5]}...", flush=True)
     else:
@@ -155,10 +115,10 @@ def safe_generate_content(contents: str) -> str:
     global WORKING_MODEL
     max_retries = 3
     
-    # Working model first, then others
+    # Prioritize working model
     models_to_try = [WORKING_MODEL] + [m for m in MODEL_CANDIDATES if m != WORKING_MODEL] if WORKING_MODEL else MODEL_CANDIDATES
-
-    # Remove duplicates while preserving order
+    
+    # Remove duplicates
     unique_models = []
     seen = set()
     for m in models_to_try:
@@ -172,7 +132,7 @@ def safe_generate_content(contents: str) -> str:
     for model_name in models_to_try:
         print(f"  [AI] Trying {model_name}...", flush=True)
         
-        # Retry logic for a single model
+        # Retry logic ONLY for server errors, NOT rate limits
         for attempt in range(max_retries):
             try:
                 model = genai.GenerativeModel(model_name)
@@ -189,22 +149,10 @@ def safe_generate_content(contents: str) -> str:
                 last_error = e
                 error_str = str(e)
                 
-                # Check for Quota/Rate Limit Errors
+                # Immediate fail on Rate Limit
                 if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
-                    print(f"    - Rate limit hit on {model_name} (Attempt {attempt+1})", flush=True)
-                    
-                    # Try switching API Key if available
-                    switched = switch_api_key()
-                    if switched:
-                        # If switched, continue loop to retry immediately with new key
-                        print(f"    - Retrying with new API Key...", flush=True)
-                        time.sleep(1) # Brief pause
-                        continue 
-                    else:
-                        # No other key, must wait
-                        wait_time = 10 * (2 ** attempt) + random.uniform(1, 5)
-                        print(f"    - Waiting {wait_time:.1f}s...", flush=True)
-                        time.sleep(wait_time)
+                    print(f"    - Rate limit hit on {model_name}. Failing immediately.", flush=True)
+                    raise e  # Fail immediately as requested
                 
                 # Model Not Found -> Break to try next model
                 elif "404" in error_str or "not found" in error_str.lower():
@@ -218,8 +166,9 @@ def safe_generate_content(contents: str) -> str:
                 
                 else:
                     print(f"    - Error: {error_str}", flush=True)
+                    # For unknown errors, maybe retry a bit?
                     time.sleep(2)
-                    
+        
     raise Exception(f"All models failed. Last error: {last_error}")
 
 
@@ -262,7 +211,6 @@ Research: {research_notes}
 def step_4_write_post(topic: str, storyboard: str, date_str: str, filename_slug: str) -> str:
     print("\n>>> Step 4: Writing Post", flush=True)
     
-    # Provide context for Front Matter generation
     context = f"""
 Current Date: {date_str}
 Filename Slug: {filename_slug}
@@ -294,7 +242,6 @@ Draft Content:
     if "REJECTED" in result:
         raise Exception(f"Post rejected: {result}")
     
-    # Clean up review meta text if any remains
     skip = ['Score:', 'APPROVE', 'Editor Review', '점수:']
     return '\n'.join([l for l in result.split('\n') if not any(s in l for s in skip)]).strip()
 
@@ -312,34 +259,23 @@ def step_6_generate_images(content: str, asset_dir_path: str, asset_dir_name: st
         full_path = os.path.join(asset_dir_path, filename)
         web_path = f"/assets/img/posts/{asset_dir_name}/{filename}"
         
-        # Optimize prompt using agent guidelines
         prompt = f"""
 {image_agent_prompt}
 
 Generate an image for: {desc}
 """
-        retry_count = 0
-        success = False
-        while retry_count < 2 and not success:
-            try:
-                if generate_single_image(prompt, full_path):
-                    success = True
-                    # Replace placeholder with markdown image
-                    alt = desc[:50].replace('"', "'")
-                    content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
-            except Exception as e:
-                print(f"  Image Error (Retry {retry_count}): {e}", flush=True)
-                # If rate limited on image gen, try switching key
-                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                    if switch_api_key():
-                        print("  Switched API Key for Image Gen", flush=True)
-                retry_count += 1
-                time.sleep(5)
-
-        if not success:
-             # Just remove placeholder if failed
-             print(f"  Failed to generate image {idx+1}. Skipping.", flush=True)
+        try:
+            if generate_single_image(prompt, full_path):
+                alt = desc[:50].replace('"', "'")
+                content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
+            else:
+                 print(f"  Failed to generate image {idx+1}. Skipping.", flush=True)
+                 content = content.replace(f"[IMAGE_DESC: {desc}]", "")
+        except Exception as e:
+             print(f"  Image generation error: {e}", flush=True)
              content = content.replace(f"[IMAGE_DESC: {desc}]", "")
+        
+        time.sleep(2)
         
     return content
 
@@ -347,7 +283,6 @@ Generate an image for: {desc}
 def generate_single_image(prompt: str, output_path: str) -> bool:
     print(f"  [IMG] Generating...", flush=True)
     
-    # Candidates for image generation
     image_models = [
         "models/gemini-2.0-flash-exp", 
         "models/gemini-1.5-pro-latest"
@@ -364,9 +299,9 @@ def generate_single_image(prompt: str, output_path: str) -> bool:
                         f.write(base64.b64decode(response.parts[0].inline_data.data))
                     return True
         except Exception as e:
-            # print(f"  [IMG] Failed with {model_name}: {e}")
+            # Propagate rate limit
             if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                raise e # Propagate rate limit to caller to handle key switching
+                raise e 
             pass
             
     return False
