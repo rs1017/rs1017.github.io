@@ -2,7 +2,7 @@
 title: 바이브코딩 - AI와 함께하는 새로운 개발 방식
 author: naksupapa
 date: 2026-01-19 11:00:00 +0900
-categories: [기술, AI]
+categories: [AI]
 tags: [바이브코딩, AI코딩, ClaudeCode, Cursor, 개발워크플로우]
 description: Andrej Karpathy가 소개한 바이브 코딩의 개념부터 실전 적용까지. 2026년 개발자의 72%가 사용하는 AI 코딩 도구와 워크플로우를 상세히 분석합니다.
 image:

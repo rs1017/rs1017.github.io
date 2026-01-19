@@ -2,7 +2,7 @@
 title: 에이전틱 오토 코딩 - AI 에이전트가 코딩하는 시대
 author: naksupapa
 date: 2026-01-19 14:00:00 +0900
-categories: [기술, AI]
+categories: [AI]
 tags: [에이전틱코딩, AI에이전트, 자동화코딩, ClaudeCode, Devin]
 description: AI 에이전트가 계획, 코딩, 테스트, 배포까지 자율적으로 수행하는 에이전틱 코딩의 세계. Claude Code, Devin, Cursor 등 주요 도구 비교와 실전 활용법, 멀티 에이전트 워크플로우 패턴, 게임 서버 개발 사례까지 2026년 최신 트렌드를 소개합니다.
 image:

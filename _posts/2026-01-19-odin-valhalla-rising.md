@@ -2,7 +2,7 @@
 layout: post
 title: "오딘: 발할라 라이징 - 신의 영역에 도전하는 MMORPG의 새로운 기준"
 date: 2026-01-19 14:00:00 +0900
-categories: [Game Review, MMORPG]
+categories: [Life]
 tags: [Odin, Valhalla Rising, Mobile Game, PC Game, Review]
 image:
   path: /assets/img/posts/2026-01-19-odin/main.jpg

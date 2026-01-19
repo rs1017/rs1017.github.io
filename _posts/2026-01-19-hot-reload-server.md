@@ -2,7 +2,7 @@
 layout: post
 title: "게임 서버 핫 리로드 - 메모리와 동기화 문제 해결"
 date: 2026-01-19 18:42:20 +0900
-categories: [Backend, GameDev]
+categories: [Tech]
 tags: [HotReload, Memory, Synchronization, C++, Go]
 image:
   path: /assets/img/posts/2026-01-19-hot-reload-server/main.jpg

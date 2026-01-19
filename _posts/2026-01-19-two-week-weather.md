@@ -2,7 +2,7 @@
 title: 2주간 날씨 전망과 생활 팁
 author: naksupapa
 date: 2026-01-19 12:00:00 +0900
-categories: [라이프스타일]
+categories: [Life]
 tags: [날씨, 기상예보, 생활팁, 한파대비]
 description: 기상청 중기예보 활용법부터 겨울철 생활 노하우, 한파 대비 안전 수칙까지. 2주간 날씨 전망과 함께 알아보는 스마트한 겨울나기 완벽 가이드입니다.
 image:

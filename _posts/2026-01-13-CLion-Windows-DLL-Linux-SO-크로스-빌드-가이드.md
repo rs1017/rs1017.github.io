@@ -2,7 +2,7 @@
 title: CLion에서 Windows DLL을 Linux .so로 크로스 빌드하는 방법
 author: naksupapa
 date: 2026-01-13 15:00:00 +0900
-categories: [Development, C++]
+categories: [Tech]
 tags: [clion, rider, cmake, cross-compile, dll, so, linux, windows, wsl2]
 ---
 
