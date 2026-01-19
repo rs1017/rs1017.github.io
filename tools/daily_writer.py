@@ -6,6 +6,7 @@ import time
 import re
 import argparse
 from google import genai
+from google.genai import types
 import frontmatter
 from pathlib import Path
 import pytz
@@ -17,13 +18,16 @@ IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 # Set your Gemini API Key in environment variables
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Blog Identity for Context
-BLOG_CONTEXT = """
+# Blog Identity for Context (Default fallback if env var not set)
+DEFAULT_BLOG_CONTEXT = """
 Role: Expert Game Server Developer & Backend Engineer.
 Topics: Game Server Architecture, Backend Systems (Redis, DB, Networks), AI/ML (LLMs, Agents), Productivity.
 Tone: Professional, Insightful, "Knowledge-first" (No fluff, no thesis-style boring text).
 Language: Korean.
 """
+
+# Load Prompt Context from Environment Variable (Secret)
+BLOG_CONTEXT = os.environ.get("BLOG_PROMPT_CONTEXT", DEFAULT_BLOG_CONTEXT)
 
 def get_client():
     if not GENAI_API_KEY:
@@ -43,8 +47,32 @@ def get_existing_topics():
             continue
     return topics
 
+def safe_generate_content(client, model, contents):
+    """Citron-wrapped generation with retry for 429 errors."""
+    max_retries = 5
+    base_delay = 10  # Start with 10s delay
+
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=contents
+            )
+            return response
+        except Exception as e:
+            if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 5)
+                print(f"Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})")
+                time.sleep(delay)
+            else:
+                raise e
+    raise Exception("Max retries exceeded for Gemini API.")
+
 def generate_topic(existing_topics):
     client = get_client()
+    
+    # Use 1.5-flash for better stability/quota than experimental models
+    model_name = 'gemini-1.5-flash'
     
     prompt = f"""
     {BLOG_CONTEXT}
@@ -58,10 +86,7 @@ def generate_topic(existing_topics):
     3. Output ONLY the topic title in Korean. No explanations.
     """
     
-    response = client.models.generate_content(
-        model='gemini-2.0-flash-exp',
-        contents=prompt
-    )
+    response = safe_generate_content(client, model_name, prompt)
     
     if not response or not response.text:
        raise Exception("Failed to generate topic")
@@ -70,6 +95,7 @@ def generate_topic(existing_topics):
 
 def generate_post_content(topic):
     client = get_client()
+    model_name = 'gemini-1.5-flash'
     
     prompt = f"""
     {BLOG_CONTEXT}
@@ -90,10 +116,7 @@ def generate_post_content(topic):
     Write the post now.
     """
     
-    response = client.models.generate_content(
-        model='gemini-2.0-flash-exp',
-        contents=prompt
-    )
+    response = safe_generate_content(client, model_name, prompt)
     return response.text
 
 def normalize_filename(title):
@@ -103,7 +126,6 @@ def normalize_filename(title):
 
 def main():
     print("Starting Daily Blog Automation...")
-    # Validate API Key check upfront by getting client
     get_client()
     
     # 1. Get Topics
@@ -111,8 +133,12 @@ def main():
     print(f"Found {len(existing)} existing posts.")
     
     # 2. Generate New Topic
+    # Add a small delay/retry logic is handled inside
     new_topic = generate_topic(existing)
     print(f"Goal Topic: {new_topic}")
+    
+    # Sleep to respect rate limits between calls
+    time.sleep(5)
     
     # 3. Write Content
     content_body = generate_post_content(new_topic)
@@ -125,24 +151,20 @@ def main():
     time_str = today.strftime("%H:%M:%S +0900")
     
     filename_slug = normalize_filename(new_topic)
-    # Fallback if slug is empty (Korean titles often become empty with simple regex)
     if not filename_slug:
         filename_slug = f"daily-tech-post-{int(time.time())}"
         
     filename = f"{date_str}-{filename_slug}.md"
     filepath = os.path.join(POSTS_DIR, filename)
     
-    # 5. Asset Management (Images)
-    
+    # 5. Asset Management
     asset_dir_name = f"{date_str}-{filename_slug}"
     full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
     os.makedirs(full_asset_path, exist_ok=True)
     
     image_path = f"/assets/img/posts/{asset_dir_name}/main.jpg"
     
-    # Create a dummy image or copy one (GitHub Action should have a default)
-    # In a real scenario, call `genai.generate_images` here if available.
-    default_bg = os.path.join(IMAGE_DIR, "../../background.jpg") # assets/img/background.jpg
+    default_bg = os.path.join(IMAGE_DIR, "../../background.jpg")
     if os.path.exists(default_bg):
         import shutil
         target_image_path = os.path.join(BLOG_DIR, image_path.lstrip("/"))
@@ -150,9 +172,6 @@ def main():
         os.makedirs(parent_dir, exist_ok=True)
         shutil.copy(default_bg, target_image_path)
         print(f"Copied default background to {target_image_path}")
-    else:
-        print("Warning: Default background image not found.")
-    
     
     # 6. Assemble Post
     post_content = f"""---
