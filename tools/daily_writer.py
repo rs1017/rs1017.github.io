@@ -44,7 +44,7 @@ def get_existing_topics():
     return topics
 
 def generate_topic(existing_topics):
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     
     prompt = f"""
     {BLOG_CONTEXT}
@@ -65,7 +65,7 @@ def generate_topic(existing_topics):
     return response.text.strip()
 
 def generate_post_content(topic):
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-1.5-flash')
     
     prompt = f"""
     {BLOG_CONTEXT}
