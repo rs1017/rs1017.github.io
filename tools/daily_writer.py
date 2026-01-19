@@ -300,6 +300,87 @@ def sanitize_yaml_title(title):
     title = title.replace('"', "'")   # Replace double quotes
     return title
 
+def extract_image_placeholders(content):
+    """Extract all [IMAGE_DESC: ...] placeholders from content."""
+    pattern = r'\[IMAGE_DESC:\s*([^\]]+)\]'
+    matches = re.findall(pattern, content)
+    return matches
+
+def generate_image_with_gemini(prompt, output_path):
+    """
+    Generate an image using Gemini's image generation model.
+    Returns True if successful, False otherwise.
+    """
+    print(f"  [IMG] Generating image for: {prompt[:50]}...", flush=True)
+    
+    # Image generation model
+    image_model_name = "models/gemini-2.0-flash-exp-image-generation"
+    
+    try:
+        model = genai.GenerativeModel(image_model_name)
+        
+        # Generate image
+        response = model.generate_content(
+            f"Generate a high-quality blog header image: {prompt}. Style: Modern, professional, tech-themed.",
+            generation_config=genai.GenerationConfig(
+                response_mime_type="image/jpeg"
+            )
+        )
+        
+        # Save image
+        if response.parts:
+            for part in response.parts:
+                if hasattr(part, 'inline_data') and part.inline_data:
+                    import base64
+                    image_data = base64.b64decode(part.inline_data.data)
+                    with open(output_path, 'wb') as f:
+                        f.write(image_data)
+                    print(f"  [IMG] Saved image to: {output_path}", flush=True)
+                    return True
+        
+        print(f"  [IMG] No image data in response", flush=True)
+        return False
+        
+    except Exception as e:
+        print(f"  [IMG] Image generation failed: {e}", flush=True)
+        return False
+
+def step_6_generate_images(content, asset_dir_path, asset_dir_name):
+    """
+    Find all [IMAGE_DESC: ...] placeholders, generate images, and replace with actual paths.
+    """
+    print(">>> Step 6: Generating Images (image-generator)", flush=True)
+    
+    placeholders = extract_image_placeholders(content)
+    
+    if not placeholders:
+        print("  No image placeholders found.", flush=True)
+        return content
+    
+    print(f"  Found {len(placeholders)} image placeholder(s).", flush=True)
+    
+    for idx, prompt in enumerate(placeholders):
+        image_filename = f"image_{idx + 1}.jpg"
+        image_full_path = os.path.join(asset_dir_path, image_filename)
+        web_path = f"/assets/img/posts/{asset_dir_name}/{image_filename}"
+        
+        success = generate_image_with_gemini(prompt, image_full_path)
+        
+        if success:
+            # Replace placeholder with actual image markdown
+            placeholder_pattern = rf'\[IMAGE_DESC:\s*{re.escape(prompt)}\]'
+            replacement = f'![{prompt[:50]}]({web_path})'
+            content = re.sub(placeholder_pattern, replacement, content)
+        else:
+            # If image generation fails, remove the placeholder
+            placeholder_pattern = rf'\[IMAGE_DESC:\s*{re.escape(prompt)}\]'
+            content = re.sub(placeholder_pattern, '', content)
+            print(f"  [IMG] Removed failed placeholder.", flush=True)
+        
+        time.sleep(2)  # Rate limit protection
+    
+    return content
+
 def main():
     print("=" * 60, flush=True)
     print("Starting Daily Blog Automation (Full Pipeline)...", flush=True)
@@ -328,9 +409,8 @@ def main():
     
     # 5. Review & Finalize
     final_content = step_5_review_post(draft_content)
-    print(">>> Pipeline Completed Successfully.", flush=True)
     
-    # 6. Save File and Assets
+    # 6. Prepare Asset Directory (needed for image generation)
     kst = pytz.timezone('Asia/Seoul')
     today = datetime.datetime.now(kst)
     date_str = today.strftime("%Y-%m-%d")
@@ -340,25 +420,36 @@ def main():
     if not filename_slug:
         filename_slug = f"daily-tech-post-{int(time.time())}"
         
-    filename = f"{date_str}-{filename_slug}.md"
-    filepath = os.path.join(POSTS_DIR, filename)
-    
     asset_dir_name = f"{date_str}-{filename_slug}"
     full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
     os.makedirs(full_asset_path, exist_ok=True)
     
-    image_path = f"/assets/img/posts/{asset_dir_name}/main.jpg"
-    default_bg = os.path.join(IMAGE_DIR, "../../background.jpg")
+    # 7. Generate Images from [IMAGE_DESC: ...] placeholders
+    final_content = step_6_generate_images(final_content, full_asset_path, asset_dir_name)
+    time.sleep(2)
     
-    if os.path.exists(default_bg):
-        import shutil
-        target_image_path = os.path.join(BLOG_DIR, image_path.lstrip("/"))
-        parent_dir = os.path.dirname(target_image_path)
-        os.makedirs(parent_dir, exist_ok=True)
-        shutil.copy(default_bg, target_image_path)
-        print(f"Copied default background image.", flush=True)
+    # 8. Generate Main Header Image
+    print(">>> Step 7: Generating Main Header Image", flush=True)
+    main_image_path = os.path.join(full_asset_path, "main.jpg")
+    header_prompt = f"A professional tech blog header image for an article about: {topic}"
+    header_success = generate_image_with_gemini(header_prompt, main_image_path)
     
-    # Ensure Final Front Matter
+    # If header image generation fails, use default background
+    if not header_success:
+        default_bg = os.path.join(BLOG_DIR, "assets", "background.jpg")
+        if os.path.exists(default_bg):
+            import shutil
+            shutil.copy(default_bg, main_image_path)
+            print(f"  Used default background as fallback.", flush=True)
+    
+    image_web_path = f"/assets/img/posts/{asset_dir_name}/main.jpg"
+    
+    print(">>> Pipeline Completed Successfully.", flush=True)
+    
+    # 9. Save File with Front Matter
+    filename = f"{date_str}-{filename_slug}.md"
+    filepath = os.path.join(POSTS_DIR, filename)
+    
     safe_title = sanitize_yaml_title(topic)
     if not final_content.startswith("---"):
         final_content = f"""---
@@ -368,7 +459,7 @@ date: {date_str} {time_str}
 categories: [Automation, AI]
 tags: [Gemini, AutoBlog, Pipeline]
 image:
-  path: {image_path}
+  path: {image_web_path}
   alt: {safe_title}
 ---
 
