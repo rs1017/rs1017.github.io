@@ -99,7 +99,7 @@ def step_1_select_topic(client, existing_topics):
     Output Format: ONLY the topic title in Korean.
     """
     
-    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
+    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
     topic = response.text.strip()
     print(f"Selected Topic: {topic}")
     return topic
@@ -122,7 +122,7 @@ def step_2_research_topic(client, topic):
     Provide comprehensive research notes usable by a writer.
     """
     
-    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
+    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
     research_notes = response.text
     return research_notes
 
@@ -144,7 +144,7 @@ def step_3_create_storyboard(client, topic, research_notes):
     - Outline flow: Hook -> Problem -> Solution -> Deep Dive -> Conclusion
     """
     
-    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
+    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
     storyboard = response.text
     return storyboard
 
@@ -168,7 +168,7 @@ def step_4_write_post(client, topic, storyboard):
     {storyboard}
     """
     
-    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
+    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
     draft_content = response.text
     return draft_content
 
@@ -194,7 +194,7 @@ def step_5_review_post(client, draft_content):
     {draft_content}
     """
     
-    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
+    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
     review_result = response.text
     
     if "REJECTED" in review_result:
