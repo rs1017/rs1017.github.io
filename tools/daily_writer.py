@@ -6,8 +6,7 @@ import time
 import re
 import json
 import argparse
-from google import genai
-from google.genai import types
+import google.generativeai as genai
 import frontmatter
 from pathlib import Path
 import pytz
@@ -19,7 +18,6 @@ IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # Load Agents Configuration (JSON Secret)
-# Contains: topic-selector, topic-researcher, storyboard-creator, post-writer, post-reviewer
 AGENTS_CONFIG_JSON = os.environ.get("BLOG_AGENTS_CONFIG")
 AGENTS = {}
 if AGENTS_CONFIG_JSON:
@@ -36,10 +34,10 @@ def get_agent_prompt(agent_name):
         return f"You are acting as {agent_name}."
     return prompt
 
-def get_client():
+def configure_genai():
     if not GENAI_API_KEY:
         raise ValueError("GEMINI_API_KEY environment variable is missing.")
-    return genai.Client(api_key=GENAI_API_KEY)
+    genai.configure(api_key=GENAI_API_KEY)
 
 def get_existing_topics():
     topics = []
@@ -54,26 +52,25 @@ def get_existing_topics():
             continue
     return topics
 
-def safe_generate_content(client, model, contents):
-    """Citron-wrapped generation with retry for 429 errors."""
-    max_retries = 5
-    base_delay = 2  # Short delay for Pro plan
-    
-    print(f"  [AI] Calling model '{model}' with input length: {len(contents)} chars...", flush=True)
+def safe_generate_content(model_name, contents):
+    """Generation wrapper with retry logic using google-generativeai SDK."""
+    max_retries = 3
+    base_delay = 2  # Pro plan friendly
+
+    print(f"  [AI] Calling model '{model_name}' with input length: {len(contents)} chars...", flush=True)
+
+    model = genai.GenerativeModel(model_name)
 
     for attempt in range(max_retries):
         try:
             start_time = time.time()
-            response = client.models.generate_content(
-                model=model,
-                contents=contents
-            )
+            response = model.generate_content(contents)
             elapsed = time.time() - start_time
             print(f"  [AI] Success in {elapsed:.2f}s", flush=True)
             return response
         except Exception as e:
             if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                delay = base_delay * (1.5 ** attempt) + random.uniform(0, 1)
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
                 print(f"  [AI] Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})", flush=True)
                 time.sleep(delay)
             else:
@@ -83,7 +80,7 @@ def safe_generate_content(client, model, contents):
 
 # --- Pipeline Steps ---
 
-def step_1_select_topic(client, existing_topics):
+def step_1_select_topic(existing_topics):
     print(">>> Step 1: Selecting Topic (topic-selector)")
     agent_prompt = get_agent_prompt("topic-selector")
     
@@ -99,12 +96,12 @@ def step_1_select_topic(client, existing_topics):
     Output Format: ONLY the topic title in Korean.
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content('gemini-1.5-flash', prompt)
     topic = response.text.strip()
     print(f"Selected Topic: {topic}")
     return topic
 
-def step_2_research_topic(client, topic):
+def step_2_research_topic(topic):
     print(">>> Step 2: Researching Topic (topic-researcher)")
     agent_prompt = get_agent_prompt("topic-researcher")
     
@@ -122,11 +119,11 @@ def step_2_research_topic(client, topic):
     Provide comprehensive research notes usable by a writer.
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content('gemini-1.5-flash', prompt)
     research_notes = response.text
     return research_notes
 
-def step_3_create_storyboard(client, topic, research_notes):
+def step_3_create_storyboard(topic, research_notes):
     print(">>> Step 3: Creating Storyboard (storyboard-creator)")
     agent_prompt = get_agent_prompt("storyboard-creator")
     
@@ -144,11 +141,11 @@ def step_3_create_storyboard(client, topic, research_notes):
     - Outline flow: Hook -> Problem -> Solution -> Deep Dive -> Conclusion
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content('gemini-1.5-flash', prompt)
     storyboard = response.text
     return storyboard
 
-def step_4_write_post(client, topic, storyboard):
+def step_4_write_post(topic, storyboard):
     print(">>> Step 4: Writing Post (post-writer)")
     agent_prompt = get_agent_prompt("post-writer")
     
@@ -168,11 +165,11 @@ def step_4_write_post(client, topic, storyboard):
     {storyboard}
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content('gemini-1.5-flash', prompt)
     draft_content = response.text
     return draft_content
 
-def step_5_review_post(client, draft_content):
+def step_5_review_post(draft_content):
     print(">>> Step 5: Reviewing Post (post-reviewer)")
     agent_prompt = get_agent_prompt("post-reviewer")
     
@@ -194,7 +191,7 @@ def step_5_review_post(client, draft_content):
     {draft_content}
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content('gemini-1.5-flash', prompt)
     review_result = response.text
     
     if "REJECTED" in review_result:
@@ -208,27 +205,27 @@ def normalize_filename(title):
 
 def main():
     print("Starting Daily Blog Automation (Full Pipeline)...")
-    client = get_client()
+    configure_genai()
     
     # 1. Topic Selection
     existing = get_existing_topics()
-    topic = step_1_select_topic(client, existing)
-    time.sleep(5)
+    topic = step_1_select_topic(existing)
+    time.sleep(2)
     
     # 2. Research
-    research_notes = step_2_research_topic(client, topic)
-    time.sleep(5)
+    research_notes = step_2_research_topic(topic)
+    time.sleep(2)
     
     # 3. Storyboard
-    storyboard = step_3_create_storyboard(client, topic, research_notes)
-    time.sleep(5)
+    storyboard = step_3_create_storyboard(topic, research_notes)
+    time.sleep(2)
     
     # 4. Drafting
-    draft_content = step_4_write_post(client, topic, storyboard)
-    time.sleep(5)
+    draft_content = step_4_write_post(topic, storyboard)
+    time.sleep(2)
     
     # 5. Review & Finalize
-    final_content = step_5_review_post(client, draft_content)
+    final_content = step_5_review_post(draft_content)
     print(">>> Pipeline Completed Successfully.")
     
     # 6. Save File and Assets
