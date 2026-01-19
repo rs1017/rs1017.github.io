@@ -159,11 +159,22 @@ def step_1_select_topic(existing_topics):
     - Target Audience: Backend Engineers, Game Developers.
     - Existing Topics (Avoid these): {existing_topics[-30:]}
     
-    Output Format: ONLY the topic title in Korean.
+    CRITICAL RULES:
+    - Title must be 50 characters or less (Korean characters count as 1 each)
+    - Do NOT use colons (:) in the title
+    - Do NOT use quotes in the title
+    - Keep it concise but descriptive
+    
+    Output Format: ONLY the topic title in Korean. Nothing else.
     """
     
     response = safe_generate_content(prompt)
     topic = response.text.strip()
+    # Remove any quotes or problematic characters
+    topic = topic.replace('"', '').replace("'", '').strip()
+    # Truncate if too long
+    if len(topic) > 60:
+        topic = topic[:57] + "..."
     print(f"Selected Topic: {topic}", flush=True)
     return topic
 
@@ -242,32 +253,52 @@ def step_5_review_post(draft_content):
     prompt = f"""
     {agent_prompt}
     
-    Task: Review the following technical post.
+    Task: Review and finalize the following technical post.
     
-    Critique Criteria:
+    Review Criteria:
     1. Is it technically accurate?
     2. Is it free of fluff/filler?
     3. Are code examples valid?
     4. Is the tone appropriate?
     
-    If the post is Good (Score > 80), output the consolidated final markdown content (with minor fixes if needed).
-    If the post is Bad, output "REJECTED: [Reason]".
+    CRITICAL OUTPUT INSTRUCTIONS:
+    - If the post passes review, output ONLY the final polished markdown content.
+    - Do NOT include any review scores, ratings, or meta-commentary.
+    - Do NOT include phrases like "Score:", "APPROVE", "Editor Review", etc.
+    - Do NOT wrap the content in code blocks.
+    - Just output the clean, ready-to-publish blog post content.
+    - If the post fails review, output exactly "REJECTED: [Reason]" and nothing else.
     
     Draft Content:
     {draft_content}
     """
     
     response = safe_generate_content(prompt)
-    review_result = response.text
+    review_result = response.text.strip()
     
     if "REJECTED" in review_result:
         raise Exception(f"Post Rejected by Reviewer: {review_result}")
-        
-    return review_result
+    
+    # Remove any accidentally included review metadata
+    lines = review_result.split('\n')
+    clean_lines = []
+    skip_patterns = ['Score:', 'APPROVE', 'Editor Review', '점수:', '결정:', '종합 평가:']
+    for line in lines:
+        if not any(pattern in line for pattern in skip_patterns):
+            clean_lines.append(line)
+    
+    return '\n'.join(clean_lines).strip()
 
 def normalize_filename(title):
     clean = re.sub(r'[^\w\s-]', '', title).strip().lower()
     return re.sub(r'[\s]+', '-', clean)
+
+def sanitize_yaml_title(title):
+    """Escape special characters for YAML front matter."""
+    # Remove or replace problematic characters
+    title = title.replace(':', ' -')  # Replace colon with dash
+    title = title.replace('"', "'")   # Replace double quotes
+    return title
 
 def main():
     print("=" * 60, flush=True)
@@ -328,16 +359,17 @@ def main():
         print(f"Copied default background image.", flush=True)
     
     # Ensure Final Front Matter
+    safe_title = sanitize_yaml_title(topic)
     if not final_content.startswith("---"):
         final_content = f"""---
 layout: post
-title: "{topic}"
+title: "{safe_title}"
 date: {date_str} {time_str}
 categories: [Automation, AI]
 tags: [Gemini, AutoBlog, Pipeline]
 image:
   path: {image_path}
-  alt: {topic} Main Image
+  alt: {safe_title}
 ---
 
 {final_content}
