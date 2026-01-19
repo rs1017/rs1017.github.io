@@ -1,0 +1,39 @@
+id: odin-valhalla-rising
+title: "오딘: 발할라 라이징 - 북유럽 신화의 압도적 스케일"
+proposed_by: user
+proposed_date: 2026-01-19
+status: researched
+
+description: |
+  라이온하트 스튜디오 개발, 카카오게임즈 퍼블리싱의 MMORPG '오딘: 발할라 라이징'에 대한 깊이 있는 분석.
+  북유럽 신화 기반의 세계관, 언리얼 엔진 4로 구현된 심리스 오픈월드, 그리고 클래스 시스템과 주요 콘텐츠를 다룬다.
+
+keywords:
+  - 오딘 발할라 라이징
+  - MMORPG
+  - 북유럽 신화
+  - 오픈월드
+  - 라이온하트 스튜디오
+  - 카카오게임즈
+
+target_category:
+  - Game Review
+
+research_notes:
+  - "언리얼 엔진 4 기반의 고퀄리티 그래픽과 3D 캡처 기술 활용"
+  - "로딩 없는 심리스 오픈월드 (미드가르드, 요툰하임 등 8개 대륙)"
+  - "클래스: 워리어, 소서리스, 로그, 프리스트 (전직 시스템 존재)"
+  - "비행 탈것과 벽타기, 수영 등 자유로운 이동 시스템"
+  - "발할라 대전 등 대규모 PVP 콘텐츠"
+
+media:
+  - id: main-visual
+    type: image
+    description: "오딘의 광활한 오픈월드 전경과 신화적 분위기"
+    prompt: "Odin Valhalla Rising game landscape, nordic mythology style, massive scale open world, unreal engine 4 graphics, highly detailed, dramatic lighting, 8k resolution"
+    status: pending
+  - id: combat-scene
+    type: image
+    description: "역동적인 전투 장면과 스킬 이펙트"
+    prompt: "Odin Valhalla Rising combat scene, dynamic action, magical effects, warrior vs giant monster, cinematic angle, 4k, detailed textures"
+    status: pending
