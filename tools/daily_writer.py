@@ -5,7 +5,7 @@ import random
 import time
 import re
 import argparse
-import google.generativeai as genai
+from google import genai
 import frontmatter
 from pathlib import Path
 import pytz
@@ -25,10 +25,10 @@ Tone: Professional, Insightful, "Knowledge-first" (No fluff, no thesis-style bor
 Language: Korean.
 """
 
-def setup_gemini():
+def get_client():
     if not GENAI_API_KEY:
         raise ValueError("GEMINI_API_KEY environment variable is missing.")
-    genai.configure(api_key=GENAI_API_KEY)
+    return genai.Client(api_key=GENAI_API_KEY)
 
 def get_existing_topics():
     topics = []
@@ -44,7 +44,7 @@ def get_existing_topics():
     return topics
 
 def generate_topic(existing_topics):
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    client = get_client()
     
     prompt = f"""
     {BLOG_CONTEXT}
@@ -58,14 +58,18 @@ def generate_topic(existing_topics):
     3. Output ONLY the topic title in Korean. No explanations.
     """
     
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model='gemini-2.0-flash-exp',
+        contents=prompt
+    )
+    
     if not response or not response.text:
        raise Exception("Failed to generate topic")
     
     return response.text.strip()
 
 def generate_post_content(topic):
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    client = get_client()
     
     prompt = f"""
     {BLOG_CONTEXT}
@@ -86,7 +90,10 @@ def generate_post_content(topic):
     Write the post now.
     """
     
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(
+        model='gemini-2.0-flash-exp',
+        contents=prompt
+    )
     return response.text
 
 def normalize_filename(title):
@@ -96,7 +103,8 @@ def normalize_filename(title):
 
 def main():
     print("Starting Daily Blog Automation...")
-    setup_gemini()
+    # Validate API Key check upfront by getting client
+    get_client()
     
     # 1. Get Topics
     existing = get_existing_topics()
@@ -125,18 +133,11 @@ def main():
     filepath = os.path.join(POSTS_DIR, filename)
     
     # 5. Asset Management (Images)
-    # Note: Real Gemini Image Gen requires different model/API handling. 
-    # For automation stability, we will use a placeholder/Unsplash approach 
-    # OR you can implement the specific 'imagen-3' call here if you have access.
-    # For now, we use a reliable curated placeholder based on keywords.
     
     asset_dir_name = f"{date_str}-{filename_slug}"
     full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
     os.makedirs(full_asset_path, exist_ok=True)
     
-    # Minimal validation/logic for "Odin" style images could go here.
-    # We will simply point to a placeholder in the markdown for now, 
-    # or use a generic tech image.
     image_path = f"/assets/img/posts/{asset_dir_name}/main.jpg"
     
     # Create a dummy image or copy one (GitHub Action should have a default)
