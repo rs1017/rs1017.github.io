@@ -17,9 +17,10 @@ node_modules
 package-lock.json
 Gemfile.lock
 
-_posts/2021-12-14-test.md
-_layouts/post.html.org
-_layouts/post.html.utterance
-_includes/refactor-content.html.org
+# Automation Tools
+tools/bundle_agents.py
+agents_prompts.json
+.claude/agents/
+.agent/workflow/
 
 
