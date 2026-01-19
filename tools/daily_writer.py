@@ -27,12 +27,12 @@ IMAGE_DIR = os.path.join(BLOG_DIR, "assets", "img", "posts")
 AGENTS_DIR = os.path.join(BLOG_DIR, "_agents")
 GENAI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-# Model Fallback List
+# Model Fallback List - 안정적인 모델 우선
 MODEL_CANDIDATES = [
+    "models/gemini-1.5-flash", 
     "models/gemini-2.0-flash",
-    "models/gemini-flash-latest",
-    "models/gemini-pro-latest",
-    "models/gemini-2.5-flash",
+    "models/gemini-1.5-pro",
+    "models/gemini-pro",
 ]
 WORKING_MODEL = None
 
@@ -91,8 +91,12 @@ def get_existing_topics() -> list:
 def safe_generate_content(contents: str) -> str:
     global WORKING_MODEL
     max_retries = 3
-    base_delay = 2
-    models_to_try = [WORKING_MODEL] if WORKING_MODEL else MODEL_CANDIDATES
+    base_delay = 5  # 대기 시간 증가
+    
+    # 이전에 성공한 모델이 있으면 그것부터 시도, 없으면 목록 순서대로
+    models_to_try = [WORKING_MODEL] + [m for m in MODEL_CANDIDATES if m != WORKING_MODEL] if WORKING_MODEL else MODEL_CANDIDATES
+
+    last_error = None
 
     for model_name in models_to_try:
         print(f"  [AI] Trying {model_name}...", flush=True)
@@ -101,16 +105,31 @@ def safe_generate_content(contents: str) -> str:
             for attempt in range(max_retries):
                 try:
                     response = model.generate_content(contents)
+                    if not response.text:
+                        raise Exception("Empty response")
+                    
                     WORKING_MODEL = model_name
+                    print(f"  [AI] Success with {model_name}", flush=True)
                     return response.text
                 except Exception as e:
-                    if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                        time.sleep(base_delay * (2 ** attempt))
+                    last_error = e
+                    error_str = str(e)
+                    print(f"    - Attempt {attempt+1} failed: {error_str}", flush=True)
+                    
+                    if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
+                        sleep_time = base_delay * (2 ** attempt) + random.uniform(1, 3)
+                        print(f"      Rating limited. Sleeping {sleep_time:.1f}s...", flush=True)
+                        time.sleep(sleep_time)
+                    elif "500" in error_str or "internal" in error_str.lower():
+                        time.sleep(base_delay)
                     else:
+                        # 기타 에이러(404 등)는 재시도 없이 다음 모델로
                         break
-        except:
+        except Exception as e:
+            print(f"  [AI] Failed to init {model_name}: {e}", flush=True)
             continue
-    raise Exception("All models failed.")
+            
+    raise Exception(f"All models failed. Last error: {last_error}")
 
 
 # === Pipeline Steps ===
@@ -214,9 +233,17 @@ Generate an image for: {desc}
                 # Replace placeholder with markdown image
                 alt = desc[:50].replace('"', "'")
                 content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
-        except:
-             content = content.replace(f"[IMAGE_DESC: {desc}]", "")
-        time.sleep(2)
+            else:
+                # If generation fails, verify if file exists anyway (sometimes API returns error but file is saved)
+                if os.path.exists(full_path):
+                     alt = desc[:50].replace('"', "'")
+                     content = content.replace(f"[IMAGE_DESC: {desc}]", f"![{alt}]({web_path})")
+                else:
+                     print(f"  Skipping image {idx+1} due to generation failure", flush=True)
+        except Exception as e:
+             print(f"  Image generation error: {e}", flush=True)
+             
+        time.sleep(5) # Increase delay for image generation
         
     return content
 
@@ -242,49 +269,54 @@ def normalize_filename(title: str) -> str:
 
 def main():
     print("=== Daily Blog Writer Agent ===", flush=True)
-    configure_genai()
-    
-    # 1. Topic
-    existing = get_existing_topics()
-    topic = step_1_select_topic(existing)
-    
-    # 2. Research
-    research = step_2_research_topic(topic)
-    
-    # 3. Storyboard
-    storyboard = step_3_create_storyboard(topic, research)
-    
-    # Prepare paths
-    kst = pytz.timezone('Asia/Seoul')
-    now = datetime.datetime.now(kst)
-    date_str = now.strftime("%Y-%m-%d")
-    slug = normalize_filename(topic) or f"post-{int(time.time())}"
-    asset_dir_name = f"{date_str}-{slug}"
-    full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
-    os.makedirs(full_asset_path, exist_ok=True)
-    
-    # 4. Write (Agent generates Front Matter now)
-    draft = step_4_write_post(topic, storyboard, date_str, slug)
-    
-    # 5. Review
-    final = step_5_review_post(draft)
-    
-    # 6. Images
-    final = step_6_generate_images(final, full_asset_path, asset_dir_name)
-    
-    # 7. Header Image
-    print("\n>>> Step 7: Header Image", flush=True)
-    header_prompt = f"Blog header image for topic: {topic}"
-    generate_single_image(header_prompt, os.path.join(full_asset_path, "main.jpg"), "models/gemini-2.0-flash-exp-image-generation")
-    
-    # 8. Save
-    filename = f"{date_str}-{slug}.md"
-    filepath = os.path.join(POSTS_DIR, filename)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(final)
+    try:
+        configure_genai()
         
-    print(f"\n✅ Created: {filepath}", flush=True)
-
+        # 1. Topic
+        existing = get_existing_topics()
+        topic = step_1_select_topic(existing)
+        
+        # 2. Research
+        research = step_2_research_topic(topic)
+        
+        # 3. Storyboard
+        storyboard = step_3_create_storyboard(topic, research)
+        
+        # Prepare paths
+        kst = pytz.timezone('Asia/Seoul')
+        now = datetime.datetime.now(kst)
+        date_str = now.strftime("%Y-%m-%d")
+        slug = normalize_filename(topic) or f"post-{int(time.time())}"
+        asset_dir_name = f"{date_str}-{slug}"
+        full_asset_path = os.path.join(IMAGE_DIR, asset_dir_name)
+        os.makedirs(full_asset_path, exist_ok=True)
+        
+        # 4. Write (Agent generates Front Matter now)
+        draft = step_4_write_post(topic, storyboard, date_str, slug)
+        
+        # 5. Review
+        final = step_5_review_post(draft)
+        
+        # 6. Images
+        final = step_6_generate_images(final, full_asset_path, asset_dir_name)
+        
+        # 7. Header Image
+        print("\n>>> Step 7: Header Image", flush=True)
+        header_prompt = f"Blog header image for topic: {topic}"
+        generate_single_image(header_prompt, os.path.join(full_asset_path, "main.jpg"), "models/gemini-2.0-flash-exp-image-generation")
+        
+        # 8. Save
+        filename = f"{date_str}-{slug}.md"
+        filepath = os.path.join(POSTS_DIR, filename)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(final)
+            
+        print(f"\n✅ Created: {filepath}", flush=True)
+        
+    except Exception as e:
+        print(f"\n❌ Pipeline Failed: {e}", flush=True)
+        # Re-raise to show traceback in logs if needed
+        raise
 
 if __name__ == "__main__":
     main()
