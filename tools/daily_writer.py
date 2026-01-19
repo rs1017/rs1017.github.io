@@ -56,8 +56,8 @@ def get_existing_topics():
 
 def safe_generate_content(client, model, contents):
     """Citron-wrapped generation with retry for 429 errors."""
-    max_retries = 5
-    base_delay = 10
+    max_retries = 10
+    base_delay = 20  # Start with 20s delay for 2.0 model
 
     for attempt in range(max_retries):
         try:
@@ -68,7 +68,7 @@ def safe_generate_content(client, model, contents):
             return response
         except Exception as e:
             if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                delay = base_delay * (2 ** attempt) + random.uniform(0, 5)
+                delay = base_delay * (1.5 ** attempt) + random.uniform(0, 10)
                 print(f"Rate limited (429). Retrying in {delay:.2f}s... (Attempt {attempt+1}/{max_retries})")
                 time.sleep(delay)
             else:
@@ -93,7 +93,7 @@ def step_1_select_topic(client, existing_topics):
     Output Format: ONLY the topic title in Korean.
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
     topic = response.text.strip()
     print(f"Selected Topic: {topic}")
     return topic
@@ -116,7 +116,7 @@ def step_2_research_topic(client, topic):
     Provide comprehensive research notes usable by a writer.
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
     research_notes = response.text
     return research_notes
 
@@ -138,7 +138,7 @@ def step_3_create_storyboard(client, topic, research_notes):
     - Outline flow: Hook -> Problem -> Solution -> Deep Dive -> Conclusion
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
     storyboard = response.text
     return storyboard
 
@@ -162,7 +162,7 @@ def step_4_write_post(client, topic, storyboard):
     {storyboard}
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
     draft_content = response.text
     return draft_content
 
@@ -188,7 +188,7 @@ def step_5_review_post(client, draft_content):
     {draft_content}
     """
     
-    response = safe_generate_content(client, 'gemini-1.5-flash', prompt)
+    response = safe_generate_content(client, 'gemini-2.0-flash-exp', prompt)
     review_result = response.text
     
     if "REJECTED" in review_result:
