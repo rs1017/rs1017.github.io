@@ -1,3 +1,3 @@
-from .unified_client import UnifiedAIClient
+from .gemini_client import GeminiClient
 
-__all__ = ["UnifiedAIClient"]
+__all__ = ["GeminiClient"]
