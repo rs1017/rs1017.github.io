@@ -11,9 +11,9 @@ from google.genai import types
 
 
 MODEL_CANDIDATES = [
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-pro",
+    "gemini-2.0-flash-001",
+    "gemini-1.5-flash-001",
+    "gemini-1.5-flash-8b",
 ]
 
 
@@ -47,19 +47,18 @@ class GeminiClient:
 
             for attempt in range(self.max_retries):
                 try:
-                    # Build config
-                    config = types.GenerateContentConfig(
-                        max_output_tokens=max_tokens,
-                        temperature=temperature,
-                    )
-
+                    # Build contents with system instruction if provided
+                    contents = prompt
                     if system:
-                        config.system_instruction = system
+                        contents = f"System Instructions:\n{system}\n\n---\n\nUser Request:\n{prompt}"
 
                     response = self.client.models.generate_content(
                         model=model_name,
-                        contents=prompt,
-                        config=config,
+                        contents=contents,
+                        config=types.GenerateContentConfig(
+                            max_output_tokens=max_tokens,
+                            temperature=temperature,
+                        ),
                     )
 
                     if not response.text:
@@ -74,8 +73,9 @@ class GeminiClient:
                     error_str = str(e).lower()
 
                     if "rate" in error_str or "quota" in error_str or "429" in error_str or "resource" in error_str:
-                        print(f"    - Rate limit hit on {model_name}. Trying next model...")
-                        break
+                        print(f"    - Rate limit on {model_name}. Waiting 30s...")
+                        time.sleep(30)
+                        continue  # retry same model after wait
                     elif "not found" in error_str or "404" in error_str:
                         print(f"    - Model {model_name} not found. Skipping.")
                         break
