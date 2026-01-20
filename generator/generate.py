@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from generator.clients.gemini_client import GeminiClient
+from generator.clients.unified_client import UnifiedAIClient
 from generator.agents.topic_selector import TopicSelectorAgent
 from generator.agents.skill_designer import SkillDesignerAgent
 from generator.agents.code_generator import CodeGeneratorAgent
@@ -41,7 +41,7 @@ class SkillFactoryPipeline:
     """Main pipeline orchestrator for AI Skill Factory."""
 
     def __init__(self) -> None:
-        self.client = GeminiClient()
+        self.client = UnifiedAIClient()
         self.topic_selector = TopicSelectorAgent(self.client, PROMPTS_DIR)
         self.skill_designer = SkillDesignerAgent(self.client, PROMPTS_DIR)
         self.code_generator = CodeGeneratorAgent(self.client, PROMPTS_DIR)
