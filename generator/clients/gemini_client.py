@@ -6,13 +6,14 @@ import os
 import time
 from typing import Optional, List
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 
 MODEL_CANDIDATES = [
-    "gemini-2.0-flash-exp",
-    "gemini-1.5-pro",
+    "gemini-2.0-flash",
     "gemini-1.5-flash",
+    "gemini-1.5-pro",
 ]
 
 
@@ -24,7 +25,7 @@ class GeminiClient:
         if not api_key:
             raise ValueError("GEMINI_API_KEY environment variable is missing.")
 
-        genai.configure(api_key=api_key)
+        self.client = genai.Client(api_key=api_key)
         self.working_model: Optional[str] = None
         self.max_retries = 3
 
@@ -41,26 +42,24 @@ class GeminiClient:
         models_to_try = self._get_model_order()
         last_error: Optional[Exception] = None
 
-        # Combine system prompt with user prompt if provided
-        full_prompt = prompt
-        if system:
-            full_prompt = f"{system}\n\n---\n\n{prompt}"
-
         for model_name in models_to_try:
             print(f"  [AI] Trying {model_name}...", flush=True)
 
             for attempt in range(self.max_retries):
                 try:
-                    model = genai.GenerativeModel(model_name)
-
-                    generation_config = genai.types.GenerationConfig(
+                    # Build config
+                    config = types.GenerateContentConfig(
                         max_output_tokens=max_tokens,
                         temperature=temperature,
                     )
 
-                    response = model.generate_content(
-                        full_prompt,
-                        generation_config=generation_config,
+                    if system:
+                        config.system_instruction = system
+
+                    response = self.client.models.generate_content(
+                        model=model_name,
+                        contents=prompt,
+                        config=config,
                     )
 
                     if not response.text:
@@ -74,7 +73,7 @@ class GeminiClient:
                     last_error = e
                     error_str = str(e).lower()
 
-                    if "rate" in error_str or "quota" in error_str or "429" in error_str:
+                    if "rate" in error_str or "quota" in error_str or "429" in error_str or "resource" in error_str:
                         print(f"    - Rate limit hit on {model_name}. Trying next model...")
                         break
                     elif "not found" in error_str or "404" in error_str:
