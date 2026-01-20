@@ -1,0 +1,25 @@
+# AI Skill Factory - Skill Registry
+# Auto-generated, do not edit manually
+
+last_updated: "2026-01-20T09:00:00+09:00"
+total_skills: 0
+
+categories:
+  Workflow:
+    count: 0
+    skills: []
+  Agent:
+    count: 0
+    skills: []
+  Skill:
+    count: 0
+    skills: []
+
+skills: []
+
+statistics:
+  by_difficulty:
+    beginner: 0
+    intermediate: 0
+    advanced: 0
+  by_month: {}
