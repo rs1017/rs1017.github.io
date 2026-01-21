@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from generator.clients.gemini_client import GeminiClient
+from generator.clients.claude_code_client import ClaudeCodeClient
 from generator.agents.topic_selector import TopicSelectorAgent
 from generator.agents.skill_designer import SkillDesignerAgent
 from generator.agents.code_generator import CodeGeneratorAgent
@@ -25,6 +26,7 @@ from generator.agents.post_writer import PostWriterAgent
 from generator.agents.validator import ValidatorAgent
 from generator.utils.file_utils import save_skill, save_post, update_registry
 from generator.utils.slug_utils import normalize_filename
+from generator.utils.git_utils import commit_and_push, has_changes
 
 load_dotenv()
 
@@ -40,8 +42,16 @@ SOURCES_DIR = Path(__file__).parent / "sources"
 class SkillFactoryPipeline:
     """Main pipeline orchestrator for AI Skill Factory."""
 
-    def __init__(self) -> None:
-        self.client = GeminiClient()
+    def __init__(self, use_claude_cli: bool = False) -> None:
+        """Initialize the pipeline.
+
+        Args:
+            use_claude_cli: If True, use Claude Code CLI instead of Gemini API
+        """
+        if use_claude_cli:
+            self.client = ClaudeCodeClient()
+        else:
+            self.client = GeminiClient()
         self.topic_selector = TopicSelectorAgent(self.client, PROMPTS_DIR)
         self.skill_designer = SkillDesignerAgent(self.client, PROMPTS_DIR)
         self.code_generator = CodeGeneratorAgent(self.client, PROMPTS_DIR)
@@ -51,7 +61,8 @@ class SkillFactoryPipeline:
         self.kst = pytz.timezone("Asia/Seoul")
 
     def run(
-        self, strategy: str = "auto", user_topic: Optional[str] = None
+        self, strategy: str = "auto", user_topic: Optional[str] = None,
+        skip_validation: bool = False
     ) -> bool:
         """Execute the full 6-step pipeline."""
         print("=" * 60)
@@ -74,16 +85,20 @@ class SkillFactoryPipeline:
             )
 
             # Step 5: Validation
-            validation_result = self._step_5_validate(
-                skill_md, example_code, post_content
-            )
+            if skip_validation:
+                print("\n>>> Step 5: Validation (SKIPPED)")
+                validation_result = {"approved": True, "score": 0, "warnings": ["Validation skipped"]}
+            else:
+                validation_result = self._step_5_validate(
+                    skill_md, example_code, post_content
+                )
 
-            if not validation_result["approved"]:
-                print(f"\n[REJECTED] {validation_result['reason']}")
-                print("Errors:")
-                for error in validation_result.get("errors", []):
-                    print(f"  - {error}")
-                return False
+                if not validation_result["approved"]:
+                    print(f"\n[REJECTED] {validation_result['reason']}")
+                    print("Errors:")
+                    for error in validation_result.get("errors", []):
+                        print(f"  - {error}")
+                    return False
 
             # Step 6: Save Files
             self._step_6_save_files(
@@ -254,10 +269,42 @@ def main() -> None:
         type=str,
         help="Specific topic to generate (overrides strategy)",
     )
+    parser.add_argument(
+        "--use-claude-cli",
+        action="store_true",
+        help="Use Claude Code CLI instead of Gemini API",
+    )
+    parser.add_argument(
+        "--auto-git",
+        action="store_true",
+        help="Automatically commit and push changes after generation",
+    )
+    parser.add_argument(
+        "--skip-validation",
+        action="store_true",
+        help="Skip content validation (for testing)",
+    )
     args = parser.parse_args()
 
-    pipeline = SkillFactoryPipeline()
-    success = pipeline.run(strategy=args.strategy, user_topic=args.topic)
+    pipeline = SkillFactoryPipeline(use_claude_cli=args.use_claude_cli)
+    success = pipeline.run(
+        strategy=args.strategy,
+        user_topic=args.topic,
+        skip_validation=args.skip_validation,
+    )
+
+    # Handle auto-git if requested and generation succeeded
+    if success and args.auto_git:
+        print("\n>>> Auto Git: Committing and pushing changes")
+        if has_changes(BLOG_DIR):
+            git_success, git_msg = commit_and_push(BLOG_DIR)
+            if git_success:
+                print(f"  {git_msg}")
+            else:
+                print(f"  [ERROR] {git_msg}")
+                success = False
+        else:
+            print("  No changes to commit")
 
     sys.exit(0 if success else 1)
 
