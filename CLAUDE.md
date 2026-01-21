@@ -107,3 +107,14 @@ compress.html (HTML minification)
 
 ### GitHub Secrets Required
 - `ANTHROPIC_API_KEY`: Claude API key for skill generation
+
+## Creation Guidelines
+
+콘텐츠 생성 시 반드시 아래 도구를 사용하세요:
+
+| 생성 대상 | 사용할 도구 |
+|----------|------------|
+| Skill 생성 | `skill-creator` |
+| Agent/Subagent 생성 | `subagent-creator` |
+| Hook 생성 | `hook-creator` |
+| Slash Command 생성 | `slash-command-creator` |
