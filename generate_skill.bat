@@ -126,6 +126,61 @@ echo ============================================
 echo Generation complete!
 echo ============================================
 
+:: Monitor GitHub Actions if gh CLI is available and git was used
+if "%SKIP_GIT%"=="1" goto :done
+
+gh --version >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo [Info] gh CLI not installed. Skipping Actions monitoring.
+    echo        Install with: winget install GitHub.cli
+    goto :done
+)
+
+echo.
+echo [Actions] Monitoring GitHub Actions workflow...
+echo [Actions] Waiting for workflow to start...
+
+:: Wait for workflow to start (max 30 seconds)
+set "WAIT_COUNT=0"
+:wait_for_workflow
+timeout /t 5 /nobreak >nul
+set /a WAIT_COUNT+=1
+
+for /f "tokens=1,2" %%a in ('gh run list --limit 1 --json status^,conclusion -q ".[0] | \"\(.status) \(.conclusion // \"none\")\"" 2^>nul') do (
+    set "RUN_STATUS=%%a"
+    set "RUN_CONCLUSION=%%b"
+)
+
+if "%RUN_STATUS%"=="in_progress" (
+    echo [Actions] Workflow in progress...
+    if %WAIT_COUNT% lss 24 goto :wait_for_workflow
+    echo [Actions] Timeout waiting for workflow. Check manually.
+    goto :done
+)
+
+if "%RUN_STATUS%"=="queued" (
+    echo [Actions] Workflow queued...
+    if %WAIT_COUNT% lss 24 goto :wait_for_workflow
+)
+
+if "%RUN_STATUS%"=="completed" (
+    if "%RUN_CONCLUSION%"=="success" (
+        echo [Actions] Workflow completed successfully!
+        echo [Actions] Blog deployed to https://rs1017.github.io/
+    ) else (
+        echo [Actions] Workflow FAILED!
+        echo.
+        echo [Actions] Fetching error logs...
+        for /f %%i in ('gh run list --limit 1 --json databaseId -q ".[0].databaseId"') do set "RUN_ID=%%i"
+        gh run view !RUN_ID! --log-failed 2>nul || gh run view !RUN_ID! --log 2>nul | findstr /i "error fail"
+        echo.
+        echo [Actions] View full logs: gh run view !RUN_ID! --log
+        exit /b 1
+    )
+)
+
+:done
 endlocal
 exit /b 0
 
@@ -153,5 +208,11 @@ echo   generate_skill.bat --strategy keyword
 echo   generate_skill.bat --topic "API 통합 스킬"
 echo   generate_skill.bat --skip-git
 echo   generate_skill.bat --skip-validation
+echo.
+echo GitHub Actions Monitoring:
+echo   If gh CLI is installed, the script will automatically monitor
+echo   the deployment workflow and report success/failure.
+echo   Install gh CLI: winget install GitHub.cli
+echo   Authenticate: gh auth login
 echo.
 exit /b 0
