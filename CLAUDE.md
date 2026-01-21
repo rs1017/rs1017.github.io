@@ -118,3 +118,97 @@ compress.html (HTML minification)
 | Agent/Subagent 생성 | `subagent-creator` |
 | Hook 생성 | `hook-creator` |
 | Slash Command 생성 | `slash-command-creator` |
+
+---
+
+## Blog Post Guidelines
+
+### 필수 첨부 파일 구조
+
+블로그 게시글 작성 시 실제 사용 가능한 코드/설정 파일을 `_data/templates/` 폴더에 저장하고 링크합니다.
+
+```
+_data/templates/
+├── agents/                     # Agent 정의 파일
+│   └── {agent-name}.md
+│
+├── skills/                     # Skill 패키지
+│   └── {skill-name}/
+│       ├── SKILL.md           # 스킬 문서
+│       ├── reference/         # 참조 문서
+│       │   └── ref.md
+│       └── scripts/           # 실행 스크립트
+│           └── main.py
+│
+├── commands/                   # Slash Command 정의
+│   └── {command-name}.md
+│
+└── hooks/                      # Hook 정의
+    └── {hook-name}.py (또는 .md)
+```
+
+### 게시글 작성 규칙
+
+1. **폴더 구조 시각화** - 반드시 트리 구조로 표현
+   ```
+   project/
+   ├── src/
+   │   └── main.py
+   └── README.md
+   ```
+
+2. **순서도/흐름도** - Mermaid 또는 ASCII 아트 사용
+   ```
+   ┌─────────┐    ┌─────────┐    ┌─────────┐
+   │  Input  │───▶│ Process │───▶│ Output  │
+   └─────────┘    └─────────┘    └─────────┘
+   ```
+
+3. **단계별 설명** - 번호와 아이콘으로 가독성 향상
+   ```markdown
+   ### 🔧 Step 1: 환경 설정
+   ### 📝 Step 2: 코드 작성
+   ### ▶️ Step 3: 실행
+   ### ✅ Step 4: 검증
+   ```
+
+4. **첨부 파일 링크** - 템플릿 파일 참조
+   ```markdown
+   > 📎 **첨부 파일**: [agent-config.md](/data/templates/agents/my-agent.md)
+   ```
+
+5. **코드 블록** - 언어 명시 및 주석 포함
+   ```python
+   # 📌 주요 로직 설명
+   def main():
+       pass
+   ```
+
+### 게시글 구조 템플릿
+
+```markdown
+## 🎯 개요
+(문제 정의 및 해결 목표)
+
+## 📁 폴더 구조
+(트리 다이어그램)
+
+## 🔄 동작 흐름
+(순서도/플로우차트)
+
+## 🛠️ 구현
+### Step 1: ...
+### Step 2: ...
+
+## 💻 전체 코드
+(실행 가능한 코드)
+
+## 📎 첨부 파일
+(템플릿 링크)
+
+## ✅ 실행 결과
+(스크린샷 또는 출력 예시)
+
+## 🔗 관련 스킬
+(연관 스킬 링크)
+```
