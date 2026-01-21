@@ -129,11 +129,25 @@ echo ============================================
 :: Monitor GitHub Actions if gh CLI is available and git was used
 if "%SKIP_GIT%"=="1" goto :done
 
-gh --version >nul 2>&1
+:: Find gh CLI (check PATH first, then common install location)
+set "GH_CMD=gh"
+where gh >nul 2>&1
+if errorlevel 1 (
+    if exist "C:\Program Files\GitHub CLI\gh.exe" (
+        set "GH_CMD=C:\Program Files\GitHub CLI\gh.exe"
+    ) else (
+        echo.
+        echo [Info] gh CLI not installed. Skipping Actions monitoring.
+        echo        Install with: winget install GitHub.cli
+        goto :done
+    )
+)
+
+"%GH_CMD%" auth status >nul 2>&1
 if errorlevel 1 (
     echo.
-    echo [Info] gh CLI not installed. Skipping Actions monitoring.
-    echo        Install with: winget install GitHub.cli
+    echo [Info] gh CLI not authenticated. Skipping Actions monitoring.
+    echo        Run: gh auth login
     goto :done
 )
 
@@ -147,7 +161,7 @@ set "WAIT_COUNT=0"
 timeout /t 5 /nobreak >nul
 set /a WAIT_COUNT+=1
 
-for /f "tokens=1,2" %%a in ('gh run list --limit 1 --json status^,conclusion -q ".[0] | \"\(.status) \(.conclusion // \"none\")\"" 2^>nul') do (
+for /f "tokens=1,2" %%a in ('"%GH_CMD%" run list --limit 1 --json status^,conclusion -q ".[0] | \"\(.status) \(.conclusion // \"none\")\"" 2^>nul') do (
     set "RUN_STATUS=%%a"
     set "RUN_CONCLUSION=%%b"
 )
@@ -172,10 +186,10 @@ if "%RUN_STATUS%"=="completed" (
         echo [Actions] Workflow FAILED!
         echo.
         echo [Actions] Fetching error logs...
-        for /f %%i in ('gh run list --limit 1 --json databaseId -q ".[0].databaseId"') do set "RUN_ID=%%i"
-        gh run view !RUN_ID! --log-failed 2>nul || gh run view !RUN_ID! --log 2>nul | findstr /i "error fail"
+        for /f %%i in ('"%GH_CMD%" run list --limit 1 --json databaseId -q ".[0].databaseId"') do set "RUN_ID=%%i"
+        "%GH_CMD%" run view !RUN_ID! --log-failed 2>nul || "%GH_CMD%" run view !RUN_ID! --log 2>nul | findstr /i "error fail"
         echo.
-        echo [Actions] View full logs: gh run view !RUN_ID! --log
+        echo [Actions] View full logs: "%GH_CMD%" run view !RUN_ID! --log
         exit /b 1
     )
 )
