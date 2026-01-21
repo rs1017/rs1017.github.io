@@ -27,6 +27,10 @@ def save_skill(
     skill_md_path = skill_dir / "SKILL.md"
     skill_md_path.write_text(skill_md, encoding="utf-8")
 
+    # Save index.md (copy of SKILL.md for Jekyll routing)
+    index_path = skill_dir / "index.md"
+    index_path.write_text(skill_md, encoding="utf-8")
+
     # Save example.py
     example_path = skill_dir / "example.py"
     example_path.write_text(code, encoding="utf-8")

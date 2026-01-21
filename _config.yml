@@ -116,6 +116,12 @@ collections:
 defaults:
   -
     scope:
+      path: 'skills'
+    values:
+      layout: page
+      toc: true
+  -
+    scope:
       path: ''          # An empty string here means all files in the project
       type: posts
     values:
@@ -152,6 +158,9 @@ compress_html:
   blanklines: false
   ignore:
     envs: [development]
+
+include:
+  - skills
 
 exclude:
   - '*.gem'
