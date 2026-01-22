@@ -55,6 +55,21 @@ _data/skill_registry.yml         # 스킬 레지스트리
 4. commit & push → GitHub Pages 배포
 ```
 
+## Git 관리 규칙
+
+⚠️ **중요**: `.claude/` 폴더는 git에서 추적하지 않습니다!
+
+```
+.claude/              ❌ git에 추가하지 않음 (Single Source of Truth로 로컬에만 존재)
+assets/downloads/     ✅ git에 추가 (블로그 배포용 복사본)
+_posts/               ✅ git에 추가 (블로그 포스트)
+```
+
+### 이유
+- `.claude/`는 실제 Claude Code가 사용하는 파일
+- 블로그 독자는 `assets/downloads/`의 복사본을 다운로드
+- 이중 관리를 방지하기 위해 원본(.claude/)은 로컬에만 유지
+
 ## Common Commands
 
 ### Development

@@ -286,10 +286,10 @@ def commit_and_push(skill_count: int) -> bool:
 
     try:
         # Stage files
+        # Note: .claude/ is Source of Truth but NOT tracked in git
+        # Content is copied to assets/downloads/ and _posts/ for exposure
         subprocess.run(
-            ["git", "add", ".claude/skills/", ".claude/agents/", ".claude/hooks/",
-             ".claude/commands/", ".claude/scripts/", "assets/downloads/",
-             "_posts/", "_data/skill_registry.yml"],
+            ["git", "add", "assets/downloads/", "_posts/", "_data/skill_registry.yml"],
             cwd=REPO_DIR,
             check=True,
         )
