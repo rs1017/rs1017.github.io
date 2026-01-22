@@ -1,4 +1,9 @@
 ---
+name: json-schema-generator
+description: JSON 데이터 샘플로부터 JSON Schema를 자동 생성하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # JSON Schema Generator
 

@@ -1,4 +1,9 @@
 ---
+name: pre-commit-formatter
+description: 커밋 전 자동 포맷팅 및 린트 검사 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # Pre-Commit Formatter Skill
 

@@ -1,4 +1,9 @@
 ---
+name: test-case-auto-generator
+description: 코드를 분석하여 테스트 케이스를 자동 생성하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # Test Case Auto Generator
 

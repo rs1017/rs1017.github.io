@@ -1,4 +1,9 @@
 ---
+name: api-response-parser
+description: API 응답을 파싱하고 변환하여 데이터를 추출하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # API Response Parser Skill
 

@@ -1,4 +1,9 @@
 ---
+name: markdown-toc-generator
+description: Markdown 문서에서 자동으로 목차를 생성하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # Markdown TOC Generator
 

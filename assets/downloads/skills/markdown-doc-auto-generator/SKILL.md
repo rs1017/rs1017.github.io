@@ -1,4 +1,9 @@
 ---
+name: markdown-doc-auto-generator
+description: 코드베이스를 분석하여 마크다운 문서를 자동 생성하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # Markdown Documentation Auto Generator
 
