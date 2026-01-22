@@ -301,15 +301,15 @@ def get_user(user_id):
 
 ## 다운로드
 
-> 📦 [code-review-assistant.zip](/assets/downloads/skills/code-review-assistant.zip)
+> 📁 [SKILL.md 보기](/assets/downloads/skills/code-review-assistant/SKILL.md)
 
 설치 방법:
 ```bash
-# 1. 다운로드 후 압축 해제
-unzip code-review-assistant.zip -d ~/.claude/skills/
+# 1. 스킬 폴더 생성
+mkdir -p ~/.claude/skills/code-review-assistant/
 
-# 2. 스크립트 실행 권한 부여
-chmod +x ~/.claude/skills/code-review-assistant/scripts/*.py
+# 2. SKILL.md 복사 (블로그에서 다운로드)
+# ~/.claude/skills/code-review-assistant/SKILL.md
 
 # 3. Claude Code에서 사용
 code-review-assistant를 사용해서 현재 PR을 리뷰해줘
