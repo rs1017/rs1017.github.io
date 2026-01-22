@@ -324,39 +324,34 @@ def parse_developer_response(response: str) -> Tuple[str, str]:
     """Parse Developer response into skill_md and post_content."""
     log("  응답 파싱 시작...")
 
-    parts = {}
-    current_section = None
-    current_content = []
+    # 정확한 구분자로 분리 (첫 번째만 사용)
+    skill_md = ""
+    post_content = ""
 
-    for line in response.split('\n'):
-        stripped = line.strip()
+    # ---SKILL.md--- 와 ---POST--- 구분자 찾기
+    skill_start = response.find('---SKILL.md---')
+    if skill_start == -1:
+        skill_start = response.find('---SKILL---')
 
-        # 다양한 구분자 형식 지원
-        if stripped in ['---SKILL.md---', '---SKILL---', '```markdown', '## SKILL.md'] or 'SKILL.md' in stripped and '---' in stripped:
-            if current_section:
-                parts[current_section] = '\n'.join(current_content).strip()
-            current_section = 'skill'
-            current_content = []
-            log(f"  [파싱] SKILL 섹션 시작")
-        elif stripped in ['---POST---', '---BLOG---', '## POST', '## 블로그 포스트'] or ('POST' in stripped and '---' in stripped):
-            if current_section:
-                parts[current_section] = '\n'.join(current_content).strip()
-            current_section = 'post'
-            current_content = []
-            log(f"  [파싱] POST 섹션 시작")
-        elif stripped in ['---FILES---', '---END---'] or ('FILES' in stripped and '---' in stripped):
-            if current_section:
-                parts[current_section] = '\n'.join(current_content).strip()
-            current_section = 'files'
-            current_content = []
-        else:
-            current_content.append(line)
+    post_start = response.find('---POST---')
+    if post_start == -1:
+        post_start = response.find('---BLOG---')
 
-    if current_section:
-        parts[current_section] = '\n'.join(current_content).strip()
+    files_start = response.find('---FILES---')
+    if files_start == -1:
+        files_start = len(response)
 
-    skill_md = parts.get('skill', '')
-    post_content = parts.get('post', '')
+    # SKILL 추출
+    if skill_start != -1:
+        skill_end = post_start if post_start > skill_start else files_start
+        skill_md = response[skill_start + 14:skill_end].strip()  # len('---SKILL.md---') = 14
+        if skill_md.startswith('---'):
+            skill_md = skill_md[skill_md.find('---', 3):]  # SKILL--- 제거
+
+    # POST 추출
+    if post_start != -1:
+        post_end = files_start if files_start > post_start else len(response)
+        post_content = response[post_start + 9:post_end].strip()  # len('---POST---') = 9
 
     # 파싱 실패 시 응답 전체 로깅
     if not skill_md and not post_content:

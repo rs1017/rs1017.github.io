@@ -27,4 +27,7 @@ agents_prompts.json
 # Logs
 logs/
 
+# Windows special files
+nul
+
 
