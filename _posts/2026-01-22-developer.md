@@ -107,7 +107,7 @@ tags: [{태그들}]
 
 ## 첨부 파일
 
-> [developer.md](/assets/downloads/agents/developer.html)
+> [developer.md](/assets/downloads/agents/developer.md)
 
 ## 관련 에이전트
 
