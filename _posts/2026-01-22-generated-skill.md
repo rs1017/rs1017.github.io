@@ -41,7 +41,7 @@ tags: [meta-skill, automation, code-generation, claude-code]
 ├── references/                 # 필요 시 참조 문서
 └── assets/                     # 필요 시 템플릿 등
 
-assets/downloads/skills/{새-스킬-이름}.zip  # 블로그 배포용
+assets/downloads/skills/{새-스킬-이름}/      # 블로그 배포용 (SKILL.md 복사)
 
 _posts/YYYY-MM-DD-새-스킬-포스트.md         # 문서화 포스트
 ```
@@ -212,13 +212,15 @@ author: AI Skill Factory
 4. **버전 관리**: 스킬 업데이트 및 변경 이력 추적
 5. **AI 학습**: 사용 패턴 학습으로 생성 품질 향상
 
-## 다운로드
+## 파일 위치
 
-> [generated-skill.zip](/assets/downloads/skills/generated-skill.zip)
+| 구분 | 경로 |
+|------|------|
+| 스킬 정의 | `/assets/downloads/skills/generated-skill/SKILL.md` |
+| 설치 위치 | `~/.claude/skills/generated-skill/` |
 
-## 관련 스킬
+## 관련 게시글
 
-- **skill-creator**: 대화형 스킬 생성 가이드 (빌트인)
-- **subagent-creator**: 서브에이전트 생성 (빌트인)
-- **hook-creator**: Hook 생성 (빌트인)
-- **slash-command-creator**: Slash Command 생성 (빌트인)
+- [skill-creator](/posts/skill-creator/) - 대화형 스킬 생성 가이드
+- [subagent-creator](/posts/subagent-creator/) - 서브에이전트 생성
+- [hook-creator](/posts/hook-creator/) - Hook 생성

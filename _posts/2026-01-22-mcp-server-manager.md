@@ -149,14 +149,13 @@ Claude:
 - **Configuration Templates**: 자주 사용하는 서버 설정 템플릿 제공
 - **Server Marketplace**: 유용한 MCP 서버 추천 및 자동 설치
 
-## 다운로드
+## 파일 위치
 
-> 📦 [mcp-server-manager.zip](/assets/downloads/skills/mcp-server-manager.zip)
+| 구분 | 경로 |
+|------|------|
+| 스킬 정의 | `/assets/downloads/skills/mcp-server-manager/SKILL.md` |
+| 설치 위치 | `~/.claude/skills/mcp-server-manager/` |
 
-다운로드 후 `.claude/skills/` 폴더에 압축을 풀고 사용하세요.
+## 관련 게시글
 
-## 관련 스킬
-
-- **config-manager**: Claude Code 설정 전체 관리
-- **resource-indexer**: MCP 리소스 인덱싱 및 검색
-- **server-installer**: MCP 서버 자동 설치 스크립트
+- [skill-creator](/posts/skill-creator/) - 스킬 생성 가이드
