@@ -229,7 +229,7 @@ def copy_to_downloads() -> None:
     dst_base = REPO_DIR / "assets" / "downloads"
 
     # Copy directories
-    for category in ["skills", "agents", "commands", "hooks", "scripts"]:
+    for category in ["skills", "agents", "commands", "hooks", "scripts", "workflows", "rules"]:
         src_dir = src_base / category
         dst_dir = dst_base / category
 
