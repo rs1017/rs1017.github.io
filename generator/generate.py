@@ -287,12 +287,34 @@ description: {topic_info['description']}
 ## 작업 계획
 {topic_info.get('work_plan', '기본 스킬 생성')}
 
-## Output Format (정확히 따르세요)
+## Output Format (정확히 따르세요!)
+
+⚠️ YAML frontmatter 필수 형식:
+- 반드시 ---로 시작하고 ---로 닫아야 함
+- name, description 필드 필수
+
 ---SKILL.md---
-(여기에 SKILL.md 전체 내용)
+---
+name: {topic_info['name']}
+description: 여기에 한 줄 설명
+version: 1.0.0
+author: AI Skill Factory
+---
+
+# 스킬 제목
+(이하 내용...)
 
 ---POST---
-(여기에 블로그 포스트 전체 내용)
+---
+layout: post
+title: "한글 제목"
+date: 2026-01-22 12:00:00 +0900
+categories: [AI, {topic_info['category']}]
+tags: [태그들]
+---
+
+## 개요
+(이하 내용...)
 
 ---FILES---
 (생성될 파일 경로 목록)
