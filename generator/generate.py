@@ -468,11 +468,121 @@ def parse_reviewer_response(
 
 
 # ┌─────────────────────────────────────────────────────────────┐
+# │  YAML Validation                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+def validate_yaml_frontmatter(content: str, name: str) -> Tuple[bool, str]:
+    """
+    YAML frontmatter 유효성 검증
+
+    Returns:
+        (is_valid, fixed_content)
+    """
+    import yaml
+
+    lines = content.strip().split('\n')
+
+    # Check if starts with ---
+    if not lines or lines[0].strip() != '---':
+        log(f"[YAML FIX] {name}: frontmatter 시작 --- 누락, 추가", "WARN")
+        # Add frontmatter
+        fixed = f"""---
+name: {name}
+description: {name} 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
+
+{content}"""
+        return False, fixed
+
+    # Find closing ---
+    closing_idx = -1
+    for i, line in enumerate(lines[1:], 1):
+        if line.strip() == '---':
+            closing_idx = i
+            break
+
+    if closing_idx == -1:
+        log(f"[YAML FIX] {name}: frontmatter 닫는 --- 누락, 수정", "WARN")
+        # Find where content starts (first non-empty line after ---)
+        content_start = 1
+        for i, line in enumerate(lines[1:], 1):
+            if line.strip() and not line.strip().startswith('#') and ':' not in line:
+                content_start = i
+                break
+
+        # Insert closing --- and add missing fields
+        fixed_lines = ['---']
+        fixed_lines.append(f'name: {name}')
+        fixed_lines.append(f'description: {name} 스킬')
+        fixed_lines.append('version: 1.0.0')
+        fixed_lines.append('author: AI Skill Factory')
+        fixed_lines.append('---')
+        fixed_lines.append('')
+        fixed_lines.extend(lines[content_start:])
+        return False, '\n'.join(fixed_lines)
+
+    # Extract frontmatter content
+    frontmatter_lines = lines[1:closing_idx]
+    frontmatter_str = '\n'.join(frontmatter_lines)
+
+    # Check if frontmatter is empty or invalid
+    if not frontmatter_str.strip():
+        log(f"[YAML FIX] {name}: frontmatter 내용 없음, 추가", "WARN")
+        fixed_lines = ['---']
+        fixed_lines.append(f'name: {name}')
+        fixed_lines.append(f'description: {name} 스킬')
+        fixed_lines.append('version: 1.0.0')
+        fixed_lines.append('author: AI Skill Factory')
+        fixed_lines.append('---')
+        fixed_lines.extend(lines[closing_idx + 1:])
+        return False, '\n'.join(fixed_lines)
+
+    # Try to parse YAML
+    try:
+        data = yaml.safe_load(frontmatter_str)
+        if data is None:
+            raise ValueError("Empty YAML")
+
+        # Check required fields for SKILL.md
+        if 'name' not in data:
+            log(f"[YAML FIX] {name}: name 필드 누락, 추가", "WARN")
+            frontmatter_lines.insert(0, f'name: {name}')
+        if 'description' not in data:
+            log(f"[YAML FIX] {name}: description 필드 누락, 추가", "WARN")
+            frontmatter_lines.append(f'description: {name} 스킬')
+
+        # Rebuild content
+        fixed_lines = ['---']
+        fixed_lines.extend(frontmatter_lines)
+        fixed_lines.append('---')
+        fixed_lines.extend(lines[closing_idx + 1:])
+        return True, '\n'.join(fixed_lines)
+
+    except Exception as e:
+        log(f"[YAML FIX] {name}: YAML 파싱 실패 ({e}), 재생성", "WARN")
+        fixed_lines = ['---']
+        fixed_lines.append(f'name: {name}')
+        fixed_lines.append(f'description: {name} 스킬')
+        fixed_lines.append('version: 1.0.0')
+        fixed_lines.append('author: AI Skill Factory')
+        fixed_lines.append('---')
+        fixed_lines.extend(lines[closing_idx + 1:])
+        return False, '\n'.join(fixed_lines)
+
+
+# ┌─────────────────────────────────────────────────────────────┐
 # │  File Operations                                             │
 # └─────────────────────────────────────────────────────────────┘
 
 def save_skill(name: str, category: str, skill_md: str) -> Path:
     """Save skill files to appropriate .claude/ directory."""
+    # YAML frontmatter 검증 및 자동 수정
+    is_valid, skill_md = validate_yaml_frontmatter(skill_md, name)
+    if not is_valid:
+        log(f"  YAML frontmatter 자동 수정됨: {name}")
+
     category_lower = category.lower()
 
     if category_lower == "skill":

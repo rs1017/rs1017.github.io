@@ -1,4 +1,9 @@
 ---
+name: error-log-analyzer
+description: 애플리케이션 로그 파일에서 에러를 자동으로 추출하고 패턴을 분석하는 스킬
+version: 1.0.0
+author: AI Skill Factory
+---
 
 # Error Log Analyzer
 
