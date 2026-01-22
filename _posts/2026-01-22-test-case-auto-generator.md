@@ -1,7 +1,8 @@
--
 ---
+layout: post
 title: "테스트 케이스 자동 생성 스킬 - 코드 커버리지를 높이는 지능형 도구"
-categories: [Skill]
+date: 2026-01-22 16:18:00 +0900
+categories: [AI, Skill]
 tags: [test, testing, unit-test, coverage, automation, pytest, jest]
 ---
 
