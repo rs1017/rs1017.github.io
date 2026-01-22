@@ -59,26 +59,67 @@ order: 4
 ## 폴더 구조 (Single Source of Truth)
 
 ```
-.claude/                     # 실제 사용 가능한 파일들
+.claude/                     # 실제 사용 가능한 파일들 (Claude Code에서 직접 사용)
 ├── agents/                  # 에이전트 정의
-│   ├── topic-selector.md
-│   ├── developer.md
-│   └── reviewer.md
+│   ├── topic-selector.md   # 주제 선정 에이전트
+│   ├── developer.md        # 개발 에이전트
+│   └── reviewer.md         # 검토/QA 에이전트
 ├── skills/                  # 스킬 패키지
-│   └── {skill-name}/
-│       └── SKILL.md
+│   ├── hook-creator/       # Hook 생성 가이드
+│   ├── skill-creator/      # Skill 생성 가이드
+│   ├── slash-command-creator/  # Slash Command 생성
+│   ├── subagent-creator/   # Sub-agent 생성
+│   └── youtube-collector/  # 유튜브 수집 스킬
 ├── commands/                # Slash Command
 ├── hooks/                   # Claude Code Hook
 ├── scripts/                 # 공용 스크립트
 ├── workflows/               # 워크플로우 정의
 └── rules/                   # 생성 규칙
-    └── topic-selection.md
+    └── topic-selection.md  # 주제 선정 규칙
 
 assets/downloads/            # 블로그 배포용 복사본
-└── {skills, agents, ...}
+└── {skills, agents, rules, ...}
 
 _posts/                      # 블로그 포스트
 ```
+
+---
+
+## 주제 선정 규칙
+
+`.claude/rules/topic-selection.md` 기준:
+
+### 카테고리
+
+| 카테고리 | 설명 | 저장 위치 |
+|---------|------|----------|
+| **Skill** | 특정 작업 수행 | `.claude/skills/{name}/` |
+| **Agent** | 서브에이전트 | `.claude/agents/{name}.md` |
+| **Hook** | Claude Code 훅 | `.claude/hooks/{name}.md` |
+| **Command** | Slash Command | `.claude/commands/{name}.md` |
+
+### 이름 규칙
+
+**영문 소문자 + 하이픈만 허용**
+- `git-commit-analyzer` (O)
+- `Git커밋분석` (X)
+
+### 키워드 풀
+
+| 분야 | 키워드 |
+|------|--------|
+| 개발 | Git, API, 코드, 리팩토링, 디버깅, 테스트, CI/CD |
+| 문서 | PDF, 보고서, PPT, 마크다운, README |
+| 데이터 | 분석, 시각화, CSV, JSON, 파싱, 크롤링 |
+| 미디어 | 이미지, 유튜브, 썸네일, 자막, 번역 |
+| AI 도구 | 프롬프트, 에이전트, 자동화, 요약, 분류 |
+| Claude Code | MCP, Hook, Command, Slash, 세션, 컨텍스트 |
+
+### 트렌드 토픽
+
+**Hot**: MCP, Structured Output, Multi-Agent Systems, LLM Tool Use
+
+**Rising**: Memory, RAG, Function Calling, Streaming
 
 ---
 
