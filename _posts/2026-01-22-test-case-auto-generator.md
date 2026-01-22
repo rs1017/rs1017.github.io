@@ -220,12 +220,11 @@ test_framework: auto
 
 ## 다운로드
 
-> [test-case-auto-generator.zip](/assets/downloads/skills/test-case-auto-generator.zip)
+> [SKILL.md 보기](/assets/downloads/skills/test-case-auto-generator/SKILL.html)
 
-압축을 해제하여 `.claude/skills/` 폴더에 배치하면 바로 사용할 수 있습니다.
+위 파일을 참고하여 `.claude/skills/test-case-auto-generator/` 폴더에 구성하세요.
 
 ## 관련 스킬
 
-- **code-reviewer**: 코드 리뷰 시 테스트 커버리지 체크
-- **git-commit-analyzer**: 커밋 전 테스트 검증
-- **pre-commit-lint**: 커밋 전 테스트 실행 자동화 (Hook)
+- **[code-review-assistant](/posts/code-review-assistant/)**: 코드 리뷰 시 테스트 커버리지 체크
+- **[pre-commit-formatter](/posts/pre-commit-formatter/)**: 커밋 전 포맷팅 자동화

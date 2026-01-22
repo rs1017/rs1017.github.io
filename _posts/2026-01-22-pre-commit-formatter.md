@@ -50,11 +50,12 @@ tags: [git, formatter, linter, code-quality, pre-commit, automation]
 ### 1. 스킬 설치
 
 ```bash
-# 1) 스킬 다운로드
-cd ~/.claude/skills
-unzip pre-commit-formatter.zip
+# 1) 스킬 폴더 생성
+mkdir -p ~/.claude/skills/pre-commit-formatter
 
-# 2) 필요한 포맷터 설치 (언어별로 선택)
+# 2) SKILL.md 복사 (블로그에서 다운로드)
+
+# 3) 필요한 포맷터 설치 (언어별로 선택)
 pip install black ruff           # Python
 npm install -g prettier eslint   # JavaScript/TypeScript
 # Go의 gofmt는 Go 설치 시 자동 포함
@@ -371,9 +372,9 @@ ignore = [
 
 ## 다운로드
 
-> **[pre-commit-formatter.zip](/assets/downloads/skills/pre-commit-formatter.zip)**
-> 
-> 압축 해제 후 `~/.claude/skills/` 폴더에 복사하여 사용하세요.
+> **[SKILL.md 보기](/assets/downloads/skills/pre-commit-formatter/SKILL.html)**
+>
+> 위 파일을 참고하여 `~/.claude/skills/pre-commit-formatter/` 폴더에 구성하세요.
 
 ## 활용 팁
 
@@ -422,9 +423,8 @@ python scripts/formatter.py --exclude "tests/**"
 
 ## 관련 스킬
 
-- **[git-commit-analyzer](/posts/git-commit-analyzer)**: 커밋 메시지 품질 자동 분석
-- **[code-review-assistant](/posts/code-review-assistant)**: AI 기반 코드 리뷰
-- **[test-runner](/posts/test-runner)**: 커밋 전 자동 테스트 실행
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰
+- **[test-case-auto-generator](/posts/test-case-auto-generator/)**: 테스트 케이스 자동 생성
 
 ## 마무리
 

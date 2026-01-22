@@ -255,11 +255,9 @@ Identify and explain API error responses.
 
 ## 다운로드
 
-> [api-response-parser.zip](/assets/downloads/skills/api-response-parser.zip)
+> [SKILL.md 보기](/assets/downloads/skills/api-response-parser/SKILL.html)
 
 ## 관련 스킬
 
-- [json-validator](/posts/json-validator/) - JSON 스키마 검증
-- [data-transformer](/posts/data-transformer/) - 고급 데이터 변환
-- [csv-converter](/posts/csv-converter/) - CSV 파일 작업
-- [api-client](/posts/api-client/) - API 요청 자동화
+- [code-review-assistant](/posts/code-review-assistant/) - 코드 리뷰 자동화
+- [test-case-auto-generator](/posts/test-case-auto-generator/) - 테스트 케이스 자동 생성
