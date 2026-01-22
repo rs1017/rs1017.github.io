@@ -436,9 +436,13 @@ def save_post(name: str, post_content: str) -> Path:
 # │  Main Pipeline                                               │
 # └─────────────────────────────────────────────────────────────┘
 
-def generate_skill(user_topic: Optional[str] = None) -> Tuple[str, str, str, str]:
+def generate_skill(user_topic: Optional[str] = None, max_retries: int = 3) -> Tuple[str, str, str, str]:
     """
     Generate a skill using agent-based pipeline.
+
+    Args:
+        user_topic: Optional topic from user
+        max_retries: Maximum retry attempts when review fails
 
     Returns:
         (name, title, skill_md, post_content)
@@ -446,14 +450,25 @@ def generate_skill(user_topic: Optional[str] = None) -> Tuple[str, str, str, str
     # Step 1: Topic Selection
     topic_info = run_topic_selector(user_topic)
 
-    # Step 2: Development
-    skill_md, post_content = run_developer(topic_info)
+    for attempt in range(max_retries):
+        print(f"\n>>> 시도 {attempt + 1}/{max_retries}", flush=True)
 
-    # Step 3: Review
-    approved, skill_md, post_content = run_reviewer(topic_info, skill_md, post_content)
+        # Step 2: Development
+        skill_md, post_content = run_developer(topic_info)
 
-    if not approved:
-        print("  [WARNING] 리뷰어가 수정을 권장했습니다. 수정된 버전을 사용합니다.", flush=True)
+        # Step 3: Review
+        approved, skill_md, post_content = run_reviewer(topic_info, skill_md, post_content)
+
+        if approved:
+            print("  [OK] 리뷰 승인됨", flush=True)
+            break
+        else:
+            if attempt < max_retries - 1:
+                print(f"  [RETRY] 리뷰어가 반려함. Developer로 다시 전달합니다.", flush=True)
+                # Reviewer의 피드백을 work_plan에 추가하여 Developer가 참고하도록 함
+                topic_info['work_plan'] = f"이전 시도 수정 필요.\n{topic_info.get('work_plan', '')}"
+            else:
+                print("  [WARNING] 최대 재시도 횟수 도달. 마지막 버전을 사용합니다.", flush=True)
 
     return (
         topic_info['name'],
