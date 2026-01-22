@@ -4,211 +4,177 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Skill Factory - Jekyll 기반 Claude Code 스킬 자동 생성 플랫폼. Anthropic Claude API를 사용하여 Workflow, Agent, Skill 카테고리의 스킬을 자동 생성하고 GitHub Pages에 배포합니다.
+AI Skill Factory - Jekyll 기반 Claude Code 스킬 자동 생성 플랫폼. 로컬 Claude CLI를 사용하여 Skill, Agent, Hook, Command 등을 자동 생성하고 GitHub Pages에 배포합니다.
+
+**핵심 원칙**:
+- `.claude/` = 실제 Claude Code에서 사용 가능한 파일 (Single Source of Truth)
+- `assets/downloads/` = 블로그 독자가 다운로드할 복사본
+- `_posts/` = `.claude/` 콘텐츠를 문서화한 블로그 포스트
+
+## Directory Structure
+
+```
+.claude/                         # 실제 사용 가능 (Single Source of Truth)
+├── skills/                      # 스킬 패키지
+│   └── {skill-name}/
+│       ├── SKILL.md            # 스킬 문서 (필수)
+│       ├── scripts/            # 스킬 전용 스크립트
+│       ├── references/         # 참조 문서
+│       └── assets/             # 템플릿, 이미지 등
+├── agents/                      # 서브에이전트 정의
+│   └── {agent-name}.md
+├── commands/                    # Slash Command
+│   └── {command-name}.md
+├── hooks/                       # Hook 설정
+│   └── {hook-name}.md
+├── scripts/                     # 공용 스크립트 (여러 스킬에서 사용)
+│   └── {script-name}.py
+└── rules/                       # 규칙/지침
+    └── topic-selection.md
+
+assets/downloads/                # 블로그 배포용 (복사본)
+├── skills/                      # 스킬 다운로드
+├── agents/                      # 에이전트 다운로드
+├── commands/                    # 커맨드 다운로드
+├── hooks/                       # 훅 다운로드
+└── scripts/                     # 스크립트 다운로드
+
+_posts/                          # 블로그 포스트 (문서화)
+_data/skill_registry.yml         # 스킬 레지스트리
+```
+
+## Workflow
+
+```
+1. .claude/에 실제 파일 생성 (Claude Code가 사용)
+      ↓
+2. assets/downloads/에 복사 (블로그 첨부용)
+      ↓
+3. _posts/에 문서화 포스트 작성
+      ↓
+4. commit & push → GitHub Pages 배포
+```
 
 ## Common Commands
 
 ### Development
 ```bash
 bundle exec jekyll serve          # Dev server at http://localhost:4000
-npx gulp dev                      # Watch and compile JavaScript
-```
-
-### Building
-```bash
-bundle exec jekyll b              # Standard build
-JEKYLL_ENV=production bundle exec jekyll b  # Production build
-npx gulp                          # Minify JavaScript
-```
-
-### Testing
-```bash
-bundle exec htmlproofer _site --disable-external --check-html --allow_hash_href
 ```
 
 ### Skill Generation
 ```bash
-cd generator
-pip install -r requirements.txt
-python generate.py                        # Auto strategy
-python generate.py --strategy keyword     # Keyword combination
-python generate.py --strategy trend       # Trend-based
-python generate.py --topic "Git 커밋 분석 스킬"  # Specific topic
+python auto_generate.py           # 요일에 따라 자동 (평일 5개, 주말 50개)
+python auto_generate.py --count 3 # 수동 개수 지정
 ```
 
-## Architecture
+## Naming Conventions
 
-### Skill Generation Pipeline
+### 필수 규칙: 영문 lowercase + hyphen
 
-`generator/generate.py` orchestrates a 6-step pipeline:
+모든 스킬, 에이전트, 훅, 커맨드 이름은 **영문 소문자와 하이픈**만 사용합니다.
+
+| 유형 | 형식 | 예시 |
+|------|------|------|
+| Skill | `{기능}-{동작}` | `git-commit-analyzer`, `pdf-summarizer` |
+| Agent | `{역할}` | `code-reviewer`, `test-runner` |
+| Hook | `{이벤트}-{동작}` | `pre-commit-lint`, `post-edit-format` |
+| Command | `{동작}` | `commit`, `review-pr`, `summarize` |
+
+**금지**: 한글, 공백, 특수문자, CamelCase, 언더스코어
+
+## Categories
+
+| 카테고리 | 설명 | 저장 위치 |
+|---------|------|----------|
+| **Skill** | 특정 작업 수행 스킬 | `.claude/skills/{name}/` |
+| **Agent** | 서브에이전트 정의 | `.claude/agents/{name}.md` |
+| **Command** | Slash Command | `.claude/commands/{name}.md` |
+| **Hook** | Claude Code 훅 | `.claude/hooks/{name}.md` |
+| **Script** | 공용 스크립트 | `.claude/scripts/{name}.py` |
+
+## Creation Guidelines
+
+콘텐츠 생성 시 반드시 아래 도구와 출력 위치를 따릅니다:
+
+| 카테고리 | 사용할 도구 | 저장 위치 |
+|---------|------------|----------|
+| Skill | `skill-creator` | `.claude/skills/{name}/` |
+| Agent | `subagent-creator` | `.claude/agents/{name}.md` |
+| Command | `slash-command-creator` | `.claude/commands/{name}.md` |
+| Hook | `hook-creator` | `.claude/hooks/{name}.md` |
+
+### 스킬 구조
 
 ```
-1. Topic Selection → 2. Skill Design → 3. Code Generation → 4. Post Writing → 5. Validation → 6. Save Files
+.claude/skills/{skill-name}/
+├── SKILL.md              # 필수: 프론트매터 + 사용 지침
+├── scripts/              # 선택: 스킬 전용 스크립트
+├── references/           # 선택: 참조 문서
+└── assets/               # 선택: 템플릿, 이미지
 ```
 
-### Directory Structure
+### SKILL.md 프론트매터
 
-```
-generator/
-├── generate.py              # Main entry point
-├── prompts/                 # Agent prompts
-│   ├── concept.md          # Platform identity
-│   ├── skill-topic-selector.md
-│   ├── skill-designer.md
-│   ├── code-generator.md
-│   ├── post-writer.md
-│   └── validator.md
-├── agents/                  # Python agent modules
-├── clients/                 # API clients (Anthropic)
-├── sources/                 # Topic sources (trends, requests)
-└── utils/                   # Utilities
-
-skills/                      # Generated skills
-└── {skill-name}/
-    ├── SKILL.md            # Skill documentation
-    └── example.py          # Executable example
-
-_posts/                      # Generated blog posts
-_data/skill_registry.yml     # Skill registry
+```yaml
+---
+name: skill-name          # 영문 lowercase + hyphen
+description: 스킬 설명. 언제 사용할지 포함 (트리거 조건)
+---
 ```
 
-### Jekyll Layout Hierarchy
+## Blog Post Guidelines
 
+블로그 포스트는 `.claude/`에 저장된 실제 콘텐츠를 **문서화**합니다.
+
+### 핵심 원칙
+
+1. **실제 사용 가능**: 포스트에서 설명하는 스킬/에이전트는 `.claude/`에 실제로 존재
+2. **다운로드 제공**: `assets/downloads/`에 복사본을 넣어 독자가 다운로드 가능
+3. **중복 없음**: `.claude/`가 Single Source, `assets/downloads/`는 복사본
+
+### 포스트 구조
+
+```markdown
+---
+title: "Git 커밋 분석 스킬"
+categories: [Skill]
+tags: [git, analysis, commit]
+---
+
+## 개요
+(문제 정의 및 해결 목표)
+
+## 스킬 구조
+(폴더 트리 다이어그램)
+
+## 사용 방법
+(설치 및 실행 가이드)
+
+## 전체 코드
+(SKILL.md 및 스크립트 내용)
+
+## 다운로드
+> [git-commit-analyzer.zip](/assets/downloads/skills/git-commit-analyzer.zip)
+
+## 관련 스킬
+(연관 스킬 링크)
 ```
-compress.html (HTML minification)
-    └── default.html (base structure)
-            ├── home.html (post list)
-            ├── post.html (content, TOC)
-            └── page.html (static pages)
-```
 
-### CI/CD Workflow
+### 콘텐츠 규칙
 
-`.github/workflows/auto_generate.yml`:
-- **Triggers**: Daily 00:00 UTC, manual dispatch, issue labeled `skill-request`
-- **Jobs**: Generate Skill → Build Jekyll → Deploy to GitHub Pages
+- **코드**: 실행 가능해야 함
+- **금지어**: "자동 생성", "AI Pipeline" (콘텐츠/태그에 사용 금지)
 
-## Platform Constraints
+## Difficulty Levels
 
-### Categories (3 only)
-- **Workflow**: 개발 워크플로우 자동화 (CI/CD, 코드 리뷰, 문서 생성)
-- **Agent**: AI 에이전트 설계/구현 (멀티에이전트, MCP, 도구 사용)
-- **Skill**: 특정 작업 수행 (API 통합, 데이터 처리, 파일 변환)
-
-### Difficulty Levels
 - `beginner`: 10분 내 이해 가능
 - `intermediate`: 30분 내 적용 가능
 - `advanced`: 아키텍처 레벨
 
-### Content Rules
-- Images: Minimum 3 per post (`[IMAGE_DESC: ...]` placeholders)
-- Code: Must be executable, use Anthropic SDK
-- Prohibited: "자동 생성", "AI Pipeline" in content/tags
+## Scheduler
 
-### GitHub Secrets Required
-- `ANTHROPIC_API_KEY`: Claude API key for skill generation
-
-## Creation Guidelines
-
-콘텐츠 생성 시 반드시 아래 도구를 사용하세요:
-
-| 생성 대상 | 사용할 도구 |
-|----------|------------|
-| Skill 생성 | `skill-creator` |
-| Agent/Subagent 생성 | `subagent-creator` |
-| Hook 생성 | `hook-creator` |
-| Slash Command 생성 | `slash-command-creator` |
-
----
-
-## Blog Post Guidelines
-
-### 필수 첨부 파일 구조
-
-블로그 게시글 작성 시 실제 사용 가능한 코드/설정 파일을 `_data/templates/` 폴더에 저장하고 링크합니다.
-
-```
-_data/templates/
-├── agents/                     # Agent 정의 파일
-│   └── {agent-name}.md
-│
-├── skills/                     # Skill 패키지
-│   └── {skill-name}/
-│       ├── SKILL.md           # 스킬 문서
-│       ├── reference/         # 참조 문서
-│       │   └── ref.md
-│       └── scripts/           # 실행 스크립트
-│           └── main.py
-│
-├── commands/                   # Slash Command 정의
-│   └── {command-name}.md
-│
-└── hooks/                      # Hook 정의
-    └── {hook-name}.py (또는 .md)
-```
-
-### 게시글 작성 규칙
-
-1. **폴더 구조 시각화** - 반드시 트리 구조로 표현
-   ```
-   project/
-   ├── src/
-   │   └── main.py
-   └── README.md
-   ```
-
-2. **순서도/흐름도** - Mermaid 또는 ASCII 아트 사용
-   ```
-   ┌─────────┐    ┌─────────┐    ┌─────────┐
-   │  Input  │───▶│ Process │───▶│ Output  │
-   └─────────┘    └─────────┘    └─────────┘
-   ```
-
-3. **단계별 설명** - 번호와 아이콘으로 가독성 향상
-   ```markdown
-   ### 🔧 Step 1: 환경 설정
-   ### 📝 Step 2: 코드 작성
-   ### ▶️ Step 3: 실행
-   ### ✅ Step 4: 검증
-   ```
-
-4. **첨부 파일 링크** - 템플릿 파일 참조
-   ```markdown
-   > 📎 **첨부 파일**: [agent-config.md](/data/templates/agents/my-agent.md)
-   ```
-
-5. **코드 블록** - 언어 명시 및 주석 포함
-   ```python
-   # 📌 주요 로직 설명
-   def main():
-       pass
-   ```
-
-### 게시글 구조 템플릿
-
-```markdown
-## 🎯 개요
-(문제 정의 및 해결 목표)
-
-## 📁 폴더 구조
-(트리 다이어그램)
-
-## 🔄 동작 흐름
-(순서도/플로우차트)
-
-## 🛠️ 구현
-### Step 1: ...
-### Step 2: ...
-
-## 💻 전체 코드
-(실행 가능한 코드)
-
-## 📎 첨부 파일
-(템플릿 링크)
-
-## ✅ 실행 결과
-(스크린샷 또는 출력 예시)
-
-## 🔗 관련 스킬
-(연관 스킬 링크)
-```
+로컬 Windows 작업 스케줄러 사용:
+- **평일 (월-금)**: 12:00, 5개 생성
+- **주말 (토-일)**: 12:00, 50개 생성
+- 생성 완료 후 일괄 commit & push → GitHub Actions 빌드/배포

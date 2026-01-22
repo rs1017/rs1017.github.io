@@ -1,5 +1,5 @@
-last_updated: '2026-01-21T14:07:24.419361'
-total_skills: 2
+last_updated: '2026-01-21T14:47:50.486169'
+total_skills: 3
 categories:
   Workflow:
     count: 1
@@ -11,9 +11,12 @@ categories:
     count: 0
     skills: []
   Skill:
-    count: 1
+    count: 2
     skills:
     - name: 코드-기반-이미지-데이터-생성-스킬
+      difficulty: intermediate
+      created_at: '2026-01-21'
+    - name: api-데이터-기반-pdf-캘린더-자동-생성-스킬
       difficulty: intermediate
       created_at: '2026-01-21'
 skills:
@@ -42,15 +45,28 @@ skills:
   created_at: '2026-01-21'
   post_path: /posts/코드-기반-이미지-데이터-생성-스킬/
   skill_path: /skills/코드-기반-이미지-데이터-생성-스킬/
+- name: api-데이터-기반-pdf-캘린더-자동-생성-스킬
+  title: API 데이터 기반 PDF 캘린더 자동 생성 스킬
+  category: Skill
+  difficulty: intermediate
+  tags:
+  - API
+  - PDF
+  - 캘린더
+  - 자동화
+  - 데이터-시각화
+  created_at: '2026-01-21'
+  post_path: /posts/api-데이터-기반-pdf-캘린더-자동-생성-스킬/
+  skill_path: /skills/api-데이터-기반-pdf-캘린더-자동-생성-스킬/
 statistics:
   by_difficulty:
     beginner: 0
-    intermediate: 2
+    intermediate: 3
     advanced: 0
   by_month:
     2026-01:
-      total: 2
+      total: 3
       breakdown:
         Workflow: 1
         Agent: 0
-        Skill: 1
+        Skill: 2

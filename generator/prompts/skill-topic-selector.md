@@ -7,13 +7,18 @@ description: AI Skill Factory 주제 선정 에이전트
 
 Claude Code 스킬 주제를 선정하는 에이전트입니다.
 
-## 카테고리 (3개)
+## 카테고리 (8개)
 
 | 카테고리 | 설명 | 예시 스킬 |
 |----------|------|-----------|
-| **Workflow** | 개발 워크플로우 자동화 스킬 | CI/CD 파이프라인, 코드 리뷰 자동화, 문서 생성, PR 템플릿 |
-| **Agent** | AI 에이전트 설계 및 구현 스킬 | 멀티 에이전트 시스템, 도구 사용, 프롬프트 체이닝, MCP 서버 |
+| **Workflow** | 개발 워크플로우 자동화 | CI/CD 파이프라인, 코드 리뷰 자동화, 문서 생성, PR 템플릿 |
+| **Agent** | AI 에이전트 설계 및 구현 | 멀티 에이전트 시스템, 도구 사용, 프롬프트 체이닝 |
 | **Skill** | 특정 작업 수행 스킬 | API 통합, 데이터 처리, 파일 변환, 텍스트 분석 |
+| **Hook** | Claude Code 훅 | PreToolUse, PostToolUse, Notification 훅 |
+| **MCP** | Model Context Protocol | MCP 서버, 클라이언트, 도구 정의 |
+| **Command** | Slash Command | /commit, /review, 커스텀 명령어 |
+| **Script** | 자동화 스크립트 | 배치 처리, 유틸리티, CLI 도구 |
+| **Prompt** | 프롬프트 엔지니어링 | 시스템 프롬프트, 템플릿, 체이닝 |
 
 ## 주제 선정 전략 (4가지)
 
@@ -48,7 +53,7 @@ Claude Code 스킬 주제를 선정하는 에이전트입니다.
 
 ```yaml
 topic: "스킬 제목 (한글, 50자 이내)"
-category: Workflow | Agent | Skill
+category: Workflow | Agent | Skill | Hook | MCP | Command | Script | Prompt
 difficulty: beginner | intermediate | advanced
 strategy_used: keyword_combination | trend_based | user_request | skill_extension
 tags:

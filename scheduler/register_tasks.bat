@@ -16,7 +16,7 @@ if errorlevel 1 (
 
 set "SCRIPT_DIR=%~dp0"
 
-echo [1/2] 평일 스케줄 등록 (월-금 12:30)...
+echo [1/2] 평일 스케줄 등록 (월-금 12:00, 5개 스킬)...
 schtasks /create /xml "%SCRIPT_DIR%weekday_task.xml" /tn "AI Skill Factory - Weekday" /f
 if errorlevel 1 (
     echo [ERROR] 평일 스케줄 등록 실패
@@ -25,7 +25,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/2] 주말 스케줄 등록 (토-일 12:30~21:30, 1시간 간격)...
+echo [2/2] 주말 스케줄 등록 (토-일 12:00, 50개 스킬)...
 schtasks /create /xml "%SCRIPT_DIR%weekend_task.xml" /tn "AI Skill Factory - Weekend" /f
 if errorlevel 1 (
     echo [ERROR] 주말 스케줄 등록 실패
@@ -40,6 +40,13 @@ echo ============================================
 schtasks /query /tn "AI Skill Factory - Weekday" /fo list | findstr /i "TaskName Status"
 schtasks /query /tn "AI Skill Factory - Weekend" /fo list | findstr /i "TaskName Status"
 
+echo.
+echo ============================================
+echo 스케줄 요약:
+echo   - 평일 (월-금): 12:00 시작, 5개 생성
+echo   - 주말 (토-일): 12:00 시작, 50개 생성
+echo   - 생성 완료 후 일괄 commit ^& push
+echo ============================================
 echo.
 echo 완료! 작업 스케줄러에서 확인하세요.
 pause

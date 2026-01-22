@@ -3,12 +3,14 @@
 AI Skill Factory - 자동 생성 스크립트 (스케줄러용)
 
 스케줄:
-- 평일 (월-금): 12:30 1회 시도
-- 주말 (토-일): 12:30~22:30 1시간 간격 10회 시도
-- 오류 발생 시: 최대 5회 수정 시도
+- 평일 (월-금): 12:00 시작, 5개 생성
+- 주말 (토-일): 12:00 시작, 50개 생성
+- 모든 생성 완료 후 한 번에 commit & push
+- 빌드 실패 시: 최대 5회 수정 시도
 
 사용법:
     python auto_generate.py
+    python auto_generate.py --count 3  # 수동으로 개수 지정
 """
 
 import subprocess
@@ -27,7 +29,11 @@ REPO_DIR = Path(__file__).parent
 GENERATOR_SCRIPT = REPO_DIR / "generator" / "generate.py"
 GH_CLI = r"C:\Program Files\GitHub CLI\gh.exe"
 MAX_FIX_ATTEMPTS = 5  # 오류 수정 최대 시도 횟수
-WAIT_FOR_ACTIONS = 120  # Actions 완료 대기 시간 (초)
+WAIT_FOR_ACTIONS = 180  # Actions 완료 대기 시간 (초)
+
+# 요일별 생성 개수 (0=월요일, 6=일요일)
+WEEKDAY_COUNT = 5   # 월-금
+WEEKEND_COUNT = 50  # 토-일
 
 
 # ┌─────────────────────────────────────────────────────────┐
@@ -38,6 +44,25 @@ def log(message: str, level: str = "INFO") -> None:
     """로그 출력"""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] [{level}] {message}", flush=True)
+
+
+# ┌─────────────────────────────────────────────────────────┐
+# │  Helper Functions                                        │
+# └─────────────────────────────────────────────────────────┘
+
+def get_target_count() -> int:
+    """오늘 요일에 따른 생성 개수 반환"""
+    weekday = datetime.now().weekday()  # 0=월, 6=일
+    if weekday < 5:  # 월-금
+        return WEEKDAY_COUNT
+    else:  # 토-일
+        return WEEKEND_COUNT
+
+
+def get_day_name() -> str:
+    """오늘 요일 이름"""
+    days = ["월", "화", "수", "목", "금", "토", "일"]
+    return days[datetime.now().weekday()]
 
 
 # ┌─────────────────────────────────────────────────────────┐
@@ -52,7 +77,6 @@ def check_actions_status() -> Tuple[str, Optional[str]]:
         (status, error_log): status는 'success', 'failure', 'pending', 'unknown'
     """
     try:
-        # 최신 run 상태 확인
         result = subprocess.run(
             [GH_CLI, "run", "list", "--limit", "1", "--json", "status,conclusion,databaseId"],
             capture_output=True,
@@ -77,7 +101,6 @@ def check_actions_status() -> Tuple[str, Optional[str]]:
             if conclusion == "success":
                 return "success", None
             else:
-                # 실패 로그 가져오기
                 error_log = get_error_log(run_id)
                 return "failure", error_log
         elif status in ["in_progress", "queued"]:
@@ -115,18 +138,18 @@ def wait_for_actions_completion() -> Tuple[str, Optional[str]]:
         status, error_log = check_actions_status()
 
         if status == "success":
-            log("✅ Actions 성공!")
+            log("Actions 성공!")
             return "success", None
         elif status == "failure":
-            log("❌ Actions 실패!")
+            log("Actions 실패!")
             return "failure", error_log
         elif status == "pending":
-            log("⏳ Actions 진행 중... (30초 후 재확인)")
+            log("Actions 진행 중... (30초 후 재확인)")
             time.sleep(30)
         else:
             time.sleep(10)
 
-    log("⏱️ Actions 대기 시간 초과", "WARN")
+    log("Actions 대기 시간 초과", "WARN")
     return "timeout", None
 
 
@@ -134,9 +157,9 @@ def wait_for_actions_completion() -> Tuple[str, Optional[str]]:
 # │  Skill Generation                                        │
 # └─────────────────────────────────────────────────────────┘
 
-def generate_skill() -> bool:
-    """스킬 생성 실행"""
-    log("🚀 스킬 생성 시작...")
+def generate_single_skill(index: int, total: int) -> bool:
+    """단일 스킬 생성 (커밋 없이)"""
+    log(f"[{index}/{total}] 스킬 생성 중...")
 
     try:
         result = subprocess.run(
@@ -146,7 +169,7 @@ def generate_skill() -> bool:
                 "--use-claude-cli",
                 "--strategy", "auto",
                 "--skip-validation",
-                "--auto-git",
+                # --auto-git 제거: 커밋하지 않음
             ],
             capture_output=True,
             text=True,
@@ -154,22 +177,130 @@ def generate_skill() -> bool:
             cwd=REPO_DIR,
         )
 
-        print(result.stdout)
-        if result.stderr:
-            print(result.stderr, file=sys.stderr)
+        if result.stdout:
+            # 마지막 몇 줄만 출력
+            lines = result.stdout.strip().split('\n')
+            for line in lines[-5:]:
+                print(f"    {line}")
 
         if result.returncode == 0:
-            log("✅ 스킬 생성 완료!")
+            log(f"[{index}/{total}] 생성 완료!")
             return True
         else:
-            log(f"❌ 스킬 생성 실패 (exit code: {result.returncode})", "ERROR")
+            log(f"[{index}/{total}] 생성 실패", "WARN")
+            if result.stderr:
+                print(f"    Error: {result.stderr[:200]}")
             return False
 
     except subprocess.TimeoutExpired:
-        log("⏱️ 스킬 생성 타임아웃", "ERROR")
+        log(f"[{index}/{total}] 타임아웃", "WARN")
         return False
     except Exception as e:
-        log(f"❌ 스킬 생성 오류: {e}", "ERROR")
+        log(f"[{index}/{total}] 오류: {e}", "ERROR")
+        return False
+
+
+def generate_multiple_skills(count: int) -> int:
+    """여러 스킬 생성 (커밋 없이)"""
+    log(f"총 {count}개 스킬 생성 시작...")
+
+    success_count = 0
+    for i in range(1, count + 1):
+        if generate_single_skill(i, count):
+            success_count += 1
+
+        # 연속 생성 사이에 약간의 딜레이
+        if i < count:
+            time.sleep(5)
+
+    log(f"생성 완료: {success_count}/{count}개 성공")
+    return success_count
+
+
+# ┌─────────────────────────────────────────────────────────┐
+# │  Copy to assets/downloads                                │
+# └─────────────────────────────────────────────────────────┘
+
+def copy_to_downloads() -> None:
+    """Copy .claude/ contents to assets/downloads/ for blog distribution"""
+    import shutil
+
+    src_base = REPO_DIR / ".claude"
+    dst_base = REPO_DIR / "assets" / "downloads"
+
+    # Copy directories
+    for category in ["skills", "agents", "commands", "hooks", "scripts"]:
+        src_dir = src_base / category
+        dst_dir = dst_base / category
+
+        if src_dir.exists():
+            # Copy each item
+            for item in src_dir.iterdir():
+                dst_item = dst_dir / item.name
+                if item.is_dir():
+                    if dst_item.exists():
+                        shutil.rmtree(dst_item)
+                    shutil.copytree(item, dst_item)
+                else:
+                    shutil.copy2(item, dst_item)
+
+    log("assets/downloads/로 복사 완료")
+
+
+# ┌─────────────────────────────────────────────────────────┐
+# │  Git Operations                                          │
+# └─────────────────────────────────────────────────────────┘
+
+def has_changes() -> bool:
+    """변경사항 있는지 확인"""
+    result = subprocess.run(
+        ["git", "status", "--porcelain"],
+        capture_output=True,
+        text=True,
+        cwd=REPO_DIR,
+    )
+    return bool(result.stdout.strip())
+
+
+def commit_and_push(skill_count: int) -> bool:
+    """변경사항 커밋 및 푸시"""
+    if not has_changes():
+        log("커밋할 변경사항이 없습니다.")
+        return True
+
+    try:
+        # Stage files
+        subprocess.run(
+            ["git", "add", ".claude/skills/", ".claude/agents/", ".claude/hooks/",
+             ".claude/commands/", ".claude/scripts/", "assets/downloads/",
+             "_posts/", "_data/skill_registry.yml"],
+            cwd=REPO_DIR,
+            check=True,
+        )
+
+        # Commit
+        today = datetime.now().strftime("%Y-%m-%d")
+        day_name = get_day_name()
+        commit_msg = f"feat(skill): Add {skill_count} skills - {today} ({day_name})"
+
+        subprocess.run(
+            ["git", "commit", "-m", commit_msg],
+            cwd=REPO_DIR,
+            check=True,
+        )
+
+        # Push
+        subprocess.run(
+            ["git", "push"],
+            cwd=REPO_DIR,
+            check=True,
+        )
+
+        log(f"커밋 & 푸시 완료: {commit_msg}")
+        return True
+
+    except subprocess.CalledProcessError as e:
+        log(f"Git 작업 실패: {e}", "ERROR")
         return False
 
 
@@ -179,13 +310,13 @@ def generate_skill() -> bool:
 
 def attempt_fix_with_claude(error_log: str) -> bool:
     """Claude를 사용하여 오류 수정 시도"""
-    log("🔧 Claude로 오류 수정 시도...")
+    log("Claude로 오류 수정 시도...")
 
     prompt = f"""GitHub Actions 빌드가 실패했습니다. 아래 에러 로그를 분석하고 문제를 수정해주세요.
 
 ## 에러 로그
 ```
-{error_log[:3000]}  # 로그 길이 제한
+{error_log[:3000]}
 ```
 
 ## 요청사항
@@ -214,7 +345,7 @@ def attempt_fix_with_claude(error_log: str) -> bool:
             log("Claude가 수정 불가 판단", "WARN")
             return False
 
-        # 수정이 완료되었는지 git status로 확인
+        # 수정이 완료되었는지 확인
         git_result = subprocess.run(
             ["git", "log", "-1", "--format=%s"],
             capture_output=True,
@@ -223,7 +354,7 @@ def attempt_fix_with_claude(error_log: str) -> bool:
         )
 
         if "fix:" in git_result.stdout.lower():
-            log("✅ 오류 수정 커밋 완료!")
+            log("오류 수정 커밋 완료!")
             return True
         else:
             log("수정 커밋이 생성되지 않음", "WARN")
@@ -238,30 +369,53 @@ def attempt_fix_with_claude(error_log: str) -> bool:
 # │  Main Logic                                              │
 # └─────────────────────────────────────────────────────────┘
 
-def run_with_retry() -> bool:
+def run_daily_generation(target_count: Optional[int] = None) -> bool:
     """
-    스킬 생성 실행 (오류 시 최대 5회 수정 시도)
+    일일 스킬 생성 실행
+
+    Args:
+        target_count: 생성할 개수 (None이면 요일에 따라 자동 결정)
 
     Returns:
         성공 여부
     """
+    # 생성 개수 결정
+    if target_count is None:
+        target_count = get_target_count()
+
+    day_name = get_day_name()
+
     log("=" * 60)
-    log("AI Skill Factory - 자동 생성 시작")
+    log(f"AI Skill Factory - 일일 자동 생성")
+    log(f"오늘: {day_name}요일 / 목표: {target_count}개")
     log("=" * 60)
 
-    # Step 1: 스킬 생성
-    if not generate_skill():
-        log("스킬 생성 단계에서 실패", "ERROR")
+    # Step 1: 스킬 생성 (커밋 없이)
+    success_count = generate_multiple_skills(target_count)
+
+    if success_count == 0:
+        log("생성된 스킬이 없습니다.", "ERROR")
         return False
 
-    # Step 2: Actions 완료 대기 및 결과 확인
+    # Step 2: assets/downloads/로 복사
+    log("\n>>> assets/downloads/로 복사")
+    copy_to_downloads()
+
+    # Step 3: 일괄 커밋 & 푸시
+    log("\n>>> 일괄 커밋 & 푸시")
+    if not commit_and_push(success_count):
+        log("커밋/푸시 실패", "ERROR")
+        return False
+
+    # Step 4: Actions 완료 대기 및 오류 수정
+    log("\n>>> GitHub Actions 검증")
     for attempt in range(MAX_FIX_ATTEMPTS):
-        log(f"\n--- 검증 시도 {attempt + 1}/{MAX_FIX_ATTEMPTS} ---")
+        log(f"--- 검증 시도 {attempt + 1}/{MAX_FIX_ATTEMPTS} ---")
 
         status, error_log = wait_for_actions_completion()
 
         if status == "success":
-            log("🎉 빌드 성공! 블로그 배포 완료!")
+            log("빌드 성공! 블로그 배포 완료!")
             return True
 
         elif status == "failure" and error_log:
@@ -270,7 +424,7 @@ def run_with_retry() -> bool:
             if attempt < MAX_FIX_ATTEMPTS - 1:
                 if attempt_fix_with_claude(error_log):
                     log("수정 완료. Actions 재확인...")
-                    time.sleep(10)  # push 후 Actions 시작 대기
+                    time.sleep(10)
                     continue
                 else:
                     log("수정 실패", "WARN")
@@ -285,19 +439,29 @@ def run_with_retry() -> bool:
             log("알 수 없는 상태", "WARN")
             break
 
-    log("❌ 이번 차수 작업 실패", "ERROR")
+    log("작업 실패", "ERROR")
     return False
 
 
 def main() -> None:
     """메인 엔트리 포인트"""
-    success = run_with_retry()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="AI Skill Factory - 자동 생성")
+    parser.add_argument(
+        "--count",
+        type=int,
+        help="생성할 스킬 개수 (미지정 시 요일에 따라 자동: 평일 5개, 주말 50개)",
+    )
+    args = parser.parse_args()
+
+    success = run_daily_generation(args.count)
 
     log("=" * 60)
     if success:
-        log("✅ 작업 완료!")
+        log("작업 완료!")
     else:
-        log("❌ 작업 실패")
+        log("작업 실패")
     log("=" * 60)
 
     sys.exit(0 if success else 1)

@@ -10,14 +10,19 @@ from typing import Any, Dict, List, Optional
 import yaml
 
 from .base_agent import BaseAgent
+from ..utils.keyword_manager import KeywordManager
 
 
 class TopicSelectorAgent(BaseAgent):
     """Agent that selects skill topics using various strategies."""
 
+    # 8 categories
+    CATEGORIES = ["Workflow", "Agent", "Skill", "Hook", "MCP", "Command", "Script", "Prompt"]
+
     def __init__(self, client: Any, prompts_dir: Path) -> None:
         super().__init__(client, prompts_dir)
         self.agent_prompt = self._load_prompt("skill-topic-selector.md")
+        self.keyword_manager = KeywordManager(prompts_dir.parent / "sources")
 
     def select(
         self,
@@ -53,6 +58,7 @@ class TopicSelectorAgent(BaseAgent):
 
     def _process_user_topic(self, topic: str) -> Dict[str, Any]:
         """Process a user-provided topic."""
+        categories_str = " | ".join(self.CATEGORIES)
         prompt = f"""사용자가 다음 주제로 스킬 생성을 요청했습니다:
 
 "{topic}"
@@ -62,7 +68,7 @@ class TopicSelectorAgent(BaseAgent):
 출력 형식:
 ```yaml
 topic: "{topic}"
-category: Workflow | Agent | Skill
+category: {categories_str}
 difficulty: beginner | intermediate | advanced
 strategy_used: user_request
 tags:
@@ -91,30 +97,47 @@ description: "한 줄 설명"
 """
 
         if strategy == "keyword":
-            keywords = [
-                "PDF", "API", "Git", "문서", "코드", "데이터", "파일", "이미지",
-                "분석", "생성", "변환", "요약", "검증", "자동화", "모니터링"
-            ]
-            sample = random.sample(keywords, min(5, len(keywords)))
+            # Use KeywordManager for diverse keywords
+            sample = self.keyword_manager.get_mixed_keywords(7)
+            categories_str = " | ".join(self.CATEGORIES)
             base_prompt += f"""전략: 키워드 조합 (keyword_combination)
 
 다음 키워드들을 조합하여 새로운 스킬 주제를 만들어주세요:
 {', '.join(sample)}
 
+카테고리: {categories_str}
+
 예시:
-- "PDF" + "요약" → "PDF 자동 요약 스킬"
-- "Git" + "분석" → "Git 커밋 분석 스킬"
+- "PDF" + "요약" → "PDF 자동 요약 스킬" (Skill)
+- "Git" + "분석" → "Git 커밋 분석 스킬" (Workflow)
+- "유튜브" + "썸네일" → "유튜브 썸네일 생성 스킬" (Skill)
+- "MCP" + "서버" → "MCP 서버 구축 가이드" (MCP)
+- "Hook" + "알림" → "커밋 알림 Hook" (Hook)
+- "발표자료" + "생성" → "PPT 자동 생성 스킬" (Skill)
 """
 
         elif strategy == "trend":
+            # Try to refresh GitHub trending
+            self.keyword_manager.refresh_trending()
+            github_topics = self.keyword_manager.data.get("github_topics", [])
             trending = sources.get("trending", {})
             topics = trending.get("sources", {})
+
+            # Combine GitHub topics with other trending sources
+            all_trending = list(set(github_topics[:10] + list(topics.keys())[:5]))
+            if not all_trending:
+                all_trending = ["MCP", "Claude Code", "AI Agent", "Workflow Automation", "LLM Tools"]
+
+            categories_str = " | ".join(self.CATEGORIES)
             base_prompt += f"""전략: 트렌드 기반 (trend_based)
 
-현재 트렌드 토픽:
-{json.dumps(topics, indent=2, ensure_ascii=False) if topics else "MCP, Claude Code, AI Agent, Workflow Automation"}
+GitHub 트렌드 토픽:
+{', '.join(all_trending)}
+
+카테고리: {categories_str}
 
 이 트렌드를 반영한 스킬 주제를 선정해주세요.
+최신 AI/개발 트렌드와 Claude Code 생태계를 고려해주세요.
 """
 
         elif strategy == "request":
@@ -147,13 +170,14 @@ description: "한 줄 설명"
             else:
                 return self._build_selection_prompt("keyword", existing_skills, sources)
 
-        base_prompt += """
+        categories_str = " | ".join(self.CATEGORIES)
+        base_prompt += f"""
 
 반드시 아래 YAML 형식으로만 출력하세요:
 
 ```yaml
 topic: "스킬 제목"
-category: Workflow | Agent | Skill
+category: {categories_str}
 difficulty: beginner | intermediate | advanced
 strategy_used: keyword_combination | trend_based | user_request | skill_extension
 tags:

@@ -32,7 +32,7 @@ load_dotenv()
 
 # Configuration
 BLOG_DIR = Path(__file__).parent.parent
-SKILLS_DIR = BLOG_DIR / "skills"
+SKILLS_DIR = BLOG_DIR / ".claude" / "skills"
 POSTS_DIR = BLOG_DIR / "_posts"
 DATA_DIR = BLOG_DIR / "_data"
 PROMPTS_DIR = Path(__file__).parent / "prompts"
