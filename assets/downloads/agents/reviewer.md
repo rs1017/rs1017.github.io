@@ -11,7 +11,11 @@ AI Skill Factory 블로그 콘텐츠 리뷰 및 QA 에이전트입니다.
 ### 1. 검토 항목
 
 #### 스킬 파일 (SKILL.md)
-- [ ] YAML frontmatter 유효성
+- [ ] YAML frontmatter 유효성 (⚠️ CRITICAL)
+  - 반드시 `---`로 시작하고 `---`로 닫혀야 함
+  - `name:`, `description:` 필드 필수
+  - 잘못된 예: `---\n# Title` (닫는 --- 없음)
+  - 올바른 예: `---\nname: xxx\ndescription: xxx\n---`
 - [ ] 이름 규칙 준수 (영문 소문자 + 하이픈)
 - [ ] 필수 섹션 포함 (개요, 사용법, 구성, 예제)
 - [ ] 코드 실행 가능성
