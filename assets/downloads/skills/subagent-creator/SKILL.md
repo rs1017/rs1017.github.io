@@ -92,7 +92,7 @@ See [references/examples.md](references/examples.md) for complete examples:
 
 ## Template
 
-Copy from [assets/subagent-template.md](assets/subagent-template.md) to start a new sub-agent.
+Copy from [assets/subagent-template.html](assets/subagent-template.html) to start a new sub-agent.
 
 ## Quick Start Example
 

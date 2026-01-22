@@ -134,7 +134,7 @@ transcript:
 
 ## 첨부 파일
 
-> [youtube-collector SKILL.md](/assets/downloads/skills/youtube-collector/SKILL.md)
+> [youtube-collector SKILL.md](/assets/downloads/skills/youtube-collector/SKILL.html)
 
 ## 관련 스킬
 

@@ -75,7 +75,7 @@ python3 -c "import json,sys; p=json.load(sys.stdin).get('tool_input',{}).get('fi
 
 ## 첨부 파일
 
-> [hook-creator SKILL.md](/assets/downloads/skills/hook-creator/SKILL.md)
+> [hook-creator SKILL.md](/assets/downloads/skills/hook-creator/SKILL.html)
 
 ## 관련 스킬
 

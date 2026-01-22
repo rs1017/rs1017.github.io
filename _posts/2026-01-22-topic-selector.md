@@ -89,7 +89,7 @@ description: Model Context Protocol 서버를 쉽게 구축하는 스킬
 
 ## 첨부 파일
 
-> [topic-selector.md](/assets/downloads/agents/topic-selector.md)
+> [topic-selector.md](/assets/downloads/agents/topic-selector.html)
 
 ## 관련 에이전트
 
