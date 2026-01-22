@@ -166,10 +166,7 @@ def generate_single_skill(index: int, total: int) -> bool:
             [
                 sys.executable,
                 str(GENERATOR_SCRIPT),
-                "--use-claude-cli",
-                "--strategy", "auto",
-                "--skip-validation",
-                # --auto-git 제거: 커밋하지 않음
+                # 에이전트 기반으로 변경됨 - 추가 인자 불필요
             ],
             capture_output=True,
             text=True,
