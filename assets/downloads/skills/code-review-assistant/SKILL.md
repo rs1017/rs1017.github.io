@@ -1,7 +1,3 @@
----
-name: code-review-assistant
-description: Pull Request나 코드 변경사항을 분석하여 구조화된 리뷰 코멘트를 생성합니다. 코드 품질, 버그, 성능, 보안 이슈를 자동으로 체크하고 개선 제안을 제공합니다.
----
 
 # Code Review Assistant Skill
 
@@ -299,11 +295,7 @@ def get_user(user_id):
         print(f"  {issue.description}")
 ```
 
-## 다운로드
-
-> 📁 [SKILL.md 보기](/assets/downloads/skills/code-review-assistant/SKILL.md)
-
-설치 방법:
+## 설치 방법
 ```bash
 # 1. 스킬 폴더 생성
 mkdir -p ~/.claude/skills/code-review-assistant/

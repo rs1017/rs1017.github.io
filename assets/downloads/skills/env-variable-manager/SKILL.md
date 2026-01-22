@@ -1,9 +1,3 @@
----
-name: env-variable-manager
-description: 프로젝트의 환경 변수를 체계적으로 관리하고 검증하는 스킬
-version: 1.0.0
-author: AI Skill Factory
----
 
 # Environment Variable Manager
 

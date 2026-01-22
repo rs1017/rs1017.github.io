@@ -340,12 +340,11 @@ python generate_schema.py config.dev.json -v config.prod.json
 
 ## 다운로드
 
-> [json-schema-generator.zip](/assets/downloads/skills/json-schema-generator.zip)
+> [SKILL.md 보기](/assets/downloads/skills/json-schema-generator/SKILL.md)
 
-ZIP 파일을 다운로드하여 압축 해제 후, `.claude/skills/` 디렉토리에 복사하세요.
+위 파일을 참고하여 `.claude/skills/json-schema-generator/` 폴더에 구성하세요.
 
 ## 관련 스킬
 
-- **api-response-validator**: API 응답 자동 검증
-- **config-file-manager**: JSON 설정 파일 관리
-- **data-structure-analyzer**: 복잡한 데이터 구조 분석
+- **[api-response-parser](/posts/api-response-parser/)**: API 응답 파싱 및 변환
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰

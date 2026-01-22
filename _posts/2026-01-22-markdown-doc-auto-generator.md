@@ -68,7 +68,8 @@ tags: [documentation, markdown, automation, api-docs, readme]
 
 ```bash
 # 다운로드한 압축 파일 해제
-unzip markdown-doc-auto-generator.zip -d ~/.claude/skills/
+mkdir -p ~/.claude/skills/markdown-doc-auto-generator
+# SKILL.md 복사
 ```
 
 2. Python 의존성 설치:
@@ -435,15 +436,14 @@ if __name__ == "__main__":
 
 ## 다운로드
 
-> [markdown-doc-auto-generator.zip](/assets/downloads/skills/markdown-doc-auto-generator.zip)
+> [SKILL.md 보기](/assets/downloads/skills/markdown-doc-auto-generator/SKILL.md)
 
-압축을 풀고 `.claude/skills/` 디렉토리에 복사하여 사용하세요.
+위 파일을 참고하여 `.claude/skills/markdown-doc-auto-generator/` 폴더에 구성하세요.
 
 ## 관련 스킬
 
-- **code-documentation-checker**: 생성된 문서의 품질을 검증
-- **api-spec-validator**: OpenAPI 스펙 준수 여부 확인
-- **readme-enhancer**: 기존 README 개선 제안
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰
+- **[api-response-parser](/posts/api-response-parser/)**: API 응답 파싱
 
 ## 마무리
 

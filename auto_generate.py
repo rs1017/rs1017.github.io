@@ -9,8 +9,10 @@ AI Skill Factory - 자동 생성 스크립트 (스케줄러용)
 - 빌드 실패 시: 최대 5회 수정 시도
 
 사용법:
-    python auto_generate.py
-    python auto_generate.py --count 3  # 수동으로 개수 지정
+    python auto_generate.py              # 요일에 따라 자동 (평일 5개, 주말 50개)
+    python auto_generate.py --count 3    # 수동으로 개수 지정
+    python auto_generate.py --weekend    # 주말 모드 강제 (50개)
+    python auto_generate.py --weekday    # 평일 모드 강제 (5개)
 """
 
 import subprocess
@@ -472,9 +474,29 @@ def main() -> None:
         type=int,
         help="생성할 스킬 개수 (미지정 시 요일에 따라 자동: 평일 5개, 주말 50개)",
     )
+    parser.add_argument(
+        "--weekend",
+        action="store_true",
+        help="주말 모드 강제 실행 (50개 생성)",
+    )
+    parser.add_argument(
+        "--weekday",
+        action="store_true",
+        help="평일 모드 강제 실행 (5개 생성)",
+    )
     args = parser.parse_args()
 
-    success = run_daily_generation(args.count)
+    # 생성 개수 결정
+    if args.count:
+        target_count = args.count
+    elif args.weekend:
+        target_count = WEEKEND_COUNT  # 50
+    elif args.weekday:
+        target_count = WEEKDAY_COUNT  # 5
+    else:
+        target_count = None  # 요일에 따라 자동 결정
+
+    success = run_daily_generation(target_count)
 
     log("=" * 60)
     if success:

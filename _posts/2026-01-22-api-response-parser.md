@@ -255,7 +255,7 @@ Identify and explain API error responses.
 
 ## 다운로드
 
-> [SKILL.md 보기](/assets/downloads/skills/api-response-parser/SKILL.html)
+> [SKILL.md 보기](/assets/downloads/skills/api-response-parser/SKILL.md)
 
 ## 관련 스킬
 

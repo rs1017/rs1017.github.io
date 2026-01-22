@@ -77,7 +77,7 @@ scripts/init_skill.py <skill-name> --path <output-directory>
 
 ## 첨부 파일
 
-> [skill-creator SKILL.md](/assets/downloads/skills/skill-creator/SKILL.html)
+> [skill-creator SKILL.md](/assets/downloads/skills/skill-creator/SKILL.md)
 
 ## 관련 스킬
 

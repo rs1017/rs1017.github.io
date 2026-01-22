@@ -1,7 +1,3 @@
----
-name: slash-command-creator
-description: Guide for creating Claude Code slash commands. Use when the user wants to create a new slash command, update an existing slash command, or asks about slash command syntax, frontmatter options, or best practices.
----
 
 # Slash Command Creator
 
@@ -19,9 +15,6 @@ scripts/init_command.py <command-name> [--scope project|personal]
 Slash commands are Markdown files with optional YAML frontmatter:
 
 ```markdown
----
-description: Brief description shown in /help
----
 
 Your prompt instructions here.
 
@@ -62,9 +55,6 @@ Review PR #$1 with priority $2
 Execute shell commands with `!` prefix (requires `allowed-tools` in frontmatter):
 
 ```markdown
----
-allowed-tools: Bash(git status:*), Bash(git diff:*)
----
 
 Current status: !`git status`
 Changes: !`git diff HEAD`

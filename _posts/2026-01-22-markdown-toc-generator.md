@@ -226,10 +226,9 @@ done
 
 ## 다운로드
 
-> [markdown-toc-generator.zip](/assets/downloads/skills/markdown-toc-generator.zip)
+> [SKILL.md 보기](/assets/downloads/skills/markdown-toc-generator/SKILL.md)
 
 ## 관련 스킬
 
-- **markdown-linter** - 마크다운 문법 검사
-- **doc-validator** - 문서 구조 검증
-- **readme-generator** - README 자동 생성
+- **[markdown-doc-auto-generator](/posts/markdown-doc-auto-generator/)**: 마크다운 문서 자동 생성
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰

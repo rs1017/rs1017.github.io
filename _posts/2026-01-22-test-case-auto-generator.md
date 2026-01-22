@@ -220,7 +220,7 @@ test_framework: auto
 
 ## 다운로드
 
-> [SKILL.md 보기](/assets/downloads/skills/test-case-auto-generator/SKILL.html)
+> [SKILL.md 보기](/assets/downloads/skills/test-case-auto-generator/SKILL.md)
 
 위 파일을 참고하여 `.claude/skills/test-case-auto-generator/` 폴더에 구성하세요.
 

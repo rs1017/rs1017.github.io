@@ -270,15 +270,14 @@ author: AI Skill Factory
 
 ## 다운로드
 
-> 📥 [env-variable-manager.zip](/assets/downloads/skills/env-variable-manager.zip)
+> [SKILL.md 보기](/assets/downloads/skills/env-variable-manager/SKILL.md)
 
-압축 해제 후 `.claude/skills/` 폴더에 복사하면 바로 사용 가능합니다.
+위 파일을 참고하여 `.claude/skills/env-variable-manager/` 폴더에 구성하세요.
 
 ## 관련 스킬
 
-- **git-commit-analyzer**: Git 커밋 히스토리에서 실수로 커밋된 .env 파일 탐지
-- **security-scanner**: 코드베이스 전체 보안 취약점 스캔
-- **config-validator**: 설정 파일 형식 및 값 검증
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰
+- **[test-case-auto-generator](/posts/test-case-auto-generator/)**: 테스트 케이스 자동 생성
 
 ## 활용 팁
 

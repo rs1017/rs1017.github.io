@@ -103,7 +103,7 @@ allowed-tools: Bash(git status:*), Bash(git diff:*)
 
 ## 첨부 파일
 
-> [slash-command-creator SKILL.md](/assets/downloads/skills/slash-command-creator/SKILL.html)
+> [slash-command-creator SKILL.md](/assets/downloads/skills/slash-command-creator/SKILL.md)
 
 ## 관련 스킬
 

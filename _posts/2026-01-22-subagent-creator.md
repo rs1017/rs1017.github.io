@@ -106,7 +106,7 @@ model: inherit
 
 ## 첨부 파일
 
-> [subagent-creator SKILL.md](/assets/downloads/skills/subagent-creator/SKILL.html)
+> [subagent-creator SKILL.md](/assets/downloads/skills/subagent-creator/SKILL.md)
 
 ## 관련 스킬
 

@@ -1,7 +1,3 @@
----
-name: subagent-creator
-description: Create specialized Claude Code sub-agents with custom system prompts and tool configurations. Use when users ask to create a new sub-agent, custom agent, specialized assistant, or want to configure task-specific AI workflows for Claude Code.
----
 
 # Sub-agent Creator
 
@@ -16,14 +12,6 @@ Sub-agents are Markdown files with YAML frontmatter stored in:
 ### Structure
 
 ```markdown
----
-name: subagent-name
-description: When to use this subagent (include "use proactively" for auto-delegation)
-tools: Tool1, Tool2, Tool3  # Optional - inherits all if omitted
-model: sonnet               # Optional - sonnet/opus/haiku/inherit
-permissionMode: default     # Optional - default/acceptEdits/bypassPermissions/plan
-skills: skill1, skill2      # Optional - auto-load skills
----
 
 System prompt goes here. Define role, responsibilities, and behavior.
 ```
@@ -105,12 +93,6 @@ mkdir -p .claude/agents
 Write to `.claude/agents/code-reviewer.md`:
 
 ```markdown
----
-name: code-reviewer
-description: Reviews code for quality and security. Use proactively after code changes.
-tools: Read, Grep, Glob, Bash
-model: inherit
----
 
 You are a senior code reviewer.
 

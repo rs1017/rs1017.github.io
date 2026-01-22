@@ -537,11 +537,9 @@ Generated: 2026-01-22 14:30:00
 
 ## 다운로드
 
-> [error-log-analyzer.zip](/assets/downloads/skills/error-log-analyzer.zip)
+> [SKILL.md 보기](/assets/downloads/skills/error-log-analyzer/SKILL.md)
 
 ## 관련 스킬
 
-- **log-query-builder**: 복잡한 로그 검색 쿼리 자동 생성
-- **performance-log-analyzer**: 성능 지표 중심 로그 분석
-- **api-error-tracker**: REST API 에러 추적 및 통계
-- **debug-session-recorder**: 디버깅 세션 자동 기록 및 분석
+- **[code-review-assistant](/posts/code-review-assistant/)**: AI 기반 코드 리뷰
+- **[test-case-auto-generator](/posts/test-case-auto-generator/)**: 테스트 케이스 자동 생성
