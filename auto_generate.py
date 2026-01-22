@@ -3,15 +3,14 @@
 AI Skill Factory - 자동 생성 스크립트 (스케줄러용)
 
 스케줄:
-- 평일 (월-금): 생성 안 함
-- 주말 (토-일): 12:00 시작, 10개 생성
+- 주말 GitHub Actions 스케줄로 호출
+- 기본 5개 생성 (요일 무관)
 - 모든 생성 완료 후 한 번에 commit & push
 - 빌드 실패 시: 최대 5회 수정 시도
 
 사용법:
-    python auto_generate.py              # 요일에 따라 자동 (평일 0개, 주말 10개)
+    python auto_generate.py              # 기본 5개 생성
     python auto_generate.py --count 3    # 수동으로 개수 지정
-    python auto_generate.py --weekend    # 주말 모드 강제 (10개)
 """
 
 import subprocess
@@ -32,9 +31,8 @@ GH_CLI = r"C:\Program Files\GitHub CLI\gh.exe"
 MAX_FIX_ATTEMPTS = 5  # 오류 수정 최대 시도 횟수
 WAIT_FOR_ACTIONS = 180  # Actions 완료 대기 시간 (초)
 
-# 요일별 생성 개수 (0=월요일, 6=일요일)
-WEEKDAY_COUNT = 0   # 월-금 (생성 안 함)
-WEEKEND_COUNT = 10  # 토-일
+# 생성 개수 (요일 무관)
+DEFAULT_COUNT = 5
 
 
 # ┌─────────────────────────────────────────────────────────┐
@@ -71,12 +69,8 @@ def log(message: str, level: str = "INFO") -> None:
 # └─────────────────────────────────────────────────────────┘
 
 def get_target_count() -> int:
-    """오늘 요일에 따른 생성 개수 반환"""
-    weekday = datetime.now().weekday()  # 0=월, 6=일
-    if weekday < 5:  # 월-금
-        return WEEKDAY_COUNT
-    else:  # 토-일
-        return WEEKEND_COUNT
+    """생성 개수 반환 (요일 무관)"""
+    return DEFAULT_COUNT
 
 
 def get_day_name() -> str:
@@ -471,22 +465,12 @@ def main() -> None:
     parser.add_argument(
         "--count",
         type=int,
-        help="생성할 스킬 개수 (미지정 시 요일에 따라 자동: 평일 0개, 주말 10개)",
-    )
-    parser.add_argument(
-        "--weekend",
-        action="store_true",
-        help="주말 모드 강제 실행 (10개 생성)",
+        help=f"생성할 스킬 개수 (미지정 시 기본값: {DEFAULT_COUNT}개)",
     )
     args = parser.parse_args()
 
     # 생성 개수 결정
-    if args.count:
-        target_count = args.count
-    elif args.weekend:
-        target_count = WEEKEND_COUNT  # 5
-    else:
-        target_count = None  # 요일에 따라 자동 결정
+    target_count = args.count if args.count else None
 
     success = run_daily_generation(target_count)
 
