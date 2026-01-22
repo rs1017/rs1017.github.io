@@ -40,10 +40,29 @@ WEEKEND_COUNT = 50  # 토-일
 # │  Logging                                                 │
 # └─────────────────────────────────────────────────────────┘
 
+LOG_DIR = REPO_DIR / "logs"
+LOG_FILE = None  # 실행 시 설정됨
+
+
+def init_log_file() -> Path:
+    """로그 파일 초기화"""
+    global LOG_FILE
+    LOG_DIR.mkdir(exist_ok=True)
+    today = datetime.now().strftime("%Y-%m-%d")
+    LOG_FILE = LOG_DIR / f"auto_generate_{today}.log"
+    return LOG_FILE
+
+
 def log(message: str, level: str = "INFO") -> None:
-    """로그 출력"""
+    """로그 출력 (콘솔 + 파일)"""
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[{timestamp}] [{level}] {message}", flush=True)
+    log_line = f"[{timestamp}] [{level}] {message}"
+    print(log_line, flush=True)
+
+    # 파일에도 기록
+    if LOG_FILE:
+        with open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(log_line + "\n")
 
 
 # ┌─────────────────────────────────────────────────────────┐
@@ -170,7 +189,7 @@ def generate_single_skill(index: int, total: int) -> bool:
             ],
             capture_output=True,
             text=True,
-            timeout=600,  # 10분 타임아웃
+            timeout=1200,  # 20분 타임아웃 (3회 retry 포함)
             cwd=REPO_DIR,
         )
 
@@ -443,6 +462,9 @@ def run_daily_generation(target_count: Optional[int] = None) -> bool:
 def main() -> None:
     """메인 엔트리 포인트"""
     import argparse
+
+    # 로그 파일 초기화
+    init_log_file()
 
     parser = argparse.ArgumentParser(description="AI Skill Factory - 자동 생성")
     parser.add_argument(

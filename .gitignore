@@ -24,4 +24,7 @@ agents_prompts.json
 .agent/workflow/
 .env
 
+# Logs
+logs/
+
 

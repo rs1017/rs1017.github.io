@@ -31,6 +31,29 @@ AGENTS_DIR = CLAUDE_DIR / "agents"
 SKILLS_DIR = CLAUDE_DIR / "skills"
 POSTS_DIR = REPO_DIR / "_posts"
 DATA_DIR = REPO_DIR / "_data"
+LOG_DIR = REPO_DIR / "logs"
+
+
+def log(message: str, level: str = "INFO") -> None:
+    """로그 출력 (콘솔 + 파일)"""
+    from datetime import datetime as dt
+    timestamp = dt.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_line = f"[{timestamp}] [{level}] {message}"
+
+    # 콘솔 출력 (인코딩 에러 무시)
+    try:
+        print(log_line, flush=True)
+    except UnicodeEncodeError:
+        # 이모지 등 출력 불가 문자 제거
+        safe_line = log_line.encode('ascii', 'ignore').decode('ascii')
+        print(safe_line, flush=True)
+
+    # 파일에도 기록 (UTF-8)
+    LOG_DIR.mkdir(exist_ok=True)
+    today = dt.now().strftime("%Y-%m-%d")
+    log_file = LOG_DIR / f"generator_{today}.log"
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write(log_line + "\n")
 
 
 def find_claude_cli() -> str:
@@ -119,17 +142,22 @@ def run_topic_selector(user_topic: Optional[str] = None) -> Dict[str, str]:
     Returns:
         dict with keys: name, title, category, difficulty, tags, description, work_plan
     """
-    print("\n>>> Step 1: Topic Selection", flush=True)
+    log("=== Topic Selector 에이전트 시작 ===")
 
     agent_prompt = load_agent("topic-selector")
+    log("topic-selector 프롬프트 로드 완료")
+
     rules = load_rules()
     existing = get_existing_skills()
     existing_str = ", ".join(existing) if existing else "없음"
+    log(f"기존 스킬: {len(existing)}개")
 
     if user_topic:
         topic_instruction = f'사용자 요청 주제: "{user_topic}"'
+        log(f"사용자 지정 주제: {user_topic}")
     else:
         topic_instruction = "키워드 풀과 트렌드를 참고하여 새로운 주제를 선정하세요."
+        log("자동 주제 선정 모드")
 
     prompt = f"""## 규칙
 {rules}
@@ -143,13 +171,17 @@ def run_topic_selector(user_topic: Optional[str] = None) -> Dict[str, str]:
 위 규칙과 에이전트 지침을 따라 주제를 선정하고 작업 계획을 출력하세요.
 """
 
+    log("Claude CLI 호출 중...")
     response = call_claude(prompt, system=agent_prompt)
+    log("Claude CLI 응답 수신")
 
     # Parse topic selection response
     topic_info = parse_topic_response(response)
 
-    print(f"  선정된 주제: {topic_info.get('name', 'unknown')}", flush=True)
-    print(f"  제목: {topic_info.get('title', 'unknown')}", flush=True)
+    log(f"=== Topic Selector 완료 ===")
+    log(f"  선정된 주제: {topic_info.get('name', 'unknown')}")
+    log(f"  제목: {topic_info.get('title', 'unknown')}")
+    log(f"  → Developer 에이전트로 전달")
 
     return topic_info
 
@@ -233,11 +265,18 @@ def run_developer(topic_info: Dict[str, str]) -> Tuple[str, str]:
     Returns:
         (skill_md, post_content)
     """
-    print("\n>>> Step 2: Development", flush=True)
+    log("=== Developer 에이전트 시작 ===")
+    log(f"  주제: {topic_info['name']}")
 
     agent_prompt = load_agent("developer")
+    log("developer 프롬프트 로드 완료")
 
-    prompt = f"""## 주제 정보
+    prompt = f"""## 중요 지시사항
+- 도구를 사용하지 마세요. 권한 요청을 하지 마세요.
+- 바로 아래 Output Format에 맞춰 텍스트를 출력하세요.
+- ---SKILL.md--- 로 시작해서 콘텐츠를 출력하세요.
+
+## 주제 정보
 name: {topic_info['name']}
 title: {topic_info['title']}
 category: {topic_info['category']}
@@ -248,23 +287,43 @@ description: {topic_info['description']}
 ## 작업 계획
 {topic_info.get('work_plan', '기본 스킬 생성')}
 
-위 정보를 바탕으로 SKILL.md와 블로그 포스트를 작성하세요.
-에이전트 지침의 Output Format을 따르세요.
+## Output Format (정확히 따르세요)
+---SKILL.md---
+(여기에 SKILL.md 전체 내용)
+
+---POST---
+(여기에 블로그 포스트 전체 내용)
+
+---FILES---
+(생성될 파일 경로 목록)
+
+지금 바로 ---SKILL.md--- 부터 시작하여 콘텐츠를 출력하세요.
 """
+    log("Claude CLI 호출 중...")
 
     response = call_claude(prompt, system=agent_prompt)
+    log("Claude CLI 응답 수신")
+
+    # 디버그: 응답 저장
+    debug_file = LOG_DIR / f"developer_response_{topic_info['name']}.txt"
+    debug_file.write_text(response, encoding="utf-8")
+    log(f"  응답 저장: {debug_file}")
 
     # Parse developer response
     skill_md, post_content = parse_developer_response(response)
 
-    print(f"  SKILL.md: {len(skill_md)} chars", flush=True)
-    print(f"  POST: {len(post_content)} chars", flush=True)
+    log(f"=== Developer 완료 ===")
+    log(f"  SKILL.md: {len(skill_md)} chars")
+    log(f"  POST: {len(post_content)} chars")
+    log(f"  → Reviewer 에이전트로 전달")
 
     return skill_md, post_content
 
 
 def parse_developer_response(response: str) -> Tuple[str, str]:
     """Parse Developer response into skill_md and post_content."""
+    log("  응답 파싱 시작...")
+
     parts = {}
     current_section = None
     current_content = []
@@ -272,17 +331,20 @@ def parse_developer_response(response: str) -> Tuple[str, str]:
     for line in response.split('\n'):
         stripped = line.strip()
 
-        if stripped == '---SKILL.md---':
+        # 다양한 구분자 형식 지원
+        if stripped in ['---SKILL.md---', '---SKILL---', '```markdown', '## SKILL.md'] or 'SKILL.md' in stripped and '---' in stripped:
             if current_section:
                 parts[current_section] = '\n'.join(current_content).strip()
             current_section = 'skill'
             current_content = []
-        elif stripped == '---POST---':
+            log(f"  [파싱] SKILL 섹션 시작")
+        elif stripped in ['---POST---', '---BLOG---', '## POST', '## 블로그 포스트'] or ('POST' in stripped and '---' in stripped):
             if current_section:
                 parts[current_section] = '\n'.join(current_content).strip()
             current_section = 'post'
             current_content = []
-        elif stripped == '---FILES---':
+            log(f"  [파싱] POST 섹션 시작")
+        elif stripped in ['---FILES---', '---END---'] or ('FILES' in stripped and '---' in stripped):
             if current_section:
                 parts[current_section] = '\n'.join(current_content).strip()
             current_section = 'files'
@@ -296,6 +358,13 @@ def parse_developer_response(response: str) -> Tuple[str, str]:
     skill_md = parts.get('skill', '')
     post_content = parts.get('post', '')
 
+    # 파싱 실패 시 응답 전체 로깅
+    if not skill_md and not post_content:
+        log("  [경고] 파싱 실패! 응답 미리보기:", "WARN")
+        preview = response[:500].replace('\n', '\\n')
+        log(f"  {preview}...", "WARN")
+
+    log(f"  파싱 결과: SKILL={len(skill_md)}chars, POST={len(post_content)}chars")
     return skill_md, post_content
 
 
@@ -310,9 +379,11 @@ def run_reviewer(topic_info: Dict[str, str], skill_md: str, post_content: str) -
     Returns:
         (approved, final_skill_md, final_post_content)
     """
-    print("\n>>> Step 3: Review", flush=True)
+    log("=== Reviewer 에이전트 시작 ===")
+    log(f"  주제: {topic_info['name']}")
 
     agent_prompt = load_agent("reviewer")
+    log("reviewer 프롬프트 로드 완료")
 
     prompt = f"""## 검토 대상
 
@@ -335,7 +406,9 @@ category: {topic_info['category']}
 문제가 있으면 직접 수정한 버전도 함께 출력하세요.
 """
 
+    log("Claude CLI 호출 중...")
     response = call_claude(prompt, system=agent_prompt)
+    log("Claude CLI 응답 수신")
 
     # Parse review result
     approved, final_skill, final_post = parse_reviewer_response(
@@ -343,7 +416,8 @@ category: {topic_info['category']}
     )
 
     status = "APPROVED" if approved else "NEEDS_REVISION"
-    print(f"  검토 결과: {status}", flush=True)
+    log(f"=== Reviewer 완료 ===")
+    log(f"  검토 결과: {status}")
 
     return approved, final_skill, final_post
 
@@ -451,7 +525,7 @@ def generate_skill(user_topic: Optional[str] = None, max_retries: int = 3) -> Tu
     topic_info = run_topic_selector(user_topic)
 
     for attempt in range(max_retries):
-        print(f"\n>>> 시도 {attempt + 1}/{max_retries}", flush=True)
+        log(f"========== 시도 {attempt + 1}/{max_retries} ==========")
 
         # Step 2: Development
         skill_md, post_content = run_developer(topic_info)
@@ -460,15 +534,16 @@ def generate_skill(user_topic: Optional[str] = None, max_retries: int = 3) -> Tu
         approved, skill_md, post_content = run_reviewer(topic_info, skill_md, post_content)
 
         if approved:
-            print("  [OK] 리뷰 승인됨", flush=True)
+            log("[OK] 리뷰 승인됨!")
+            log(f"  → 파일 저장 단계로 진행")
             break
         else:
             if attempt < max_retries - 1:
-                print(f"  [RETRY] 리뷰어가 반려함. Developer로 다시 전달합니다.", flush=True)
+                log(f"[RETRY] 리뷰어가 반려함. Developer로 다시 전달합니다.", "WARN")
                 # Reviewer의 피드백을 work_plan에 추가하여 Developer가 참고하도록 함
                 topic_info['work_plan'] = f"이전 시도 수정 필요.\n{topic_info.get('work_plan', '')}"
             else:
-                print("  [WARNING] 최대 재시도 횟수 도달. 마지막 버전을 사용합니다.", flush=True)
+                log("최대 재시도 횟수 도달. 마지막 버전을 사용합니다.", "WARN")
 
     return (
         topic_info['name'],
@@ -484,17 +559,17 @@ def main():
     parser.add_argument("--skip-review", action="store_true", help="리뷰 단계 건너뛰기")
     args = parser.parse_args()
 
-    print("=" * 60)
-    print("AI Skill Factory - Agent-based Generator")
-    print("=" * 60)
+    log("=" * 60)
+    log("AI Skill Factory - Agent-based Generator")
+    log("=" * 60)
 
     try:
         # Generate skill
         name, title, skill_md, post_content = generate_skill(args.topic)
 
-        print(f"\n>>> 결과")
-        print(f"  Name: {name}")
-        print(f"  Title: {title}")
+        log("=== 결과 ===")
+        log(f"  Name: {name}")
+        log(f"  Title: {title}")
 
         # Determine category from skill_md or default
         category = "Skill"
@@ -504,21 +579,21 @@ def main():
                 break
 
         # Save files
-        print("\n>>> 파일 저장")
+        log("=== 파일 저장 ===")
         skill_dir = save_skill(name, category, skill_md)
-        print(f"  Skill: {skill_dir}")
+        log(f"  Skill: {skill_dir}")
 
         post_file = save_post(name, post_content)
-        print(f"  Post: {post_file}")
+        log(f"  Post: {post_file}")
 
-        print("\n" + "=" * 60)
-        print("SUCCESS!")
-        print("=" * 60)
+        log("=" * 60)
+        log("SUCCESS! 스킬 생성 완료!")
+        log("=" * 60)
 
         return 0
 
     except Exception as e:
-        print(f"\n[ERROR] {e}")
+        log(f"오류 발생: {e}", "ERROR")
         import traceback
         traceback.print_exc()
         return 1
