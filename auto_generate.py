@@ -3,16 +3,15 @@
 AI Skill Factory - 자동 생성 스크립트 (스케줄러용)
 
 스케줄:
-- 평일 (월-금): 12:00 시작, 5개 생성
-- 주말 (토-일): 12:00 시작, 50개 생성
+- 평일 (월-금): 생성 안 함
+- 주말 (토-일): 12:00 시작, 10개 생성
 - 모든 생성 완료 후 한 번에 commit & push
 - 빌드 실패 시: 최대 5회 수정 시도
 
 사용법:
-    python auto_generate.py              # 요일에 따라 자동 (평일 5개, 주말 50개)
+    python auto_generate.py              # 요일에 따라 자동 (평일 0개, 주말 10개)
     python auto_generate.py --count 3    # 수동으로 개수 지정
-    python auto_generate.py --weekend    # 주말 모드 강제 (50개)
-    python auto_generate.py --weekday    # 평일 모드 강제 (5개)
+    python auto_generate.py --weekend    # 주말 모드 강제 (10개)
 """
 
 import subprocess
@@ -34,8 +33,8 @@ MAX_FIX_ATTEMPTS = 5  # 오류 수정 최대 시도 횟수
 WAIT_FOR_ACTIONS = 180  # Actions 완료 대기 시간 (초)
 
 # 요일별 생성 개수 (0=월요일, 6=일요일)
-WEEKDAY_COUNT = 5   # 월-금
-WEEKEND_COUNT = 50  # 토-일
+WEEKDAY_COUNT = 0   # 월-금 (생성 안 함)
+WEEKEND_COUNT = 10  # 토-일
 
 
 # ┌─────────────────────────────────────────────────────────┐
@@ -472,17 +471,12 @@ def main() -> None:
     parser.add_argument(
         "--count",
         type=int,
-        help="생성할 스킬 개수 (미지정 시 요일에 따라 자동: 평일 5개, 주말 50개)",
+        help="생성할 스킬 개수 (미지정 시 요일에 따라 자동: 평일 0개, 주말 10개)",
     )
     parser.add_argument(
         "--weekend",
         action="store_true",
-        help="주말 모드 강제 실행 (50개 생성)",
-    )
-    parser.add_argument(
-        "--weekday",
-        action="store_true",
-        help="평일 모드 강제 실행 (5개 생성)",
+        help="주말 모드 강제 실행 (10개 생성)",
     )
     args = parser.parse_args()
 
@@ -490,9 +484,7 @@ def main() -> None:
     if args.count:
         target_count = args.count
     elif args.weekend:
-        target_count = WEEKEND_COUNT  # 50
-    elif args.weekday:
-        target_count = WEEKDAY_COUNT  # 5
+        target_count = WEEKEND_COUNT  # 5
     else:
         target_count = None  # 요일에 따라 자동 결정
 

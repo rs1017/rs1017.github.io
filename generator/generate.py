@@ -350,10 +350,15 @@ def parse_developer_response(response: str) -> Tuple[str, str]:
     skill_md = ""
     post_content = ""
 
-    # ---SKILL.md--- 와 ---POST--- 구분자 찾기
-    skill_start = response.find('---SKILL.md---')
+    # ---CONTENT--- 또는 ---SKILL.md--- 와 ---POST--- 구분자 찾기
+    skill_start = response.find('---CONTENT---')
+    delimiter_len = 13  # len('---CONTENT---')
+    if skill_start == -1:
+        skill_start = response.find('---SKILL.md---')
+        delimiter_len = 14  # len('---SKILL.md---')
     if skill_start == -1:
         skill_start = response.find('---SKILL---')
+        delimiter_len = 11  # len('---SKILL---')
 
     post_start = response.find('---POST---')
     if post_start == -1:
@@ -363,10 +368,10 @@ def parse_developer_response(response: str) -> Tuple[str, str]:
     if files_start == -1:
         files_start = len(response)
 
-    # SKILL 추출
+    # CONTENT/SKILL 추출
     if skill_start != -1:
         skill_end = post_start if post_start > skill_start else files_start
-        skill_md = response[skill_start + 14:skill_end].strip()  # len('---SKILL.md---') = 14
+        skill_md = response[skill_start + delimiter_len:skill_end].strip()
         if skill_md.startswith('---'):
             skill_md = skill_md[skill_md.find('---', 3):]  # SKILL--- 제거
 
