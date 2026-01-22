@@ -274,7 +274,7 @@ def run_developer(topic_info: Dict[str, str]) -> Tuple[str, str]:
     prompt = f"""## 중요 지시사항
 - 도구를 사용하지 마세요. 권한 요청을 하지 마세요.
 - 바로 아래 Output Format에 맞춰 텍스트를 출력하세요.
-- ---SKILL.md--- 로 시작해서 콘텐츠를 출력하세요.
+- ---CONTENT--- 로 시작해서 콘텐츠를 출력하세요.
 
 ## 주제 정보
 name: {topic_info['name']}
@@ -289,20 +289,12 @@ description: {topic_info['description']}
 
 ## Output Format (정확히 따르세요!)
 
-⚠️ YAML frontmatter 필수 형식:
-- 반드시 ---로 시작하고 ---로 닫아야 함
-- name, description 필드 필수
+⚠️ 콘텐츠 파일에는 YAML frontmatter를 넣지 마세요!
+⚠️ 블로그 포스트에만 YAML frontmatter를 넣으세요.
 
----SKILL.md---
----
-name: {topic_info['name']}
-description: 여기에 한 줄 설명
-version: 1.0.0
-author: AI Skill Factory
----
-
-# 스킬 제목
-(이하 내용...)
+---CONTENT---
+# 제목
+(콘텐츠 내용 - YAML frontmatter 없이!)
 
 ---POST---
 ---
@@ -316,10 +308,16 @@ tags: [태그들]
 ## 개요
 (이하 내용...)
 
+## 파일 위치
+| 구분 | 경로 |
+|------|------|
+| 정의 파일 | /assets/downloads/... |
+| 설치 위치 | ~/.claude/... |
+
 ---FILES---
 (생성될 파일 경로 목록)
 
-지금 바로 ---SKILL.md--- 부터 시작하여 콘텐츠를 출력하세요.
+지금 바로 ---CONTENT--- 부터 시작하여 콘텐츠를 출력하세요.
 """
     log("Claude CLI 호출 중...")
 
@@ -455,8 +453,12 @@ def parse_reviewer_response(
     fixed_post = original_post
 
     # Try to extract fixed content if provided
-    if "---FIXED_SKILL---" in response or "---SKILL.md---" in response:
-        parts = response.split("---SKILL.md---")
+    if "---FIXED_SKILL---" in response or "---SKILL.md---" in response or "---CONTENT---" in response:
+        # Try ---CONTENT--- first, then ---SKILL.md---
+        if "---CONTENT---" in response:
+            parts = response.split("---CONTENT---")
+        else:
+            parts = response.split("---SKILL.md---")
         if len(parts) > 1:
             skill_part = parts[1].split("---")[0].strip()
             if skill_part:
@@ -475,6 +477,33 @@ def parse_reviewer_response(
 # ┌─────────────────────────────────────────────────────────────┐
 # │  YAML Validation                                             │
 # └─────────────────────────────────────────────────────────────┘
+
+def remove_yaml_frontmatter(content: str) -> str:
+    """
+    YAML frontmatter 제거 (콘텐츠 파일용)
+    Jekyll이 HTML로 변환하지 않도록 frontmatter를 제거합니다.
+    """
+    lines = content.strip().split('\n')
+
+    # frontmatter가 없으면 그대로 반환
+    if not lines or lines[0].strip() != '---':
+        return content
+
+    # 닫는 --- 찾기
+    closing_idx = -1
+    for i, line in enumerate(lines[1:], 1):
+        if line.strip() == '---':
+            closing_idx = i
+            break
+
+    # 닫는 ---가 없으면 그대로 반환
+    if closing_idx == -1:
+        return content
+
+    # frontmatter 제거하고 나머지 반환
+    remaining = '\n'.join(lines[closing_idx + 1:]).strip()
+    return remaining
+
 
 def validate_yaml_frontmatter(content: str, name: str) -> Tuple[bool, str]:
     """
@@ -583,10 +612,9 @@ author: AI Skill Factory
 
 def save_skill(name: str, category: str, skill_md: str) -> Path:
     """Save skill files to appropriate .claude/ directory."""
-    # YAML frontmatter 검증 및 자동 수정
-    is_valid, skill_md = validate_yaml_frontmatter(skill_md, name)
-    if not is_valid:
-        log(f"  YAML frontmatter 자동 수정됨: {name}")
+    # YAML frontmatter 제거 (Jekyll이 HTML로 변환하지 않도록)
+    skill_md = remove_yaml_frontmatter(skill_md)
+    log(f"  콘텐츠 파일 저장 (frontmatter 없음): {name}")
 
     category_lower = category.lower()
 
