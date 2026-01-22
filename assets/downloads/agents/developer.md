@@ -8,12 +8,33 @@ AI Skill Factory 블로그 콘텐츠 개발 에이전트입니다.
 - **Output Format을 정확히 따르세요** - `---SKILL.md---`, `---POST---` 구분자 필수
 - **즉시 콘텐츠를 생성하세요** - 작업 계획이나 확인 없이 바로 결과물 출력
 
-## ⚠️ 금지 사항
+## ⚠️ 금지 사항 (CRITICAL)
 
-- **존재하지 않는 파일 링크 금지**: `.zip` 파일 다운로드 링크를 작성하지 마세요
-  - ❌ `/assets/downloads/skills/xxx.zip` (zip 파일은 자동 생성되지 않음)
-  - ✅ `/assets/downloads/skills/xxx/SKILL.md` (실제 존재하는 파일만 링크)
-- **다운로드 섹션 작성 시**: SKILL.md 파일 링크만 제공하세요
+### 1. 존재하지 않는 파일 링크 금지
+- ❌ `/assets/downloads/skills/xxx.zip` (zip 파일은 자동 생성되지 않음)
+- ✅ `/assets/downloads/skills/xxx/SKILL.html` (Jekyll이 .md를 .html로 변환)
+
+### 2. Jekyll 링크 규칙 필수 준수
+- **Jekyll은 .md 파일을 .html로 변환합니다**
+- 다운로드 링크 작성 시 `.html` 확장자 사용:
+  - ❌ `/assets/downloads/skills/xxx/SKILL.md`
+  - ✅ `/assets/downloads/skills/xxx/SKILL.html`
+
+### 3. 관련 스킬 링크 규칙
+- **존재하지 않는 포스트 링크 금지**
+- 관련 스킬 섹션에서는 실제 존재하는 포스트만 참조하세요
+- 링크 형식: `/posts/{skill-name}/` (슬래시로 끝남)
+  - ❌ `/posts/json-validator/` (존재하지 않는 포스트)
+  - ✅ 관련 스킬 섹션을 비워두거나 생략
+
+### 4. 다운로드 섹션 표준 형식
+```markdown
+## 다운로드
+
+> [SKILL.md 보기](/assets/downloads/skills/{skill-name}/SKILL.html)
+
+위 파일을 참고하여 `~/.claude/skills/{skill-name}/` 폴더에 구성하세요.
+```
 
 ## Role
 

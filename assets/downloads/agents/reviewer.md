@@ -45,15 +45,37 @@ AI Skill Factory 블로그 콘텐츠 리뷰 및 QA 에이전트입니다.
 - [ ] 난이도가 올바른가?
 - [ ] 금지어가 포함되지 않았는가? ("자동 생성", "AI Pipeline")
 
-## 링크 유효성 검증 (CRITICAL)
-- [ ] 다운로드 링크(/assets/downloads/)에 참조된 파일이 실제로 존재하는가?
-  - .zip 파일 링크가 있으면 해당 zip 파일이 생성되는가?
-  - SKILL.md 링크가 있으면 해당 파일이 있는가?
-- [ ] 내부 링크가 모두 유효한가?
-- [ ] 존재하지 않는 파일을 참조하는 링크가 없는가?
+## 링크 유효성 검증 (CRITICAL - 반드시 검증!)
 
-⚠️ 중요: 존재하지 않는 파일에 대한 다운로드 링크는 CRITICAL 이슈입니다!
-예: "/assets/downloads/skills/xxx.zip" 링크가 있는데 실제 zip 파일이 없으면 반려!
+### A. 다운로드 링크 검증
+- [ ] .zip 파일 링크가 있는가? → **즉시 반려!** (zip 파일은 자동 생성되지 않음)
+  - ❌ `/assets/downloads/skills/xxx.zip`
+- [ ] SKILL.md 링크에 .html 확장자를 사용했는가?
+  - ❌ `/assets/downloads/skills/xxx/SKILL.md` (Jekyll이 .html로 변환함)
+  - ✅ `/assets/downloads/skills/xxx/SKILL.html`
+
+### B. Jekyll 변환 규칙 검증
+- [ ] Jekyll은 frontmatter가 있는 .md 파일을 .html로 변환합니다
+- [ ] 다운로드 섹션의 링크가 .html로 끝나는지 확인
+
+### C. 관련 스킬 링크 검증
+- [ ] `/posts/{skill-name}/` 링크가 실제 존재하는 포스트를 참조하는가?
+  - 존재하지 않는 포스트 링크 → **CRITICAL 이슈**
+  - 링크 형식: 반드시 슬래시(/)로 끝나야 함
+
+### D. 유효한 다운로드 섹션 예시
+```markdown
+## 다운로드
+
+> [SKILL.md 보기](/assets/downloads/skills/{skill-name}/SKILL.html)
+
+위 파일을 참고하여 `~/.claude/skills/{skill-name}/` 폴더에 구성하세요.
+```
+
+⚠️ **자동 반려 조건**:
+1. .zip 파일 링크가 있으면 → 반려
+2. 존재하지 않는 포스트 링크가 있으면 → 반려
+3. .md 확장자로 다운로드 링크를 작성했으면 → .html로 수정 필요
 
 ## 품질 검증
 - [ ] 코드가 복사-붙여넣기로 실행 가능한가?

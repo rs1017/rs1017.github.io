@@ -301,7 +301,7 @@ def get_user(user_id):
 
 ## 다운로드
 
-> 📁 [SKILL.md 보기](/assets/downloads/skills/code-review-assistant/SKILL.html)
+> 📁 [SKILL.md 보기](/assets/downloads/skills/code-review-assistant/SKILL.md)
 
 설치 방법:
 ```bash
@@ -363,8 +363,11 @@ claude "이 코드의 안티패턴을 찾아줘" < legacy-code.java
 
 ## 관련 스킬
 
-- **[test-case-auto-generator](/posts/test-case-auto-generator/)**: 테스트 케이스 자동 생성
-- **[pre-commit-formatter](/posts/pre-commit-formatter/)**: 커밋 전 포맷팅 자동화
+- **git-commit-analyzer**: 커밋 메시지 품질 분석
+- **test-coverage-reporter**: 테스트 커버리지 리포트
+- **refactoring-suggester**: 리팩토링 기회 탐지
+- **security-scanner**: 보안 취약점 전문 스캔
+- **performance-profiler**: 성능 병목 지점 분석
 
 ## 마무리
 
