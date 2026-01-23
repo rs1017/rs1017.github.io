@@ -1,8 +1,3 @@
----
-name: pptx
-description: "Presentation creation, editing, and analysis. When Claude needs to work with presentations (.pptx files) for: (1) Creating new presentations, (2) Modifying or editing content, (3) Working with layouts, (4) Adding comments or speaker notes, or any other presentation tasks"
-license: Proprietary. LICENSE.txt has complete terms
----
 
 # PPTX creation, editing, and analysis
 
@@ -57,11 +52,11 @@ When creating a new PowerPoint presentation from scratch, use the **html2pptx** 
 4. **State your approach**: Explain your design choices before writing code
 
 **Requirements**:
-- ✅ State your content-informed design approach BEFORE writing code
-- ✅ Use web-safe fonts only: Arial, Helvetica, Times New Roman, Georgia, Courier New, Verdana, Tahoma, Trebuchet MS, Impact
-- ✅ Create clear visual hierarchy through size, weight, and color
-- ✅ Ensure readability: strong contrast, appropriately sized text, clean alignment
-- ✅ Be consistent: repeat patterns, spacing, and visual language across slides
+- ??State your content-informed design approach BEFORE writing code
+- ??Use web-safe fonts only: Arial, Helvetica, Times New Roman, Georgia, Courier New, Verdana, Tahoma, Trebuchet MS, Impact
+- ??Create clear visual hierarchy through size, weight, and color
+- ??Ensure readability: strong contrast, appropriately sized text, clean alignment
+- ??Be consistent: repeat patterns, spacing, and visual language across slides
 
 #### Color Palette Selection
 
@@ -317,7 +312,7 @@ When you need to create a presentation that follows an existing template's desig
    - Generate appropriate replacement content for placeholder text
    - Use shape size to determine appropriate content length
    - **CRITICAL**: Include paragraph properties from the original inventory - don't just provide text
-   - **IMPORTANT**: When bullet: true, do NOT include bullet symbols (•, -, *) in text - they're added automatically
+   - **IMPORTANT**: When bullet: true, do NOT include bullet symbols (?? -, *) in text - they're added automatically
    - **ESSENTIAL FORMATTING RULES**:
      - Headers/titles should typically have `"bold": true`
      - List items should have `"bullet": true, "level": 0` (level is required when bullet is true)

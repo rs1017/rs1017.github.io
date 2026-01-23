@@ -216,6 +216,22 @@ tags: [git, analysis, commit]
 **절대 금지**:
 - git add 없이 게시글에 다운로드 링크 작성
 - 존재하지 않는 파일 경로 링크
+- `assets/downloads/`의 SKILL.md에 프론트매터(`---`) 포함
+
+### ⚠️ assets/downloads/ SKILL.md 프론트매터 금지
+
+**문제**: Jekyll은 프론트매터가 있는 .md 파일을 .html로 변환합니다. 따라서 `/assets/downloads/skills/*/SKILL.md` 링크가 깨집니다.
+
+**해결**: `assets/downloads/`에 복사되는 SKILL.md 파일에서 프론트매터를 **반드시 제거**해야 합니다.
+
+```bash
+# 프론트매터 제거 예시 (PowerShell)
+$content = Get-Content SKILL.md -Raw
+$newContent = $content -replace '^---[\s\S]*?---\r?\n', ''
+Set-Content SKILL.md $newContent -NoNewline
+```
+
+**참고**: `.claude/skills/*/SKILL.md`에는 프론트매터가 필요하지만, `assets/downloads/skills/*/SKILL.md`에는 프론트매터가 없어야 합니다.
 
 ## Difficulty Levels
 

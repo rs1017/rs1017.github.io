@@ -1,8 +1,3 @@
----
-name: web-artifacts-builder
-description: Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.
-license: Complete terms in LICENSE.txt
----
 
 # Web Artifacts Builder
 
@@ -30,13 +25,13 @@ cd <project-name>
 ```
 
 This creates a fully configured project with:
-- ✅ React + TypeScript (via Vite)
-- ✅ Tailwind CSS 3.4.1 with shadcn/ui theming system
-- ✅ Path aliases (`@/`) configured
-- ✅ 40+ shadcn/ui components pre-installed
-- ✅ All Radix UI dependencies included
-- ✅ Parcel configured for bundling (via .parcelrc)
-- ✅ Node 18+ compatibility (auto-detects and pins Vite version)
+- ??React + TypeScript (via Vite)
+- ??Tailwind CSS 3.4.1 with shadcn/ui theming system
+- ??Path aliases (`@/`) configured
+- ??40+ shadcn/ui components pre-installed
+- ??All Radix UI dependencies included
+- ??Parcel configured for bundling (via .parcelrc)
+- ??Node 18+ compatibility (auto-detects and pins Vite version)
 
 ### Step 2: Develop Your Artifact
 
