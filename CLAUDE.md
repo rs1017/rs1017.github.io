@@ -50,9 +50,25 @@ _data/skill_registry.yml         # 스킬 레지스트리
       ↓
 2. assets/downloads/에 복사 (블로그 첨부용)
       ↓
-3. _posts/에 문서화 포스트 작성
+3. git add assets/downloads/ (⚠️ 필수! 복사 직후 즉시 실행)
       ↓
-4. commit & push → GitHub Pages 배포
+4. _posts/에 문서화 포스트 작성
+      ↓
+5. commit & push → GitHub Pages 배포
+```
+
+### ⚠️ 중요: assets/downloads/ 복사 후 반드시 git add
+
+**문제**: 파일을 복사만 하고 git add를 하지 않으면 GitHub Pages 배포 시 파일이 없어 링크가 깨짐
+
+**해결**: 복사 직후 반드시 아래 명령 실행:
+```bash
+git add assets/downloads/
+```
+
+**검증**: 게시글 작성 전 파일이 git에 추가되었는지 확인:
+```bash
+git status assets/downloads/
 ```
 
 ## Git 관리 규칙
@@ -180,6 +196,26 @@ tags: [git, analysis, commit]
 
 - **코드**: 실행 가능해야 함
 - **금지어**: "자동 생성", "AI Pipeline" (콘텐츠/태그에 사용 금지)
+
+### ⚠️ 다운로드 링크 작성 규칙 (필수)
+
+**문제**: `assets/downloads/`에 파일이 git에 추가되지 않으면 배포 후 링크가 깨짐
+
+**필수 절차**:
+1. 게시글 작성 **전에** 반드시 `git add assets/downloads/` 실행
+2. `git status`로 파일이 스테이징되었는지 확인
+3. 확인 후에만 게시글에 다운로드 링크 추가
+
+**링크 형식**:
+```markdown
+## 첨부 파일
+
+> [{skill-name} SKILL.md](/assets/downloads/skills/{skill-name}/SKILL.md)
+```
+
+**절대 금지**:
+- git add 없이 게시글에 다운로드 링크 작성
+- 존재하지 않는 파일 경로 링크
 
 ## Difficulty Levels
 
