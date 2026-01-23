@@ -233,6 +233,18 @@ Set-Content SKILL.md $newContent -NoNewline
 
 **참고**: `.claude/skills/*/SKILL.md`에는 프론트매터가 필요하지만, `assets/downloads/skills/*/SKILL.md`에는 프론트매터가 없어야 합니다.
 
+### ⚠️ About 페이지 업데이트 (필수)
+
+새 스킬/에이전트 추가 시 `_tabs/about.md`의 **폴더 구조** 섹션도 업데이트해야 합니다.
+
+**위치**: `_tabs/about.md` → "폴더 구조 (Single Source of Truth)" 섹션
+
+**업데이트 항목**:
+- `.claude/skills/` 하위에 새 스킬 추가
+- `.claude/agents/` 하위에 새 에이전트 추가
+- `.claude/commands/` 하위에 새 커맨드 추가
+- `.claude/hooks/` 하위에 새 훅 추가
+
 ## Difficulty Levels
 
 - `beginner`: 10분 내 이해 가능
