@@ -236,12 +236,6 @@ jobs:
 | 정의 파일 | `/assets/downloads/skills/performance-profiler/SKILL.md` |
 | 설치 위치 | `~/.claude/skills/performance-profiler/` |
 
-## 다운로드
-
-> [performance-profiler.zip](/assets/downloads/skills/performance-profiler.zip)
-
 ## 관련 스킬
 
 - [code-review-assistant](/posts/code-review-assistant/) - 코드 품질 검토
-- [test-runner](/posts/test-runner/) - 자동화된 테스트 실행
-- [debug-helper](/posts/debug-helper/) - 디버깅 지원

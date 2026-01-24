@@ -277,10 +277,6 @@ fi
     fi
 ```
 
-## 다운로드
-
-> [git-commit-message-generator.zip](/assets/downloads/skills/git-commit-message-generator.zip)
-
 ## 관련 스킬
 
 - **git-commit-analyzer**: 기존 커밋 히스토리 분석

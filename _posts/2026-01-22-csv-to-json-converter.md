@@ -358,10 +358,6 @@ if __name__ == "__main__":
 | 스크립트 | `/assets/downloads/skills/csv-to-json-converter/scripts/convert.py` |
 | 설치 위치 | `~/.claude/skills/csv-to-json-converter/` |
 
-## 다운로드
-
-> [csv-to-json-converter.zip](/assets/downloads/skills/csv-to-json-converter.zip)
-
 ## 활용 사례
 
 1. **API 응답 데이터 생성**: 테스트용 JSON 데이터 생성
