@@ -50,9 +50,25 @@ _data/skill_registry.yml         # 스킬 레지스트리
       ↓
 2. assets/downloads/에 복사 (블로그 첨부용)
       ↓
-3. _posts/에 문서화 포스트 작성
+3. git add assets/downloads/ (⚠️ 필수! 복사 직후 즉시 실행)
       ↓
-4. commit & push → GitHub Pages 배포
+4. _posts/에 문서화 포스트 작성
+      ↓
+5. commit & push → GitHub Pages 배포
+```
+
+### ⚠️ 중요: assets/downloads/ 복사 후 반드시 git add
+
+**문제**: 파일을 복사만 하고 git add를 하지 않으면 GitHub Pages 배포 시 파일이 없어 링크가 깨짐
+
+**해결**: 복사 직후 반드시 아래 명령 실행:
+```bash
+git add assets/downloads/
+```
+
+**검증**: 게시글 작성 전 파일이 git에 추가되었는지 확인:
+```bash
+git status assets/downloads/
 ```
 
 ## Git 관리 규칙
@@ -180,6 +196,54 @@ tags: [git, analysis, commit]
 
 - **코드**: 실행 가능해야 함
 - **금지어**: "자동 생성", "AI Pipeline" (콘텐츠/태그에 사용 금지)
+
+### ⚠️ 다운로드 링크 작성 규칙 (필수)
+
+**문제**: `assets/downloads/`에 파일이 git에 추가되지 않으면 배포 후 링크가 깨짐
+
+**필수 절차**:
+1. 게시글 작성 **전에** 반드시 `git add assets/downloads/` 실행
+2. `git status`로 파일이 스테이징되었는지 확인
+3. 확인 후에만 게시글에 다운로드 링크 추가
+
+**링크 형식**:
+```markdown
+## 첨부 파일
+
+> [{skill-name} SKILL.md](/assets/downloads/skills/{skill-name}/SKILL.md)
+```
+
+**절대 금지**:
+- git add 없이 게시글에 다운로드 링크 작성
+- 존재하지 않는 파일 경로 링크
+- `assets/downloads/`의 SKILL.md에 프론트매터(`---`) 포함
+
+### ⚠️ assets/downloads/ SKILL.md 프론트매터 금지
+
+**문제**: Jekyll은 프론트매터가 있는 .md 파일을 .html로 변환합니다. 따라서 `/assets/downloads/skills/*/SKILL.md` 링크가 깨집니다.
+
+**해결**: `assets/downloads/`에 복사되는 SKILL.md 파일에서 프론트매터를 **반드시 제거**해야 합니다.
+
+```bash
+# 프론트매터 제거 예시 (PowerShell)
+$content = Get-Content SKILL.md -Raw
+$newContent = $content -replace '^---[\s\S]*?---\r?\n', ''
+Set-Content SKILL.md $newContent -NoNewline
+```
+
+**참고**: `.claude/skills/*/SKILL.md`에는 프론트매터가 필요하지만, `assets/downloads/skills/*/SKILL.md`에는 프론트매터가 없어야 합니다.
+
+### ⚠️ About 페이지 업데이트 (필수)
+
+새 스킬/에이전트 추가 시 `_tabs/about.md`의 **폴더 구조** 섹션도 업데이트해야 합니다.
+
+**위치**: `_tabs/about.md` → "폴더 구조 (Single Source of Truth)" 섹션
+
+**업데이트 항목**:
+- `.claude/skills/` 하위에 새 스킬 추가
+- `.claude/agents/` 하위에 새 에이전트 추가
+- `.claude/commands/` 하위에 새 커맨드 추가
+- `.claude/hooks/` 하위에 새 훅 추가
 
 ## Difficulty Levels
 

@@ -70,10 +70,25 @@ order: 4
 │   ├── developer.md        # 개발 에이전트
 │   └── reviewer.md         # 검토/QA 에이전트
 ├── skills/                  # 스킬 패키지
+│   ├── algorithmic-art/    # p5.js 알고리즘 아트
+│   ├── brand-guidelines/   # Anthropic 브랜드 스타일링
+│   ├── canvas-design/      # 디자인 철학 기반 비주얼 아트
+│   ├── doc-coauthoring/    # 문서 공동 작성 워크플로우
+│   ├── docx/               # Word 문서 생성/편집
+│   ├── frontend-design/    # 프론트엔드 UI 디자인
 │   ├── hook-creator/       # Hook 생성 가이드
+│   ├── internal-comms/     # 내부 커뮤니케이션 작성
+│   ├── mcp-builder/        # MCP 서버 개발 가이드
+│   ├── pdf/                # PDF 처리 툴킷
+│   ├── pptx/               # 프레젠테이션 생성/편집
 │   ├── skill-creator/      # Skill 생성 가이드
+│   ├── slack-gif-creator/  # Slack용 GIF 생성
 │   ├── slash-command-creator/  # Slash Command 생성
 │   ├── subagent-creator/   # Sub-agent 생성
+│   ├── theme-factory/      # 아티팩트 테마 스타일링
+│   ├── webapp-testing/     # Playwright 웹앱 테스트
+│   ├── web-artifacts-builder/  # React 웹 아티팩트
+│   ├── xlsx/               # 스프레드시트 생성/편집
 │   └── youtube-collector/  # 유튜브 수집 스킬
 ├── commands/                # Slash Command
 ├── hooks/                   # Claude Code Hook
