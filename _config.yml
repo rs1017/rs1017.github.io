@@ -21,12 +21,12 @@ future: true
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: AI Skill Factory # the main title
+title: 낙현아빠의 개발 블로그 # the main title
 
-tagline: Claude Code 스킬 자동 생성 플랫폼 # it will display as the sub-title
+tagline: 게임 서버 개발자의 IT 이야기 # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Workflow, Agent, Skill - Claude Code 활용 스킬을 자동 생성하고 공유합니다.
+  게임 서버 개발, AI, 서버 아키텍처, DB, Redis 등 16년차 게임 서버 개발자의 IT 이야기.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://naksupapa.github.io'

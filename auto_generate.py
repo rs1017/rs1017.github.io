@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI Skill Factory - 자동 생성 스크립트 (스케줄러용)
+낙현아빠의 개발 블로그 - 자동 포스트 생성 스크립트 (스케줄러용)
 
 스케줄:
 - 주말 GitHub Actions 스케줄로 호출
@@ -172,8 +172,8 @@ def wait_for_actions_completion() -> Tuple[str, Optional[str]]:
 # └─────────────────────────────────────────────────────────┘
 
 def generate_single_skill(index: int, total: int) -> bool:
-    """단일 스킬 생성 (커밋 없이)"""
-    log(f"[{index}/{total}] 스킬 생성 중...")
+    """단일 포스트 생성 (커밋 없이)"""
+    log(f"[{index}/{total}] 포스트 생성 중...")
 
     try:
         result = subprocess.run(
@@ -195,10 +195,10 @@ def generate_single_skill(index: int, total: int) -> bool:
                 print(f"    {line}")
 
         if result.returncode == 0:
-            log(f"[{index}/{total}] 생성 완료!")
+            log(f"[{index}/{total}] 포스트 생성 완료!")
             return True
         else:
-            log(f"[{index}/{total}] 생성 실패", "WARN")
+            log(f"[{index}/{total}] 포스트 생성 실패", "WARN")
             if result.stderr:
                 print(f"    Error: {result.stderr[:200]}")
             return False
@@ -212,8 +212,8 @@ def generate_single_skill(index: int, total: int) -> bool:
 
 
 def generate_multiple_skills(count: int) -> int:
-    """여러 스킬 생성 (커밋 없이)"""
-    log(f"총 {count}개 스킬 생성 시작...")
+    """여러 포스트 생성 (커밋 없이)"""
+    log(f"총 {count}개 포스트 생성 시작...")
 
     success_count = 0
     for i in range(1, count + 1):
@@ -224,7 +224,7 @@ def generate_multiple_skills(count: int) -> int:
         if i < count:
             time.sleep(5)
 
-    log(f"생성 완료: {success_count}/{count}개 성공")
+    log(f"포스트 생성 완료: {success_count}/{count}개 성공")
     return success_count
 
 
@@ -292,7 +292,7 @@ def commit_and_push(skill_count: int) -> bool:
         # Commit
         today = datetime.now().strftime("%Y-%m-%d")
         day_name = get_day_name()
-        commit_msg = f"feat(skill): Add {skill_count} skills - {today} ({day_name})"
+        commit_msg = f"feat(blog): Add {skill_count} posts - {today} ({day_name})"
 
         subprocess.run(
             ["git", "commit", "-m", commit_msg],
@@ -397,15 +397,15 @@ def run_daily_generation(target_count: Optional[int] = None) -> bool:
     day_name = get_day_name()
 
     log("=" * 60)
-    log(f"AI Skill Factory - 일일 자동 생성")
+    log(f"낙현아빠의 개발 블로그 - 일일 포스트 생성")
     log(f"오늘: {day_name}요일 / 목표: {target_count}개")
     log("=" * 60)
 
-    # Step 1: 스킬 생성 (커밋 없이)
+    # Step 1: 포스트 생성 (커밋 없이)
     success_count = generate_multiple_skills(target_count)
 
     if success_count == 0:
-        log("생성된 스킬이 없습니다.", "ERROR")
+        log("생성된 포스트가 없습니다.", "ERROR")
         return False
 
     # Step 2: assets/downloads/로 복사
@@ -461,11 +461,11 @@ def main() -> None:
     # 로그 파일 초기화
     init_log_file()
 
-    parser = argparse.ArgumentParser(description="AI Skill Factory - 자동 생성")
+    parser = argparse.ArgumentParser(description="낙현아빠의 개발 블로그 - 포스트 자동 생성")
     parser.add_argument(
         "--count",
         type=int,
-        help=f"생성할 스킬 개수 (미지정 시 기본값: {DEFAULT_COUNT}개)",
+        help=f"생성할 포스트 개수 (미지정 시 기본값: {DEFAULT_COUNT}개)",
     )
     args = parser.parse_args()
 
