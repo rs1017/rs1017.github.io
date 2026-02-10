@@ -95,7 +95,9 @@ Topic Selector → Writer → YouTube Creator → Reviewer
       ↓
 7. _posts/에 포스트 파일 저장
       ↓
-8. commit & push → GitHub Pages 배포
+8. git add + git commit (⚠️ push는 사용자가 직접 수행)
+      ↓
+9. 사용자가 git push origin main → GitHub Pages 배포
 ```
 
 ### ⚠️ 중요: assets/downloads/ 복사 후 반드시 git add
@@ -126,6 +128,28 @@ _posts/               ✅ git에 추가 (블로그 포스트)
 - `.claude/`는 실제 Claude Code가 사용하는 파일
 - 블로그 독자는 `assets/downloads/`의 복사본을 다운로드
 - 이중 관리를 방지하기 위해 원본(.claude/)은 로컬에만 유지
+
+### ⚠️ Git Push 규칙
+
+**중요**: Claude는 `git push`를 실행하지 않습니다!
+
+```
+Claude의 작업 범위:
+✅ git add (파일 스테이징)
+✅ git commit (커밋 생성)
+❌ git push (사용자가 직접 수행)
+```
+
+**이유**:
+- GitHub 인증 문제 방지
+- 사용자가 변경사항을 최종 검토 후 배포
+- 의도하지 않은 배포 방지
+
+**사용자 작업**:
+```bash
+# Claude가 커밋 완료 후
+git push origin main
+```
 
 ## Common Commands
 
