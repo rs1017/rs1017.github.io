@@ -487,10 +487,6 @@ flutter run -d chrome   # Web
 - 게임 개발도 결국 데이터 설계가 핵심이다
 - AI 도구로 혼자서도 게임을 만들 수 있다
 
-**다음 글 예고**:
-- [Flutter Flame Engine 완벽 가이드 - ECS 패턴으로 게임 만들기](/posts/flutter-flame-ecs-guide)
-- [Stable Diffusion으로 게임 에셋 생성하기 - 픽셀 아트 편](/posts/stable-diffusion-pixel-art)
-
 ---
 
 **프로젝트 저장소**: [GitHub - Kim Bongshik Growing Game](https://github.com/...)
@@ -498,9 +494,3 @@ flutter run -d chrome   # Web
 
 **질문/피드백**:
 댓글로 자유롭게 남겨주세요!
-
----
-
-**함께 읽으면 좋은 글**:
-- [게임 서버 개발자의 커리어 전환 이야기](/posts/career-transition)
-- [Flutter로 크로스 플랫폼 앱 개발하기](/posts/flutter-cross-platform)

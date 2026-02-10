@@ -235,7 +235,3 @@ jobs:
 |------|------|
 | 정의 파일 | `/assets/downloads/skills/performance-profiler/SKILL.md` |
 | 설치 위치 | `~/.claude/skills/performance-profiler/` |
-
-## 관련 스킬
-
-- [code-review-assistant](/posts/code-review-assistant/) - 코드 품질 검토
