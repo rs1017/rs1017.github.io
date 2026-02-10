@@ -118,6 +118,195 @@ assets/
     └── effects/
 ```
 
+## 게임 화면 구성
+
+### 프롤로그 화면
+
+게임 시작 시 나타나는 스토리 소개 화면입니다.
+
+```
+┌─────────────────────────────────────┐
+│                                     │
+│     [중년기사 김봉식의 모험]        │
+│                                     │
+│  ┌───────────────────────────────┐ │
+│  │                               │ │
+│  │  "2024년, 서울 강남.          │ │
+│  │   회사원 김봉식(47세)는       │ │
+│  │   평범한 삶을 살고 있었다.    │ │
+│  │                               │ │
+│  │   그러던 어느 날,             │ │
+│  │   퇴근길에 마주친 이계의 문.  │ │
+│  │                               │ │
+│  │   어느새 김봉식은             │ │
+│  │   중세 기사가 되어 있었다..." │ │
+│  │                               │ │
+│  └───────────────────────────────┘ │
+│                                     │
+│         [게임 시작하기]             │
+│         [건너뛰기]                  │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+**구현 포인트**:
+- `FadeTransition` 애니메이션으로 부드러운 화면 전환
+- Gradient 배경 (`#0a0520` → `#2D1B69`)
+- `rootBundle.loadString()`으로 프롤로그 텍스트 로드
+
+### 메인 게임 화면
+
+```
+┌─────────────────────────────────────┐
+│  [탑 5층 BOSS] 💰1.2K 🔑3 💎50     │ ← HUD (상단)
+│  [DPS: 250/s] [골드/초: 100]       │
+│─────────────────────────────────────│
+│                                     │
+│         😠                          │ ← 몬스터
+│       (슬라임)                      │
+│                                     │
+│                                     │
+│         ⚔️                          │ ← 플레이어
+│      (김봉식)                       │
+│                                     │
+│  "이 정도는 가뿐하지..."            │ ← 대사 버블
+│                                     │
+│─────────────────────────────────────│
+│ [무기] [퀘스트] [보물] [스탯]      │ ← 하단 메뉴
+│                                     │
+│                    [🐛]             │ ← 버그 리포트
+└─────────────────────────────────────┘
+```
+
+**UI 구성 요소**:
+1. **HUD Overlay** (상단)
+   - 층수 표시 + BOSS 배지
+   - 재화: 골드 💰, 키 🔑, 젬 💎
+   - DPS, 골드/초 통계
+
+2. **게임 캔버스** (중앙)
+   - Flame Engine 렌더링
+   - 플레이어/몬스터 스프라이트
+   - 이펙트 애니메이션
+
+3. **Bottom Menu** (하단)
+   - 무기: 업그레이드, 레벨업
+   - 퀘스트: 일일 퀘스트, 도전 과제
+   - 보물: 패시브 효과 아이템
+   - 스탯: 캐릭터 능력치
+
+4. **버그 리포트 버튼** (우하단)
+   - FloatingActionButton
+   - 클릭 시 버그 리포트 다이얼로그
+
+### 버그 리포트 다이얼로그
+
+게임 내 버그 제보 시스템입니다.
+
+```
+┌─────────────────────────────────────┐
+│  🐛 버그 리포트                [X] │
+│─────────────────────────────────────│
+│                                     │
+│  제목                               │
+│  ┌─────────────────────────────┐   │
+│  │ 무기 업그레이드 버튼 안눌림  │   │
+│  └─────────────────────────────┘   │
+│                                     │
+│  설명                               │
+│  ┌─────────────────────────────┐   │
+│  │                             │   │
+│  │ - 무기 레벨 10에서          │   │
+│  │ - 업그레이드 버튼 누르면    │   │
+│  │ - 반응이 없음               │   │
+│  │                             │   │
+│  │ 예상: 레벨업되어야 함       │   │
+│  │ 실제: 아무 반응 없음        │   │
+│  │                             │   │
+│  └─────────────────────────────┘   │
+│                                     │
+│  ℹ️ 제출 시 스크린샷과 함께 저장   │
+│                                     │
+│           [전송]                    │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+**기능**:
+- 제목/설명 입력
+- 자동 스크린샷 캡처 (`RenderRepaintBoundary`)
+- 시스템 정보 수집 (플랫폼, OS 버전)
+- 파일 저장 (`bug_reports/{timestamp}_{title}.txt`)
+
+**코드 예시**:
+
+`lib/game/ui/bug_report_dialog.dart`
+```dart
+Future<void> _captureScreenshot(String dirPath, String timestamp) async {
+  final boundary = context.findRenderObject() as RenderRepaintBoundary?;
+  if (boundary == null) return;
+
+  // 2배 해상도로 캡처
+  final image = await boundary.toImage(pixelRatio: 2.0);
+  final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+  final pngBytes = byteData!.buffer.asUint8List();
+  final screenshotFile = File('$dirPath/${timestamp}_screenshot.png');
+  await screenshotFile.writeAsBytes(pngBytes);
+}
+```
+
+**저장 위치**:
+- **Windows**: `%USERPROFILE%\Documents\bug_reports\`
+- **Android**: `/data/data/com.example.app/files/bug_reports/`
+- **Web**: 콘솔 출력 (파일 저장 불가)
+
+### UI 컴포넌트 계층 구조
+
+```mermaid
+graph TD
+    A[GameScreen] --> B[Scaffold]
+    B --> C[Stack]
+    C --> D[GameWidget]
+    C --> E[HudOverlay]
+    C --> F[BottomMenu]
+    C --> G[FloatingActionButton]
+
+    E --> E1[FloorIndicator]
+    E --> E2[CurrencyBar]
+    E --> E3[StatsBar]
+    E --> E4[DialogueBubble]
+
+    F --> F1[WeaponPanel]
+    F --> F2[QuestPanel]
+    F --> F3[TreasurePanel]
+    F --> F4[StatPanel]
+
+    G --> H[BugReportDialog]
+    H --> H1[TitleField]
+    H --> H2[DescriptionField]
+    H --> H3[SubmitButton]
+
+    style D fill:#4A148C
+    style E fill:#7B1FA2
+    style F fill:#9C27B0
+    style G fill:#BA68C8
+    style H fill:#CE93D8
+```
+
+**Provider 상태 관리**:
+```dart
+GameScreen
+  └─ GameState (ChangeNotifier)
+      ├─ Player
+      ├─ Monster
+      ├─ WeaponList
+      ├─ QuestList
+      └─ TreasureList
+```
+
+모든 UI 컴포넌트는 `GameState`를 구독하여 실시간 업데이트됩니다.
+
 ## 핵심 기술
 
 ### 1. CSV 기반 기획 데이터 관리

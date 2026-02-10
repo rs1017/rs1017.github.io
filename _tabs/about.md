@@ -115,7 +115,23 @@ _posts/                      # 블로그 포스트
 
 ---
 
+## 최근 프로젝트
+
+### 김봉식 키우기 (2026)
+- **장르**: 방치형 RPG 게임
+- **플랫폼**: Windows, Web (Flutter)
+- **기술 스택**: Flutter + Flame Engine + Provider + CSV 데이터 관리
+- **특징**:
+  - ECS 패턴 기반 게임 아키텍처
+  - BigInt 기반 대규모 숫자 처리
+  - 방치 보상 시스템 (오프라인 골드)
+  - AI 생성 에셋 (Stable Diffusion WebUI)
+- **상태**: 개발 중 (환생 시스템, 보스 전투 작업 중)
+
+---
+
 ## Contact
 
 - **GitHub**: [github.com/rs1017](https://github.com/rs1017)
 - **Blog**: [rs1017.github.io](https://rs1017.github.io)
+- **Email**: rs1017@naver.com
