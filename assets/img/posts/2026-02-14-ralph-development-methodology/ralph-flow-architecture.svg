@@ -1,0 +1,78 @@
+<svg width="1500" height="980" viewBox="0 0 1500 980" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <polygon points="0,0 12,6 0,12" fill="#2563eb"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <polygon points="0,0 12,6 0,12" fill="#16a34a"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <polygon points="0,0 12,6 0,12" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { fill:#fff; font:700 48px 'Pretendard','Noto Sans KR',sans-serif; }
+      .sub { fill:#bfdbfe; font:500 24px 'Pretendard','Noto Sans KR',sans-serif; }
+      .node { fill:#fff; stroke:#334155; stroke-width:3; rx:16; }
+      .txt { fill:#0f172a; font:600 24px 'Pretendard','Noto Sans KR',sans-serif; }
+      .small { fill:#334155; font:500 20px 'Pretendard','Noto Sans KR',sans-serif; }
+      .legend { fill:#1f2937; font:600 20px 'Pretendard','Noto Sans KR',sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="980" fill="#f8fafc"/>
+  <rect x="0" y="0" width="1500" height="120" fill="#1e293b"/>
+  <text x="50" y="74" class="title">RALPH Flow Architecture</text>
+  <text x="50" y="108" class="sub">요청 처리 흐름 + 관측성 + 운영 피드백 환류 구조</text>
+
+  <rect x="70" y="220" width="220" height="90" class="node" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text x="180" y="275" text-anchor="middle" class="txt">Client / App</text>
+
+  <rect x="370" y="220" width="230" height="90" class="node" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text x="485" y="275" text-anchor="middle" class="txt">API Gateway</text>
+
+  <rect x="690" y="160" width="250" height="90" class="node" fill="#ecfeff" stroke="#0e7490"/>
+  <text x="815" y="215" text-anchor="middle" class="txt">Auth Service</text>
+
+  <rect x="690" y="300" width="250" height="90" class="node" fill="#ecfeff" stroke="#0e7490"/>
+  <text x="815" y="355" text-anchor="middle" class="txt">Domain Service</text>
+
+  <rect x="1020" y="160" width="220" height="90" class="node" fill="#fef3c7" stroke="#b45309"/>
+  <text x="1130" y="215" text-anchor="middle" class="txt">Redis Cache</text>
+
+  <rect x="1020" y="300" width="220" height="90" class="node" fill="#fef3c7" stroke="#b45309"/>
+  <text x="1130" y="355" text-anchor="middle" class="txt">Primary DB</text>
+
+  <rect x="1020" y="440" width="220" height="90" class="node" fill="#fee2e2" stroke="#b91c1c"/>
+  <text x="1130" y="495" text-anchor="middle" class="txt">Event Bus</text>
+
+  <rect x="1310" y="440" width="170" height="90" class="node" fill="#fee2e2" stroke="#b91c1c"/>
+  <text x="1395" y="495" text-anchor="middle" class="txt">Worker</text>
+
+  <rect x="1020" y="590" width="460" height="100" class="node" fill="#dcfce7" stroke="#15803d"/>
+  <text x="1250" y="635" text-anchor="middle" class="txt">Observability</text>
+  <text x="1250" y="668" text-anchor="middle" class="small">Logs / Metrics / Traces</text>
+
+  <rect x="370" y="780" width="760" height="120" class="node" fill="#e2e8f0" stroke="#475569"/>
+  <text x="750" y="845" text-anchor="middle" class="txt">Harden &amp; Heal Feedback Loop</text>
+  <text x="750" y="878" text-anchor="middle" class="small">운영 데이터 분석 → 다음 Requirements 반영</text>
+
+  <line x1="290" y1="265" x2="370" y2="265" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="600" y1="265" x2="690" y2="205" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="600" y1="265" x2="690" y2="345" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="940" y1="345" x2="1020" y2="205" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="940" y1="345" x2="1020" y2="345" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="940" y1="345" x2="1020" y2="485" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+  <line x1="1240" y1="485" x2="1310" y2="485" stroke="#2563eb" stroke-width="5" marker-end="url(#arrowBlue)"/>
+
+  <line x1="1395" y1="530" x2="1395" y2="590" stroke="#16a34a" stroke-width="5" marker-end="url(#arrowGreen)"/>
+  <line x1="815" y1="390" x2="1140" y2="590" stroke="#16a34a" stroke-width="5" marker-end="url(#arrowGreen)"/>
+
+  <line x1="1240" y1="690" x2="1050" y2="780" stroke="#64748b" stroke-width="5" marker-end="url(#arrowGray)"/>
+  <line x1="370" y1="840" x2="180" y2="310" stroke="#64748b" stroke-width="5" marker-end="url(#arrowGray)"/>
+
+  <rect x="1180" y="760" width="280" height="130" rx="14" fill="#fff" stroke="#94a3b8" stroke-width="2"/>
+  <text x="1320" y="802" text-anchor="middle" class="legend">범례</text>
+  <text x="1208" y="834" class="small">🔵 요청/처리 흐름</text>
+  <text x="1208" y="862" class="small">🟢 관측 데이터 수집</text>
+  <text x="1208" y="890" class="small">⚪ 운영 개선 피드백</text>
+</svg>
