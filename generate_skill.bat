@@ -36,14 +36,14 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Verify Claude CLI is available
-claude --version >nul 2>&1
+:: Verify AI CLI is available
+ai --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Claude CLI not found!
-    echo Please install: npm install -g @anthropic-ai/claude-code
+    echo [ERROR] AI CLI not found!
+    echo Please install the AI CLI and add it to PATH
     exit /b 1
 )
-echo [Setup] Claude CLI verified
+echo [Setup] AI CLI verified
 
 :: Parse command line arguments
 set "STRATEGY=auto"

@@ -5,9 +5,6 @@
 !.nojekyll
 !.travis.yml
 
-# .claude/ is Source of Truth but NOT tracked in git
-# Content is copied to assets/downloads/ and _posts/ for exposure
-
 # bundler cache
 _site
 vendor

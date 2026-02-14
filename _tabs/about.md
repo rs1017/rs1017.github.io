@@ -28,23 +28,19 @@ order: 4
 | **DevOps** | CI/CD, Docker, Kubernetes, 모니터링 |
 | **Architecture** | 설계 패턴, MSA, 분산 시스템 |
 | **Career** | 개발자 성장, 팀 관리, 커리어 |
-| **Claude Code** | Claude Code 스킬, 에이전트, 훅, 커맨드 |
 
 ---
 
 ## 에이전트 기반 콘텐츠 파이프라인
 
-블로그 콘텐츠는 Claude Code 에이전트 파이프라인을 통해 작성됩니다.
+블로그 콘텐츠는 AI 에이전트 파이프라인을 통해 작성됩니다.
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Topic Selector  │───▶│     Writer      │───▶│ YouTube Creator │───▶│    Reviewer     │
-│  주제 선정       │    │  블로그 글 작성   │    │  영상 기획       │    │  리뷰 + QA      │
-└─────────────────┘    └─────────────────┘    └─────────────────┘    └────────┬────────┘
-                              ▲                                               │
-                              │                  반려 시 재작업                │
-                              └───────────────────────────────────────────────┘
-                                            (최대 3회 시도)
+```mermaid
+flowchart LR
+    A[Topic Selector\n주제 선정] --> B[Writer\n블로그 글 작성]
+    B --> C[YouTube Creator\n영상 기획]
+    C --> D[Reviewer\n리뷰 + QA]
+    D -- 반려 시 재작업\n최대 3회 --> B
 ```
 
 ### 1. Topic Selector (주제 선정)
@@ -70,30 +66,6 @@ order: 4
 
 ---
 
-## 에이전트 구조
-
-```
-.claude/                     # 실제 사용 가능한 파일들 (Claude Code에서 직접 사용)
-├── agents/                  # 에이전트 정의
-│   ├── topic-selector.md   # 주제 선정 에이전트
-│   ├── writer.md           # 블로그 작성 에이전트
-│   ├── youtube-creator.md  # 유튜브 기획 에이전트
-│   └── reviewer.md         # 리뷰/QA 에이전트
-├── skills/                  # 스킬 패키지
-├── commands/                # Slash Command
-├── hooks/                   # Claude Code Hook
-├── scripts/                 # 공용 스크립트
-└── rules/                   # 생성 규칙
-    └── topic-selection.md  # 주제 선정 규칙
-
-assets/downloads/            # 블로그 배포용 복사본
-└── {agents, skills, rules, ...}
-
-_posts/                      # 블로그 포스트
-```
-
----
-
 ## 스케줄
 
 | 요일 | 생성 개수 | 시작 시간 |
@@ -114,21 +86,6 @@ _posts/                      # 블로그 포스트
 - 16년차 게임 서버 개발자
 - 덱사스튜디오
 - MMORPG-ProjectR 서버 개발
-
----
-
-## 최근 프로젝트
-
-### 김봉식 키우기 (2026)
-- **장르**: 방치형 RPG 게임
-- **플랫폼**: Windows, Web (Flutter)
-- **기술 스택**: Flutter + Flame Engine + Provider + CSV 데이터 관리
-- **특징**:
-  - ECS 패턴 기반 게임 아키텍처
-  - BigInt 기반 대규모 숫자 처리
-  - 방치 보상 시스템 (오프라인 골드)
-  - AI 생성 에셋 (Stable Diffusion WebUI)
-- **상태**: 개발 중 (환생 시스템, 보스 전투 작업 중)
 
 ---
 
