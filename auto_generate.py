@@ -233,10 +233,10 @@ def generate_multiple_skills(count: int) -> int:
 # └─────────────────────────────────────────────────────────┘
 
 def copy_to_downloads() -> None:
-    """Copy .claude/ contents to assets/downloads/ for blog distribution"""
+    """Copy source automation contents to assets/downloads/ for blog distribution"""
     import shutil
 
-    src_base = REPO_DIR / ".claude"
+    src_base = REPO_DIR / ".agent"
     dst_base = REPO_DIR / "assets" / "downloads"
 
     # Copy directories
@@ -281,8 +281,6 @@ def commit_and_push(skill_count: int) -> bool:
 
     try:
         # Stage files
-        # Note: .claude/ is Source of Truth but NOT tracked in git
-        # Content is copied to assets/downloads/ and _posts/ for exposure
         subprocess.run(
             ["git", "add", "assets/downloads/", "_posts/", "_data/skill_registry.yml"],
             cwd=REPO_DIR,
@@ -316,12 +314,12 @@ def commit_and_push(skill_count: int) -> bool:
 
 
 # ┌─────────────────────────────────────────────────────────┐
-# │  Error Fix with Claude                                   │
+# │  Error Fix with AI Assistant                             │
 # └─────────────────────────────────────────────────────────┘
 
-def attempt_fix_with_claude(error_log: str) -> bool:
-    """Claude를 사용하여 오류 수정 시도"""
-    log("Claude로 오류 수정 시도...")
+def attempt_fix_with_ai_assistant(error_log: str) -> bool:
+    """AI 어시스턴트를 사용하여 오류 수정 시도"""
+    log("AI 어시스턴트로 오류 수정 시도...")
 
     prompt = f"""GitHub Actions 빌드가 실패했습니다. 아래 에러 로그를 분석하고 문제를 수정해주세요.
 
@@ -341,7 +339,7 @@ def attempt_fix_with_claude(error_log: str) -> bool:
 
     try:
         result = subprocess.run(
-            ["claude", "-p", "--model", "sonnet"],
+            ["ai", "-p", "--model", "sonnet"],
             input=prompt,
             capture_output=True,
             text=True,
@@ -350,10 +348,10 @@ def attempt_fix_with_claude(error_log: str) -> bool:
         )
 
         response = result.stdout.strip()
-        print(f"Claude 응답:\n{response[:500]}...")
+        print(f"AI 응답:\n{response[:500]}...")
 
         if "수정 불가" in response:
-            log("Claude가 수정 불가 판단", "WARN")
+            log("AI 어시스턴트가 수정 불가 판단", "WARN")
             return False
 
         # 수정이 완료되었는지 확인
@@ -372,7 +370,7 @@ def attempt_fix_with_claude(error_log: str) -> bool:
             return False
 
     except Exception as e:
-        log(f"Claude 수정 시도 실패: {e}", "ERROR")
+        log(f"AI 어시스턴트 수정 시도 실패: {e}", "ERROR")
         return False
 
 
@@ -433,7 +431,7 @@ def run_daily_generation(target_count: Optional[int] = None) -> bool:
             log(f"빌드 실패. 수정 시도 {attempt + 1}/{MAX_FIX_ATTEMPTS}")
 
             if attempt < MAX_FIX_ATTEMPTS - 1:
-                if attempt_fix_with_claude(error_log):
+                if attempt_fix_with_ai_assistant(error_log):
                     log("수정 완료. Actions 재확인...")
                     time.sleep(10)
                     continue
