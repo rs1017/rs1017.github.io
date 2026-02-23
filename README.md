@@ -1,46 +1,87 @@
-# Chirpy Starter [![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)](https://rubygems.org/gems/jekyll-theme-chirpy) [![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
+# RS1017 Command Center
 
-When installing the [**Chirpy**][chirpy] theme through [RubyGems.org][gem], Jekyll can only read files in the folders `_includes`, `_layout`, `_sass` and `assets`, as well as a small part of options of the `_config.yml` file from the theme's gem. If you have ever installed this theme gem, you can use the command `bundle info --path jekyll-theme-chirpy` to locate these files.
+이 저장소는 단순 블로그 템플릿이 아니라, **여러 프로젝트를 통합 모니터링하고 운영 명령을 수집/전달하는 중앙 허브**로 재구성되었습니다.
 
-The Jekyll organization claims that this is to leave the ball in the user’s court, but this also results in users not being able to enjoy the out-of-the-box experience when using feature-rich themes.
+핵심 목적은 다음과 같습니다.
 
-To fully use all the features of **Chirpy**, you need to copy the other critical files from the theme's gem to your Jekyll site. The following is a list of targets:
+- 다른 프로젝트의 상태를 모니터링
+- 프로젝트별 규칙(Rule), 에이전트 스킬(Skill), 운영 정책(Policy) 제공
+- 게임 개발의 방향성/기획부터 WAS 구성, 배포까지 전체 라이프사이클 관리
+- 모든 운영 명령과 실행 흐름을 이 저장소를 통해 일원화
 
-```shell
-.
-├── _config.yml
-├── _data
-├── _plugins
-├── _tabs
-└── index.html
+---
+
+## 프로젝트 미션
+
+> “게임 프로젝트 운영의 전 과정을 하나의 명령 체계로 연결한다.”
+
+이 저장소는 콘텐츠 발행용 블로그 기능과 함께, 아래 역할을 동시에 수행합니다.
+
+1. **전략 레이어**: 게임 방향성, 목표, 로드맵 관리
+2. **실행 레이어**: 규칙 기반 자동화, 에이전트 작업 오케스트레이션
+3. **운영 레이어**: WAS/인프라/배포 파이프라인의 상태 관리 및 실행
+4. **리포트 레이어**: 진행 상황, 품질, 정책 준수 여부 기록
+
+---
+
+## 운영 범위
+
+### 1) 모니터링
+- 대상: 연계된 게임/서비스/콘텐츠 프로젝트
+- 관점: 일정, 품질, 배포 상태, 정책 위반 여부
+- 결과: 중앙 대시보드/문서/포스트 형태로 축적
+
+### 2) 룰 & 스킬 제공
+- 룰 문서(정책/가이드라인)로 의사결정 기준 통일
+- 에이전트 스킬 기반으로 반복 작업 표준화
+- 변경 사항을 버전으로 관리해 팀 전체 재현 가능성 확보
+
+### 3) 게임 개발 라이프사이클 관리
+- 방향성 정의 (Vision)
+- 기획 (Game Design)
+- 구현/서버 구성 (WAS 포함)
+- 테스트/검수
+- 배포/운영
+- 피드백 반영 및 반복 개선
+
+### 4) 단일 명령 채널
+- 프로젝트 관련 명령은 이 저장소를 통해 접수/정리/실행
+- 명령 이력(문서 + 커밋)으로 추적성과 감사 가능성 확보
+
+---
+
+## 정보 구조(권장)
+
+- `*_POLICY.md`: 제품/운영 정책
+- `*_ROADMAP.md`: 단계별 실행 계획
+- `assets/downloads/rules/`: 실무 규칙 문서
+- `_posts/`: 운영 기록, 방법론, 회고
+- `_tabs/about.md`: 프로젝트 정체성과 운영 원칙 요약
+
+상세 운영 청사진은 `PROJECT_COMMAND_CENTER.md`에서 확인할 수 있습니다.
+
+---
+
+## 운영 원칙
+
+1. **Single Source of Truth**: 명령/정책/결정은 저장소 기준으로 관리
+2. **Automate by Default**: 반복되는 작업은 에이전트/스크립트로 자동화
+3. **Traceability First**: 변경은 문서와 커밋으로 추적 가능해야 함
+4. **Deploy with Confidence**: 정책 준수 + 검수 후 배포
+
+---
+
+## 빠른 시작
+
+```bash
+bundle install
+bundle exec jekyll serve
 ```
 
-In order to save your time, and to prevent you from missing some files when copying, we extract those files/configurations of the latest version of the **Chirpy** theme and the [CD][CD] workflow to here, so that you can start writing in minutes.
+로컬 실행 후 사이트에서 문서 탭과 포스트를 통해 운영 지침을 확인할 수 있습니다.
 
-## Prerequisites
+---
 
-Follow the instructions in the [Jekyll Docs](https://jekyllrb.com/docs/installation/) to complete the installation of `Ruby`, `RubyGems`, `Jekyll` and `Bundler`.
+## 라이선스
 
-## Installation
-
-[**Use this template**][use-template] to generate a brand new repository and name it `<GH_USERNAME>.github.io`, where `GH_USERNAME` represents your GitHub username.
-
-Then clone it to your local machine and run:
-
-```
-$ bundle
-```
-
-## Usage
-
-Please see the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy#usage).
-
-## License
-
-This work is published under [MIT][mit] License.
-
-[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
-[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
-[use-template]: https://github.com/cotes2020/chirpy-starter/generate
-[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
-[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+이 저장소는 기존 Chirpy 기반 구성을 포함하며, 별도 명시가 없는 한 MIT 라이선스를 따릅니다.
