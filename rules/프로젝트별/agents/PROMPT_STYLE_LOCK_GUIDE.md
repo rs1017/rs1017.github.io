@@ -47,7 +47,7 @@ extra limbs, deformed hands, inconsistent face, wrong costume, text artifacts, w
 3. 컷 전환은 조명/팔레트가 갑자기 바뀌지 않도록 한 단계씩만 변화시킨다.
 4. 최종 검수는 `캐릭터 일치`, `의상 일치`, `색감 일치`, `배경 일치` 4항목으로 수행한다.
 
-## 권장 모델 세트 (D:/comfyui/models 기준)
+## 권장 모델 세트 (D:/ComfyUI-Easy-Install-Windows/ComfyUI-Easy-Install/ComfyUI/models 기준)
 - 이미지 고품질: `diffusion_models/flux1-dev-fp8.safetensors`
 - 이미지 고속: `diffusion_models/flux1-schnell-fp8.safetensors`
 - SDXL 베이스: `checkpoints/sd_xl_base_1.0.safetensors`

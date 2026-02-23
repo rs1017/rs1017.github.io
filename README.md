@@ -66,7 +66,7 @@
 
 ### 3-1) 그래픽 생성 표준 (ComfyUI Only)
 - 모든 그래픽 산출물(컨셉, 카드 아트, UI 소스, 배경, 이펙트 시안)은 ComfyUI 파이프라인으로 생성한다.
-- 기본 모델 저장 경로는 `D:/comfyui/models`를 사용한다.
+- 기본 모델 저장 경로는 `D:/ComfyUI-Easy-Install-Windows/ComfyUI-Easy-Install/ComfyUI/models`를 사용한다.
 - 그래픽 일관성 유지는 `rules/프로젝트별/agents/PROMPT_STYLE_LOCK_GUIDE.md` 지침을 따른다.
 - 15초 영상 생성은 연출 에이전트 지침(`rules/프로젝트별/agents/연출/AGENT_GUIDE.md`) 기준으로 수행한다.
 

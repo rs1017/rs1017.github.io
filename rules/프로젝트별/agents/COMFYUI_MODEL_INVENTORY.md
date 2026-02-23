@@ -1,4 +1,4 @@
-# ComfyUI 모델 인벤토리 (D:/comfyui/models)
+# ComfyUI 모델 인벤토리 (D:/ComfyUI-Easy-Install-Windows/ComfyUI-Easy-Install/ComfyUI/models)
 
 업데이트 일자: 2026-02-23
 
