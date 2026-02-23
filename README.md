@@ -64,6 +64,12 @@
 - 배포/운영
 - 피드백 반영 및 반복 개선
 
+### 3-1) 그래픽 생성 표준 (ComfyUI Only)
+- 모든 그래픽 산출물(컨셉, 카드 아트, UI 소스, 배경, 이펙트 시안)은 ComfyUI 파이프라인으로 생성한다.
+- 기본 모델 저장 경로는 `D:/comfyui/models`를 사용한다.
+- 그래픽 일관성 유지는 `rules/프로젝트별/agents/PROMPT_STYLE_LOCK_GUIDE.md` 지침을 따른다.
+- 15초 영상 생성은 연출 에이전트 지침(`rules/프로젝트별/agents/연출/AGENT_GUIDE.md`) 기준으로 수행한다.
+
 ### 4) 단일 명령 채널
 - 프로젝트 관련 명령은 이 저장소를 통해 접수/정리/실행
 - 명령 이력(문서 + 커밋)으로 추적성과 감사 가능성 확보
@@ -76,6 +82,8 @@
 - `*_ROADMAP.md`: 단계별 실행 계획
 - `assets/downloads/rules/`: 실무 규칙 문서
 - `rules/프로젝트별/agents/RESEARCH_REFERENCES.md`: 에이전트 지침 조사 출처
+- `rules/프로젝트별/agents/PROMPT_STYLE_LOCK_GUIDE.md`: 그래픽/영상 프롬프트 일관성 가이드
+- `rules/프로젝트별/agents/COMFYUI_MODEL_INVENTORY.md`: ComfyUI 모델 설치 현황
 - `_posts/`: 운영 기록, 방법론, 회고
 - `_tabs/about.md`: 프로젝트 정체성과 운영 원칙 요약
 
