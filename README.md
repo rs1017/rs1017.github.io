@@ -6,6 +6,7 @@
 
 - https://github.com/rs1017/godot-001-card-battle
 - https://github.com/rs1017/godot-002-card-3d-battle-kaykit
+- 탕탕특공대
 
 핵심 목적은 다음과 같습니다.
 
@@ -40,6 +41,7 @@
 - 기준 프로젝트
   - `godot-001-card-battle`
   - `godot-002-card-3d-battle-kaykit`
+  - `탕탕특공대`
 - 일일 시작 루틴
   - 이슈/PR/최근 커밋/릴리즈를 확인해 변경 신호를 수집
   - 영향 범위를 `기획 -> UI -> 아트 -> 개발 -> 리뷰 -> QA` 순서로 분류
