@@ -84,6 +84,8 @@
 - `rules/프로젝트별/agents/RESEARCH_REFERENCES.md`: 에이전트 지침 조사 출처
 - `rules/프로젝트별/agents/PROMPT_STYLE_LOCK_GUIDE.md`: 그래픽/영상 프롬프트 일관성 가이드
 - `rules/프로젝트별/agents/COMFYUI_MODEL_INVENTORY.md`: ComfyUI 모델 설치 현황
+- `rules/프로젝트별/WORKFLOW_REQUEST_SPEC.md`: 블로그 요청 기반 실행 사양
+- `rules/프로젝트별/workflows/COMFYUI_IMAGE_VIDEO_WORKFLOW_TEMPLATE.md`: ComfyUI 워크플로우 템플릿
 - `_posts/`: 운영 기록, 방법론, 회고
 - `_tabs/about.md`: 프로젝트 정체성과 운영 원칙 요약
 
