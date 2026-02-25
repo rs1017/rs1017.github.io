@@ -4,6 +4,7 @@
 - 대상:
   - https://github.com/rs1017/godot-001-card-battle
   - https://github.com/rs1017/godot-002-card-3d-battle-kaykit
+  - 탕탕특공대
 
 ## 작업 시작 체크
 - [x] 모니터링/착수 방식 README 반영
