@@ -2,4 +2,4 @@ User-agent: *
 
 Allow: /
 
-Sitemap: https://naksupapa.github.io/sitemap.xml
+Sitemap: https://rs1017.github.io/sitemap.xml

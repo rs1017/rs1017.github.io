@@ -21,36 +21,31 @@ future: true
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: 낙현아빠의 개발 블로그 # the main title
+title: 프린터블 플레이룸 # the main title
 
-tagline: 게임 서버 개발자의 IT 이야기 # it will display as the sub-title
+tagline: 집에서 바로 출력해 쓰는 유아 활동지 # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  게임 서버 개발, AI, 서버 아키텍처, DB, Redis 등 16년차 게임 서버 개발자의 IT 이야기.
+  색칠도안, 숨은그림, 미로, 따라그리기, 오려붙이기, 숫자/한글 학습지를 모은 유아용 출력 콘텐츠 블로그.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: 'https://naksupapa.github.io'
+url: 'https://rs1017.github.io'
 
 github:
-  username: naksupapa             # change to your github username
+  username: rs1017             # change to your github username
 
 #twitter:
-#  username: naksupapa            # change to your twitter username
+#  username: your-twitter-id
 
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: jinho.choi
+  name: Printable Playroom
   email: rs1017@naver.com # change to your email address
   links:
-    # The first element serves as the copyright owner's link
-    - https://twitter.com/naksupapa # change to your twitter homepage
-    - https://github.com/naksupapa # change to your github homepage
-    # Uncomment below to add more social links
-    - https://www.facebook.com/naksupapa
-    - https://www.linkedin.com/in/naksupapa
+    - https://github.com/rs1017
 
-google_site_verification: I0280zpXg7kIe9d022EGQfqStcMXDu_sKR89Pp6_VzE # change to your verification string
+google_site_verification:
 
 # ↑ --------------------------
 
@@ -83,7 +78,7 @@ theme_mode:   # [light|dark] 비워두면 사용자가 선택 가능
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: '/assets/img/avatar.jpg'
+avatar: '/assets/img/avatar.svg'
 
 # boolean type, the global switch for ToC in posts.
 toc: true
