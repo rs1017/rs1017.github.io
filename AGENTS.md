@@ -109,7 +109,7 @@ Use these as preferred post candidates before inventing new directions.
 ## Image Workflow
 
 - Build image sets in batches, not one-offs.
-- Define a shot list of at least 10 images before building a post.
+- Define an activity list of at least 10 images before building a post.
 - Keep one theme per post and one short title per image.
 - Prefer reusable generation workflows and asset pipelines over manual one-by-one image making.
 - Use ComfyUI mainly for source generation, not as the final layout engine for every worksheet type.

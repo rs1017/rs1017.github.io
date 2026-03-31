@@ -1,60 +1,56 @@
-# Preschool Image Workflow
+# Preschool Activity Workflow
 
 ## Goal
 
-Each gallery post ships with:
+Each post ships with:
 
-- 1 theme
-- 10 images minimum
+- 1 activity purpose
+- 10 printable pages minimum
 - 1 short title per image
 
-No long explanations inside the gallery itself.
+No long explanations inside the page itself.
 
 ## Production Order
 
-1. Pick one theme
-2. Write a 10-shot list
-3. Generate a base image set
-4. Select the strongest 10
-5. Export web images
-6. Insert them into one gallery page
+1. Pick one activity type
+2. Write a 10-page activity list
+3. Decide what must be AI-generated and what must be layout-built
+4. Generate only the needed source assets
+5. Assemble printable pages
+6. Insert them into one Markdown post
 
-## Theme Rules
+## Activity Rules
 
-- One post should stay visually consistent
-- Color palette should stay within one family
-- Character shape language should stay consistent
+- One post should stay on one worksheet goal
+- Hidden picture, maze, tracing, matching, English, and cut-and-paste should not default to full-color art
+- Coloring pages can carry color only as preview material; printable output should still favor line clarity
 - Background noise should stay low enough for preschool readability
 
-## 10-Shot List Template
+## 10-Page List Template
 
 Use a fixed structure so every post is fast to assemble.
 
-1. hero image
-2. close subject
-3. wide scene
-4. object focus
-5. action scene
-6. alternate mood
-7. alternate composition
-8. simplified scene
-9. pattern scene
-10. closing scene
+1. page goal
+2. target age / difficulty
+3. required objects or letters
+4. line-art vs minimal-color decision
+5. page-specific prompt or layout note
+6. print-readability check
 
 ## ComfyUI Workflow Direction
 
-### Stage 1. Style Lock
+### Stage 1. Activity Lock
 
-- choose one model for the whole post
-- fix one palette direction
-- fix one subject direction
-- create 2 to 4 reference images first
+- choose one activity type for the whole post
+- decide whether ComfyUI is generating final line art or only source objects
+- lock print-friendly line weight and whitespace first
+- create 2 to 4 reference assets first
 
 ### Stage 2. Batch Generation
 
-- generate 20 to 40 candidates
-- keep camera angle and composition variety
-- reject images with cluttered edges or weak silhouettes
+- generate only the assets needed for the worksheet
+- keep silhouettes simple and printable
+- reject images with cluttered edges or weak object separation
 
 ### Stage 3. Cleanup
 
@@ -62,11 +58,13 @@ Use a fixed structure so every post is fast to assemble.
 - keep subject silhouette readable
 - remove tiny distracting details
 - unify line weight and contrast
+- reduce unnecessary color for non-coloring pages
 
 ### Stage 4. Export
 
-- one web image for gallery use
+- one web image for the post
 - one higher-resolution source for later printable conversion
+- one layout-ready asset set if the activity needs assembly
 
 ## Recommended ComfyUI Node Flow
 
@@ -94,17 +92,19 @@ Keep prompts short and controlled.
 
 ### Base Prompt
 
-- subject
-- environment
-- preschool-friendly illustration
+- activity type
+- main object set
+- black and white line art or minimal-color printable style
 - clean silhouette
-- bright paper-friendly palette
+- white background or low-clutter scene
 
 ### Negative Prompt
 
 - tiny text
 - watermark
 - clutter
+- heavy paint texture
+- dense gradients
 - extra limbs
 - deformed hands
 - muddy background
@@ -116,5 +116,6 @@ Do not publish a post until:
 
 - 10 images exist
 - titles are short
-- theme is visually consistent
-- no paragraph explanation is needed for the gallery to work
+- activity purpose is obvious
+- non-coloring pages are printable without heavy color dependence
+- no paragraph explanation is needed for the post to work
