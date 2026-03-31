@@ -2,6 +2,7 @@
 title: 바다 오려붙이기
 categories: [프린터블, 오려붙이기]
 tags: [오리기, 붙이기, 유아]
+description: "바다 소재를 오리고 붙이는 유아용 오려붙이기 활동지 세트."
 image:
   path: /assets/img/playroom/ocean/01.png
 ---

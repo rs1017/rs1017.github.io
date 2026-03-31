@@ -44,16 +44,23 @@ layout: page
 <div id="post-list">
 
 {% for post in posts %}
+  {% assign preview_image = post.image.path | default: post.image.src | default: post.image %}
+  {% assign preview_excerpt = post.description | default: post.content %}
 
   <div class="post-preview">
+    {% if preview_image %}
+    <a class="post-cover" href="{{ post.url | relative_url }}">
+      <img src="{{ preview_image | relative_url }}" alt="{{ post.title }}" loading="lazy" decoding="async" />
+    </a>
+    {% endif %}
+
     <h1>
       <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     </h1>
 
     <div class="post-content">
       <p>
-        {% include no-linenos.html content=post.content %}
-        {{ content | markdownify | strip_html | truncate: 200 | escape }}
+        {{ preview_excerpt | strip_html | strip_newlines | truncate: 140 | escape }}
       </p>
     </div>
 

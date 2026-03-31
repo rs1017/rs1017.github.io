@@ -2,6 +2,7 @@
 title: 비 오는 날 미로
 categories: [프린터블, 미로]
 tags: [미로, 길찾기, 유아]
+description: "길을 따라 도착점을 찾는 유아용 미로 활동지 세트."
 image:
   path: /assets/img/playroom/maze/01.png
 ---

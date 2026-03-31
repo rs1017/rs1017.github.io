@@ -11,7 +11,8 @@ This repository is an activity-first preschool printable project.
 
 ## Content Direction
 
-- The site is not a text blog.
+- Keep the standard Jekyll blog structure working.
+- Do not turn the site into a text-heavy blog.
 - Images are the main content.
 - Each image should have one short title.
 - Each post page must contain at least 10 inserted images.
@@ -23,8 +24,9 @@ This repository is an activity-first preschool printable project.
 ## Visual Rules
 
 - Prefer large visuals over lists, summaries, or article-style layouts.
-- The homepage should read like a gallery, not a blog feed.
-- One artwork tile = one image + one short title.
+- Keep the Chirpy blog home, categories, tags, and archives available unless the user explicitly asks to remove them.
+- The homepage can be a blog feed, but preview images should stay prominent.
+- One post preview should still favor one image + one short title.
 - Post pages should feel like image collections, not articles.
 - Keep supporting UI minimal: home link, print/download link, short labels only when necessary.
 - Except for coloring pages, images should usually be line art, black-and-white, or minimal-color printable layouts.

@@ -2,6 +2,7 @@
 title: 봄 색칠놀이
 categories: [프린터블, 색칠]
 tags: [색칠, 봄, 유아]
+description: "봄 풍경과 토끼를 따라 색칠하는 유아용 색칠 활동지 세트."
 image:
   path: /assets/img/playroom/spring/01.png
 ---

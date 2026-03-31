@@ -2,6 +2,7 @@
 title: 정원 숨은그림
 categories: [프린터블, 숨은그림]
 tags: [숨은그림, 찾기, 유아]
+description: "정원 장면에서 물건을 찾는 유아용 숨은그림 활동지 세트."
 image:
   path: /assets/img/playroom/garden/01.png
 ---

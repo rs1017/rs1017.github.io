@@ -13,8 +13,8 @@ tabs:
   home: 홈
   categories: 카테고리
   tags: 태그
-  archives: Archives
-  about: About
+  archives: 아카이브
+  about: 소개
 
 # the text displayed in the search bar & search results
 search:

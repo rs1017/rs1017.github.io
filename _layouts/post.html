@@ -10,12 +10,14 @@ tail_includes:
 
 {% include lang.html %}
 
-{% if page.image.src %}
+{% assign preview_image = page.image.path | default: page.image.src | default: page.image %}
+
+{% if preview_image %}
   {% capture bg %}
     {% unless page.image.no_bg %}{{ 'bg' }}{% endunless %}
   {% endcapture %}
-  <img src="{{ page.image.src }}" class="preview-img {{ bg | strip }}"
-      alt="{{ page.image.alt | default: "Preview Image" }}"
+  <img src="{{ preview_image | relative_url }}" class="preview-img {{ bg | strip }}"
+      alt="{{ page.image.alt | default: page.title }}"
 
       {% if page.image.width %}
         width="{{ page.image.width }}"
