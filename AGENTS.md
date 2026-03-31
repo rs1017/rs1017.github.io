@@ -114,6 +114,8 @@ Use these as preferred post candidates before inventing new directions.
 - Define an activity list of at least 10 images before building a post.
 - Keep one theme per post and one short title per image.
 - Prefer reusable generation workflows and asset pipelines over manual one-by-one image making.
+- Do not create final worksheet assets as SVG.
+- Final published worksheet images must be raster files such as PNG.
 - Use ComfyUI mainly for source generation, not as the final layout engine for every worksheet type.
-- For mazes, tracing, matching, counting, English worksheets, and cut-and-paste layouts, prefer SVG/HTML/PDF assembly over pure AI illustration output.
+- For mazes, tracing, matching, counting, English worksheets, and cut-and-paste layouts, prefer code-driven HTML/canvas/PDF assembly with PNG export over pure AI illustration output.
 - For hidden picture and coloring, generated art still needs printable cleanup and should not default to fully painted scenes.

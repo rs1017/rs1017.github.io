@@ -16,10 +16,10 @@ Allowed output style:
 
 For each new post, create:
 
-- `assets/img/playroom/<theme>/01.svg` or `01.png`
-- `assets/img/playroom/<theme>/02.svg` or `02.png`
+- `assets/img/playroom/<theme>/01.png`
+- `assets/img/playroom/<theme>/02.png`
 - ...
-- `assets/img/playroom/<theme>/10.svg` or `10.png`
+- `assets/img/playroom/<theme>/10.png`
 
 Theme examples:
 
@@ -209,3 +209,4 @@ When assembling the page:
 - 불가사리
 - 잠수함
 - 파도
+

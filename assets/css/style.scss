@@ -10,3 +10,34 @@ $tab-count: {{ site.tabs | size | plus: 1 }}; // plus 1 for home tab
 @import "{{ site.theme }}";
 
 /* append your custom style below */
+
+.post-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.post-image {
+  margin: 0;
+}
+
+.post-image img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--main-border-color);
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.post-image figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .post-gallery {
+    grid-template-columns: 1fr;
+  }
+}
