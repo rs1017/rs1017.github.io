@@ -31,6 +31,9 @@ This repository is an activity-first preschool printable project.
 - Keep supporting UI minimal: home link, print/download link, short labels only when necessary.
 - Except for coloring pages, images should usually be line art, black-and-white, or minimal-color printable layouts.
 - Do not use fully rendered colorful illustration sets for hidden-picture, maze, tracing, matching, or English worksheets.
+- For printable pages, prefer white backgrounds over dark or filled backgrounds.
+- Avoid heavy black fill areas or overly thick dark masses that waste printer ink.
+- Coloring pages should keep wide open spaces for coloring, not dense black regions.
 
 ## Preschool Focus
 
@@ -119,3 +122,4 @@ Use these as preferred post candidates before inventing new directions.
 - Use ComfyUI mainly for source generation, not as the final layout engine for every worksheet type.
 - For mazes, tracing, matching, counting, English worksheets, and cut-and-paste layouts, prefer code-driven HTML/canvas/PDF assembly with PNG export over pure AI illustration output.
 - For hidden picture and coloring, generated art still needs printable cleanup and should not default to fully painted scenes.
+- When prompting or cleaning worksheet images, bias toward white paper backgrounds, thin-to-medium clean outlines, and printer-friendly line density.
