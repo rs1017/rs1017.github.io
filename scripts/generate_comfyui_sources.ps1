@@ -1,6 +1,6 @@
 param(
   [string]$ComfyApi = 'http://127.0.0.1:8188',
-  [string]$Checkpoint = 'sd_xl_base_1.0.safetensors',
+  [string]$Checkpoint = 'animagine-xl-4.0-opt.safetensors',
   [int]$Steps = 16,
   [double]$Cfg = 7.0,
   [int]$Width = 1024,
@@ -135,3 +135,4 @@ foreach($group in $selected){
     Write-Output ("CREATED {0}" -f $destPath)
   }
 }
+

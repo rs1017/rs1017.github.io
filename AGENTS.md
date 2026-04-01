@@ -125,3 +125,8 @@ Use these as preferred post candidates before inventing new directions.
 - For mazes, tracing, matching, counting, English worksheets, and cut-and-paste layouts, prefer code-driven HTML/canvas/PDF assembly with PNG export over pure AI illustration output.
 - For hidden picture and coloring, generated art still needs printable cleanup and should not default to fully painted scenes.
 - When prompting or cleaning worksheet images, bias toward white paper backgrounds, thin-to-medium clean outlines, and printer-friendly line density.
+- For coloring pages, prefer prompt words such as `drawing`, `line drawing`, `outline drawing`, `ink drawing`, and `monochrome drawing`.
+- Do not rely on `coloring page` alone; pair it with explicit line-art wording.
+- Avoid prompt words such as `render`, `cinematic`, `glossy`, `shaded`, `colored`, `panel`, and `character sheet` for printable coloring pages.
+- If text-to-image keeps drifting into grids, sheets, collages, or repeated objects, stop and switch workflow instead of retrying the same prompt family.
+- For high-quality coloring pages, prefer `high-quality original character image -> line cleanup / monochrome conversion -> printable page` over unstable text-only generation.
