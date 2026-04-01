@@ -1,0 +1,62 @@
+[
+  {
+    "index": 1,
+    "reference": "Cardcaptor Sakura Movie 1",
+    "concept": "마법 카드 소녀",
+    "notes": "blank magic card, star staff, short cape, cheerful magical heroine"
+  },
+  {
+    "index": 2,
+    "reference": "Bishoujo Senshi Sailor Moon R: The Movie",
+    "concept": "달 수호 공주",
+    "notes": "moon tiara, long gloves, layered princess skirt, guardian pose"
+  },
+  {
+    "index": 3,
+    "reference": "Yes! Precure 5 Movie: Kagami no Kuni no Miracle Daibouken!",
+    "concept": "별빛 힐러 소녀",
+    "notes": "star wand, heart brooch, fluffy magical dress, bright smile"
+  },
+  {
+    "index": 4,
+    "reference": "Ojamajo Doremi Sharp Movie",
+    "concept": "견습 마녀 소녀",
+    "notes": "round witch hat, tiny broom, puff sleeves, playful witch apprentice"
+  },
+  {
+    "index": 5,
+    "reference": "Marmalade Boy Movie",
+    "concept": "테니스 학교 소녀",
+    "notes": "school uniform dress, tennis racket, lively student energy"
+  },
+  {
+    "index": 6,
+    "reference": "Tonari no Totoro",
+    "concept": "숲 탐험 소녀",
+    "notes": "satchel bag, leaf umbrella, child explorer, forest friend mood"
+  },
+  {
+    "index": 7,
+    "reference": "Escaflowne",
+    "concept": "이세계 포털 소녀",
+    "notes": "schoolgirl hero, pendant, layered fantasy cape, brave stance"
+  },
+  {
+    "index": 8,
+    "reference": "Candy Candy",
+    "concept": "주근깨 리본 소녀",
+    "notes": "freckles, braided hair, ribbon hat, classic bright dress"
+  },
+  {
+    "index": 9,
+    "reference": "Animal Crossing",
+    "concept": "마을 정원사 소녀",
+    "notes": "watering can, apron dress, flower basket, friendly village girl"
+  },
+  {
+    "index": 10,
+    "reference": "Carmen Sandiego",
+    "concept": "모험 여행 소녀",
+    "notes": "wide hat, travel coat, map scroll, mystery traveler"
+  }
+]
