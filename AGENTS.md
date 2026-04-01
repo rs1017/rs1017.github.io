@@ -113,7 +113,9 @@ Use these as preferred post candidates before inventing new directions.
 
 ## Image Workflow
 
-- Build image sets in batches, not one-offs.
+- Do not use bulk generation just to save time.
+- Work one image at a time, validate it, then move to the next image.
+- If duplicate-looking images appear, stop and replace them before continuing.
 - Define an activity list of at least 10 images before building a post.
 - Keep one theme per post and one short title per image.
 - Prefer reusable generation workflows and asset pipelines over manual one-by-one image making.
