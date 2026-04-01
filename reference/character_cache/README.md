@@ -1,0 +1,108 @@
+# Character Reference Cache
+
+- Anime films: 500
+- Games: 120
+
+## Anime Film Source Sample
+- Cowboy Bebop: Tengoku no Tobira
+- Shinseiki Evangelion Movie: Shi to Shinsei
+- Shinseiki Evangelion Movie: Air/Magokoro wo, Kimi ni
+- Koukaku Kidoutai
+- Rurouni Kenshin: Meiji Kenkaku Romantan - Ishinshishi e no Chinkonka
+- Akira
+- Appleseed
+- Kidou Senshi Gundam: Dai 08 MS Shoutai - Miller's Report
+- Kidou Senshi Gundam: Gyakushuu no Char
+- Kidou Senshi Gundam F91
+- X/1999
+- Mononoke Hime
+- Initial D Third Stage
+- Sen to Chihiro no Kamikakushi
+- Project A-Ko
+- Pia Carrot e Youkoso!!: Sayaka no Koi Monogatari
+- Kidou Senkan Nadesico: The Prince of Darkness
+- Aa! Megami-sama! Movie
+- Ace wo Nerae!
+- Xiao Qian
+- Final Fantasy VII: Advent Children
+- Cardcaptor Sakura Movie 1
+- Cardcaptor Sakura Movie 2: Fuuin Sareta Card
+- eX-Driver the Movie
+- Escaflowne
+- Blood: The Last Vampire
+- Tonari no Yamada-kun
+- Kurenai no Buta
+- Ranma ½: Chuugoku Nekonron Daikessen! Okite Yaburi no Gekitou-hen!!
+- Spriggan
+- Fullmetal Alchemist: The Conqueror of Shamballa
+- Howl no Ugoku Shiro
+- Kumo no Mukou, Yakusoku no Basho
+- Perfect Blue
+- Shoujo Kakumei Utena: Adolescence Mokushiroku
+- Naruto Movie 1: Dai Katsugeki!! Yuki Hime Ninpouchou Dattebayo!
+- InuYasha Movie 4: Guren no Houraijima
+- InuYasha Movie 2: Kagami no Naka no Mugenjou
+- InuYasha Movie 3: Tenka Hadou no Ken
+- InuYasha Movie 1: Toki wo Koeru Omoi
+- One Piece Movie 01
+- One Piece Movie 02: Nejimaki-jima no Daibouken
+- One Piece Movie 03: Chinjuu-jima no Chopper Oukoku
+- One Piece Movie 04: Dead End no Bouken
+- One Piece Movie 05: Norowareta Seiken
+- One Piece Movie 06: Omatsuri Danshaku to Himitsu no Shima
+- One Piece Movie 07: Karakuri-jou no Mecha Kyohei
+- Innocence
+- Gensoumaden Saiyuuki Movie: Requiem - Erabarezaru Mono e no Chinkonka
+- Armitage III: Dual-Matrix
+
+## Game Source Sample
+- .hack
+- .hack//G.U.
+- 3D Ultra Minigolf
+- Ace Attorney
+- Ace Combat
+- Age of Empires
+- Age of Wonders
+- Akiba's Trip
+- Alexandra Ledermann
+- All-Star Baseball
+- Alone in the Dark
+- Alternate Reality
+- America's Army
+- Angelique
+- Animal Crossing
+- Antique Road Trip
+- Antz
+- Ape Escape
+- AquaNox
+- Ar Tonelico
+- Arc the Lad
+- Arcana Heart
+- Arma
+- Armored Core
+- Army Men
+- Army of Two
+- Art of Fighting
+- Art Style
+- Arthur
+- Astro Bot
+- Asuka 120%
+- Atamania
+- Atari Recharged
+- Atelier
+- Aurora Feint
+- Avernum
+- Aveyond
+- Awakening
+- Babylonian Castle Saga
+- Backpacker
+- Backyard Football
+- Backyard Hockey
+- Backyard Sports
+- Banjo-Kazooie
+- The Bard's Tale
+- Batman: Arkham
+- Battle Raper
+- Battlefield
+- Battleground
+- Bayonetta
