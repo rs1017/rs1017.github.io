@@ -1,22 +1,22 @@
 ---
-title: 물고기 숫자 세기
-date: 2026-04-01 09:00:00 +0900
-categories: [프린터블, 숫자]
-tags: [숫자, 세기, 유아]
-description: "물고기 숫자 세기 출력 활동지 세트."
+title: 바다 숫자 학습지
+date: 2026-04-02 12:00:00 +0900
+categories: [프린터블]
+tags: [학습지, 유아]
+description: "세기, trace, ten-frame, draw-more를 묶은 바다 숫자 학습지 세트."
 image:
-  path: /assets/img/playroom/count-fish/01.png
+  path: /assets/img/playroom/count-ocean-a4/01.png
 ---
 
 <section class="post-gallery">
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/01.png" alt="1개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>1개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/02.png" alt="2개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>2개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/03.png" alt="3개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>3개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/04.png" alt="4개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>4개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/05.png" alt="5개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>5개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/06.png" alt="6개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>6개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/07.png" alt="7개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>7개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/08.png" alt="8개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>8개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/09.png" alt="9개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>9개 세기</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/count-fish/10.png" alt="10개 세기" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>10개 세기</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/01.png" alt="바다 숫자 1" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 1</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/02.png" alt="바다 숫자 2" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 2</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/03.png" alt="바다 숫자 3" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 3</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/04.png" alt="바다 숫자 4" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 4</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/05.png" alt="바다 숫자 5" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 5</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/06.png" alt="바다 숫자 6" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 6</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/07.png" alt="바다 숫자 7" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 7</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/08.png" alt="바다 숫자 8" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 8</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/09.png" alt="바다 숫자 9" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 9</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/count-ocean-a4/10.png" alt="바다 숫자 10" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>바다 숫자 10</figcaption></figure>
 </section>
