@@ -153,6 +153,8 @@ Use these as preferred post candidates before inventing new directions.
 - An English worksheet must combine at least 3 learning actions on one A4 page.
 - Valid English actions: large picture + word tracing, uppercase/lowercase box, picture-word matching, beginning-sound task, cut-and-paste letters, or short sentence frame.
 - English pages need a strong hero image plus supporting exercises; do not use a tiny icon alone.
+- Prefer phonics-book style pages: one target letter or sound per page, 3 to 4 matching pictures, letter tracing, and simple word recognition tied to the same sound.
+- Do not mix unrelated target words on the same phonics page unless a section is clearly marked as a challenge or distractor exercise.
 
 ### Tracing
 
