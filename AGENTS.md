@@ -113,9 +113,12 @@ Use these as preferred post candidates before inventing new directions.
 
 ## Image Workflow
 
-- Absolute rule: never create final worksheet images by arbitrary code drawing or SVG generation.
-- Absolute rule: final worksheet images must come from ComfyUI generation or ComfyUI-generated source images.
-- If an image was not made through ComfyUI, do not publish it. Remove it or replace it with a ComfyUI-made version.
+- Absolute rule: never create final illustration assets by arbitrary code drawing or SVG generation.
+- Absolute rule: final characters, objects, scenes, and decorative artwork must come from ComfyUI generation or ComfyUI-generated source images.
+- If an illustration was not made through ComfyUI, do not publish it. Remove it or replace it with a ComfyUI-made version.
+- Layout assembly is allowed.
+- Code or non-ComfyUI steps may add worksheet text, tracing guides, answer boxes, cut lines, labels, and layout framing.
+- Code or non-ComfyUI steps must not invent the main illustration itself.
 - Before starting any new content or code work, check whether the latest build or deploy failed.
 - If the latest build failed, treat fixing or accounting for that failure as the first step before doing more content work.
 - Do not use bulk generation just to save time.
@@ -126,7 +129,7 @@ Use these as preferred post candidates before inventing new directions.
 - Prefer reusable generation workflows and asset pipelines over manual one-by-one image making.
 - Do not create final worksheet assets as SVG.
 - Final published worksheet images must be raster files such as PNG.
-- Use ComfyUI for final image generation and for source generation.
+- Use ComfyUI for final illustration generation and for source generation.
 - For hidden picture and coloring, generated art still needs printable cleanup and should not default to fully painted scenes.
 - When prompting or cleaning worksheet images, bias toward white paper backgrounds, thin-to-medium clean outlines, and printer-friendly line density.
 - For coloring pages, prefer prompt words such as `drawing`, `line drawing`, `outline drawing`, `ink drawing`, and `monochrome drawing`.

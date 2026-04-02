@@ -16,8 +16,9 @@ No long explanations inside the page itself.
 2. Write a 10-page activity list
 3. Lock the ComfyUI generation plan before touching any post
 4. Generate only the needed ComfyUI assets
-5. Reject anything not made through ComfyUI
-6. Insert only ComfyUI-made images into one Markdown post
+5. Reject any main illustration that was not made through ComfyUI
+6. Add worksheet text and layout in a separate assembly step when needed
+7. Insert only the approved final PNG pages into one Markdown post
 
 ## Activity Rules
 
@@ -42,7 +43,7 @@ Use a fixed structure so every post is fast to assemble.
 ### Stage 1. Activity Lock
 
 - choose one activity type for the whole post
-- require ComfyUI for the final publishable image set
+- require ComfyUI for the final publishable illustration set
 - lock print-friendly line weight and whitespace first
 - create 2 to 4 reference assets first
 
@@ -60,7 +61,13 @@ Use a fixed structure so every post is fast to assemble.
 - unify line weight and contrast
 - reduce unnecessary color for non-coloring pages
 
-### Stage 4. Export
+### Stage 4. Layout
+
+- add worksheet text, labels, tracing words, answer circles, or cut lines outside ComfyUI when needed
+- keep this stage limited to layout and educational structure
+- do not replace the illustration layer with arbitrary code drawing
+
+### Stage 5. Export
 
 - one web image for the post
 - one higher-resolution source for later printable conversion
@@ -118,5 +125,5 @@ Do not publish a post until:
 - titles are short
 - activity purpose is obvious
 - non-coloring pages are printable without heavy color dependence
-- every final image in the set came from ComfyUI
+- every final illustration in the set came from ComfyUI
 - no paragraph explanation is needed for the post to work
