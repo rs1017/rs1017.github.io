@@ -23,10 +23,10 @@ future: true
 
 title: 프린터블 플레이룸 # the main title
 
-tagline: 집에서 바로 출력해 푸는 유아 활동지 # it will display as the sub-title
+tagline: 세기, tracing, 미로, 오려붙이기, 색칠을 한곳에 모은 유아용 출력 활동지 # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  색칠도안, 숨은그림, 미로, 따라그리기, 오려붙이기, 숫자/영어 학습지를 모은 유아용 출력 활동지 모음.
+  집에서 바로 출력해 사용할 수 있는 유아용 활동지 모음. 숫자 세기, 영어 단어, 선긋기, 미로, 오려붙이기, 색칠공부처럼 실제로 손을 움직이며 풀 수 있는 프린터블 학습지를 제공합니다.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://rs1017.github.io'

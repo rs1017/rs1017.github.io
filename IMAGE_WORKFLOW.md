@@ -14,10 +14,10 @@ No long explanations inside the page itself.
 
 1. Pick one activity type
 2. Write a 10-page activity list
-3. Decide what must be AI-generated and what must be layout-built
-4. Generate only the needed source assets
-5. Assemble printable pages
-6. Insert them into one Markdown post
+3. Lock the ComfyUI generation plan before touching any post
+4. Generate only the needed ComfyUI assets
+5. Reject anything not made through ComfyUI
+6. Insert only ComfyUI-made images into one Markdown post
 
 ## Activity Rules
 
@@ -42,7 +42,7 @@ Use a fixed structure so every post is fast to assemble.
 ### Stage 1. Activity Lock
 
 - choose one activity type for the whole post
-- decide whether ComfyUI is generating final line art or only source objects
+- require ComfyUI for the final publishable image set
 - lock print-friendly line weight and whitespace first
 - create 2 to 4 reference assets first
 
@@ -118,4 +118,5 @@ Do not publish a post until:
 - titles are short
 - activity purpose is obvious
 - non-coloring pages are printable without heavy color dependence
+- every final image in the set came from ComfyUI
 - no paragraph explanation is needed for the post to work

@@ -113,6 +113,11 @@ Use these as preferred post candidates before inventing new directions.
 
 ## Image Workflow
 
+- Absolute rule: never create final worksheet images by arbitrary code drawing or SVG generation.
+- Absolute rule: final worksheet images must come from ComfyUI generation or ComfyUI-generated source images.
+- If an image was not made through ComfyUI, do not publish it. Remove it or replace it with a ComfyUI-made version.
+- Before starting any new content or code work, check whether the latest build or deploy failed.
+- If the latest build failed, treat fixing or accounting for that failure as the first step before doing more content work.
 - Do not use bulk generation just to save time.
 - Work one image at a time, validate it, then move to the next image.
 - If duplicate-looking images appear, stop and replace them before continuing.
@@ -121,8 +126,7 @@ Use these as preferred post candidates before inventing new directions.
 - Prefer reusable generation workflows and asset pipelines over manual one-by-one image making.
 - Do not create final worksheet assets as SVG.
 - Final published worksheet images must be raster files such as PNG.
-- Use ComfyUI mainly for source generation, not as the final layout engine for every worksheet type.
-- For mazes, tracing, matching, counting, English worksheets, and cut-and-paste layouts, prefer code-driven HTML/canvas/PDF assembly with PNG export over pure AI illustration output.
+- Use ComfyUI for final image generation and for source generation.
 - For hidden picture and coloring, generated art still needs printable cleanup and should not default to fully painted scenes.
 - When prompting or cleaning worksheet images, bias toward white paper backgrounds, thin-to-medium clean outlines, and printer-friendly line density.
 - For coloring pages, prefer prompt words such as `drawing`, `line drawing`, `outline drawing`, `ink drawing`, and `monochrome drawing`.
