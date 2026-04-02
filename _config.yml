@@ -163,6 +163,7 @@ exclude:
   - '*.py'
   - generator
   - docs
+  - reference
   - README.md
   - LICENSE
   - gulpfile.js
