@@ -17,11 +17,15 @@
 ## 현재 컬렉션
 
 - 봄 색칠놀이 (`spring-coloring-pack.html`)
-- 정원 숨은그림 (`garden-hidden-picture.html`)
 - 바다 오려붙이기 (`ocean-cut-paste.html`)
 - 비 오는 날 미로 (`rainy-day-maze.html`)
 
 ## 콘텐츠 제작 규칙
+
+- 숫자세기 / 영어 / 선긋기 / 미로 / 오려붙이기는 A4 한 장에 여러 학습 행동이 함께 들어가야 합니다.
+- 숨은그림은 기존 단순 배치형이 아니라 `월리를 찾아라`형 dense scene 탐색지로 다시 설계합니다.
+- 오려붙이기는 단순 오브젝트보다 paper doll / puppet / 캐릭터 조립형을 우선합니다.
+
 
 1. 한 포스트 = 한 활동 목적
 2. 제작 전 10페이지 활동 목록 먼저 작성

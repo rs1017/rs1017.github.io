@@ -1,0 +1,12 @@
+{
+  "template_id": "cut-paste-paper-doll-a4-v1",
+  "page": {"size": "A4", "orientation": "portrait"},
+  "preferred_format": "two-page set",
+  "page_1_sections": ["character_base", "placement_guides", "mini_assembly_preview"],
+  "page_2_sections": ["cut_pieces_grid", "labels", "glue_guides"],
+  "rule": {
+    "minimum_cut_pieces": 4,
+    "preferred_cut_pieces": 6,
+    "focus": "paper doll, puppet, dress-up, make-a-character"
+  }
+}

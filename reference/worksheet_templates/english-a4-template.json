@@ -1,0 +1,20 @@
+{
+  "template_id": "english-a4-v2",
+  "page": {"size": "A4", "orientation": "portrait"},
+  "required_sections": [
+    "title_bar",
+    "hero_picture",
+    "target_word_trace",
+    "upper_lower_letter_box",
+    "picture_word_match",
+    "phonics_or_cut_paste_block"
+  ],
+  "rule": {
+    "minimum_learning_actions": 3,
+    "forbidden": ["single word alone on A4", "tiny icon only"]
+  },
+  "block_examples": {
+    "picture_word_match": ["match cow to COW", "circle the word apple"],
+    "phonics_or_cut_paste_block": ["cut and paste missing letters", "find the beginning sound", "trace the sentence strip"]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "template_id": "hidden-wally-a4-v1",
+  "page": {"size": "A4", "orientation": "landscape"},
+  "required_sections": [
+    "dense_main_scene",
+    "target_strip",
+    "title_bar"
+  ],
+  "rule": {
+    "minimum_targets": 5,
+    "preferred_targets": 8,
+    "scene_density": "high",
+    "forbidden": ["empty scene with a few hidden objects"]
+  },
+  "required_scene_features": [
+    "many distractors",
+    "overlap and occlusion",
+    "repeated similar silhouettes",
+    "thumbnail references for targets"
+  ]
+}

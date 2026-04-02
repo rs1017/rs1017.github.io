@@ -1,0 +1,8 @@
+[
+  {"family": "count-*", "template": "counting-a4-v2", "priority": "high", "note": "replace simple 1~10 object repetition with multi-action counting worksheets"},
+  {"family": "english-*", "template": "english-a4-v2", "priority": "high", "note": "replace one-word A4 sheets with picture + tracing + matching pages"},
+  {"family": "*tracing*", "template": "tracing-a4-v2", "priority": "high", "note": "replace sparse line-only pages with multi-block tracing pages"},
+  {"family": "maze-*", "template": "maze-a4-v2", "priority": "high", "note": "replace simple mazes with dense hard mazes"},
+  {"family": "cut-paste-*", "template": "cut-paste-paper-doll-a4-v1", "priority": "high", "note": "favor paper doll, puppet, build-a-character craft layouts"},
+  {"family": "hidden-*", "template": "hidden-wally-a4-v1", "priority": "remove-and-redesign", "note": "delete old hidden picture posts and rebuild only as dense search scenes"}
+]

@@ -1,0 +1,22 @@
+{
+  "template_id": "tracing-a4-v2",
+  "page": {"size": "A4", "orientation": "portrait"},
+  "required_sections": [
+    "warmup_strip",
+    "main_trace_grid",
+    "shape_or_path_block",
+    "finish_the_picture_block"
+  ],
+  "rule": {
+    "minimum_trace_actions": 6,
+    "forbidden": ["single line on full page"]
+  },
+  "progression": [
+    "straight",
+    "curve",
+    "zigzag",
+    "loop",
+    "shape",
+    "picture finish"
+  ]
+}

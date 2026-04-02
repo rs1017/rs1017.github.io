@@ -1,0 +1,21 @@
+{
+  "template_id": "counting-a4-v2",
+  "page": {"size": "A4", "orientation": "portrait"},
+  "required_sections": [
+    "title_bar",
+    "main_count_scene",
+    "numeral_trace_box",
+    "number_word_trace_box",
+    "choice_or_match_block",
+    "review_block"
+  ],
+  "rule": {
+    "minimum_learning_actions": 3,
+    "forbidden": ["single object repeated from 1 to 10 only"]
+  },
+  "block_examples": {
+    "main_count_scene": ["count the apples in the basket", "count the animals in the farm pen"],
+    "choice_or_match_block": ["circle the correct number", "match object group to number", "fill the ten-frame"],
+    "review_block": ["count and color", "draw more to make 10", "which is more?"]
+  }
+}

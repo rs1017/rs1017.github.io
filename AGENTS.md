@@ -70,16 +70,16 @@ Use these as preferred post candidates before inventing new directions.
 8. Alphabet coloring
 9. Number coloring
 10. Shape coloring
-11. Garden hidden picture
-12. Zoo hidden picture
-13. Ocean hidden picture
-14. Kitchen hidden picture
-15. Classroom hidden picture
-16. Playground hidden picture
-17. Forest hidden picture
-18. Rainy day hidden picture
-19. Dinosaur hidden picture
-20. Space hidden picture
+11. Garden dense search scene
+12. Zoo dense search scene
+13. Ocean dense search scene
+14. Kitchen dense search scene
+15. Classroom dense search scene
+16. Playground dense search scene
+17. Forest dense search scene
+18. Rainy day dense search scene
+19. Dinosaur dense search scene
+20. Space dense search scene
 21. Rainbow maze
 22. Rabbit maze
 23. Ocean maze
@@ -104,10 +104,10 @@ Use these as preferred post candidates before inventing new directions.
 42. Cut-and-paste shapes
 43. Shadow matching
 44. Same and different
-45. Count and color
-46. Number matching
-47. Alphabet picture match
-48. English word match
+45. Count, trace, and color review
+46. Number matching and ten-frame review
+47. Alphabet picture match worksheet
+48. English word trace and match worksheet
 49. Connect the dots
 50. Spot the difference
 
@@ -130,3 +130,44 @@ Use these as preferred post candidates before inventing new directions.
 - Avoid prompt words such as `render`, `cinematic`, `glossy`, `shaded`, `colored`, `panel`, and `character sheet` for printable coloring pages.
 - If text-to-image keeps drifting into grids, sheets, collages, or repeated objects, stop and switch workflow instead of retrying the same prompt family.
 - For high-quality coloring pages, prefer `high-quality original character image -> line cleanup / monochrome conversion -> printable page` over unstable text-only generation.
+
+## Worksheet Quality Rules
+
+### Counting
+
+- Never publish counting pages that only show 1 to 10 copies of the same object.
+- A counting worksheet must combine at least 3 learning actions on one A4 page.
+- Valid counting actions: count the scene, trace the numeral, trace the number word, circle the correct answer, fill a ten-frame, count and color, compare more/less, draw more to make N, or match group to number.
+- Counting pages should use a small scene or grouped context, not isolated repeated icons only.
+
+### English
+
+- Never publish an English worksheet that uses an entire A4 page for one word only.
+- An English worksheet must combine at least 3 learning actions on one A4 page.
+- Valid English actions: large picture + word tracing, uppercase/lowercase box, picture-word matching, beginning-sound task, cut-and-paste letters, or short sentence frame.
+- English pages need a strong hero image plus supporting exercises; do not use a tiny icon alone.
+
+### Tracing
+
+- Never publish a tracing page that spends a full A4 page on a single line.
+- A tracing worksheet should include 6 to 12 trace actions on the page.
+- Mix warm-up strokes, shape tracing, path tracing, and a small finish-the-picture trace block.
+
+### Mazes
+
+- Maze difficulty must be much higher than the current simple repository mazes.
+- A single A4 maze should target at least 35 decision points, 12 dead-end clusters, and 3 false-route groups.
+- Avoid single-corridor or nearly linear mazes.
+
+### Cut-and-Paste
+
+- Prefer paper doll, puppet, dress-up, or build-a-character worksheets over loose object cut-and-paste pages.
+- A cut-and-paste set should include a base body or puppet, 4 to 8 cut pieces, and clear placement guides.
+- Two-page sets are preferred when the activity is character assembly.
+
+### Hidden Picture
+
+- Do not publish the old low-density hidden-picture format.
+- Future hidden-picture pages must follow a Where's Wally style dense-scene search format.
+- A hidden-picture page must include a crowded main scene, target thumbnail strip, strong distractors, and real search difficulty.
+

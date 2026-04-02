@@ -1,0 +1,16 @@
+{
+  "template_id": "maze-a4-v2",
+  "page": {"size": "A4", "orientation": "portrait"},
+  "variants": ["single-hard-maze", "two-medium-mazes"],
+  "single_hard_maze_rule": {
+    "minimum_decision_points": 35,
+    "minimum_dead_end_clusters": 12,
+    "minimum_false_route_groups": 3,
+    "goal": "10x harder than current repo mazes"
+  },
+  "optional_extras": [
+    "collectibles on path",
+    "midpoint checkpoint",
+    "find the exit after solving"
+  ]
+}
