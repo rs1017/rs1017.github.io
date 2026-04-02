@@ -1,22 +1,22 @@
 ---
-title: 동물 영어 놀이
-date: 2026-04-01 09:00:00 +0900
-categories: [프린터블, 영어]
-tags: [영어, 알파벳, 유아]
-description: "동물 영어 놀이 출력 활동지 세트."
+title: 기초 영어 단어 학습지
+date: 2026-04-02 12:00:00 +0900
+categories: [프린터블]
+tags: [학습지, 유아]
+description: "큰 그림, tracing, matching, sentence를 묶은 영어 학습지 세트."
 image:
-  path: /assets/img/playroom/english-animal/01.png
+  path: /assets/img/playroom/english-basic-a4/01.png
 ---
 
 <section class="post-gallery">
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/01.png" alt="CAT" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>CAT</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/02.png" alt="DUCK" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>DUCK</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/03.png" alt="FISH" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>FISH</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/04.png" alt="RABBIT" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>RABBIT</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/05.png" alt="WHALE" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>WHALE</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/06.png" alt="OCTOPUS" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>OCTOPUS</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/07.png" alt="BEE" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>BEE</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/08.png" alt="SHELL" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>SHELL</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/09.png" alt="STARFISH" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>STARFISH</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/english-animal/10.png" alt="BUTTERFLY" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>BUTTERFLY</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/01.png" alt="영어 단어 1" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 1</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/02.png" alt="영어 단어 2" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 2</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/03.png" alt="영어 단어 3" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 3</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/04.png" alt="영어 단어 4" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 4</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/05.png" alt="영어 단어 5" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 5</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/06.png" alt="영어 단어 6" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 6</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/07.png" alt="영어 단어 7" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 7</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/08.png" alt="영어 단어 8" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 8</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/09.png" alt="영어 단어 9" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 9</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/english-basic-a4/10.png" alt="영어 단어 10" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>영어 단어 10</figcaption></figure>
 </section>
