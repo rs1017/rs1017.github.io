@@ -1,22 +1,22 @@
 ---
-title: 비 오는 날 미로
-date: 2026-04-01 09:00:00 +0900
-categories: [프린터블, 미로]
-tags: [미로, 길찾기, 유아]
-description: "비 오는 날 미로 흑백 출력 활동지 세트."
+title: 하드 미로 학습지
+date: 2026-04-02 09:00:00 +0900
+categories: [프린터블]
+tags: [학습지, 유아]
+description: "branch와 dead-end가 많은 A4 하드 미로 세트."
 image:
-  path: /assets/img/playroom/maze-rainy/01.png
+  path: /assets/img/playroom/maze-adventure-a4/01.png
 ---
 
 <section class="post-gallery">
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/01.png" alt="길 1" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 1</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/02.png" alt="길 2" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 2</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/03.png" alt="길 3" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 3</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/04.png" alt="길 4" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 4</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/05.png" alt="길 5" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 5</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/06.png" alt="길 6" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 6</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/07.png" alt="길 7" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 7</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/08.png" alt="길 8" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 8</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/09.png" alt="길 9" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 9</figcaption></figure>
-  <figure class="post-image"><img src="/assets/img/playroom/maze-rainy/10.png" alt="길 10" decoding="async" width="1024" height="768" loading="lazy" fetchpriority="low" /><figcaption>길 10</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/01.png" alt="하드 미로 1" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 1</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/02.png" alt="하드 미로 2" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 2</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/03.png" alt="하드 미로 3" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 3</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/04.png" alt="하드 미로 4" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 4</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/05.png" alt="하드 미로 5" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 5</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/06.png" alt="하드 미로 6" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 6</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/07.png" alt="하드 미로 7" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 7</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/08.png" alt="하드 미로 8" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 8</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/09.png" alt="하드 미로 9" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 9</figcaption></figure>
+  <figure class="post-image"><img src="/assets/img/playroom/maze-adventure-a4/10.png" alt="하드 미로 10" decoding="async" width="1240" height="1754" loading="lazy" fetchpriority="low" /><figcaption>하드 미로 10</figcaption></figure>
 </section>
