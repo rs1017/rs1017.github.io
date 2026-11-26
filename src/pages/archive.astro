@@ -13,6 +13,6 @@ const sortedPostsList = await getSortedPostsList();
     {sortedPostsList.length ? (
         <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte" />
     ) : (
-        <p class="card-base px-6 py-8 text-75 md:px-9">아직 게시된 활동지가 없습니다.</p>
+        <p class="card-base px-6 py-8 text-75 md:px-9">아직 게시된 글이 없습니다.</p>
     )}
 </MainGridLayout>

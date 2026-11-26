@@ -9,7 +9,7 @@ import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
 	title: "naksuGames",
-	subtitle: "유아와 초등 저학년을 위한 출력 활동지",
+	subtitle: "1인 개발 게임 · 나키온의 모험 개발기",
 	lang: "ko",
 	themeColor: { hue: 250, fixed: false },
 	banner: {
@@ -29,8 +29,13 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
 	avatar: "",
 	name: "naksuGames",
-	bio: "집과 교실에서 바로 출력해 쓰는 활동지",
+	bio: "AI와 함께 만드는 1인 개발 RPG, 나키온의 모험",
 	links: [
+		{
+			name: "YouTube",
+			icon: "fa6-brands:youtube",
+			url: "https://www.youtube.com/@naksupapa",
+		},
 		{
 			name: "GitHub",
 			icon: "fa6-brands:github",

@@ -1,6 +1,6 @@
 # naksuGames
 
-유아와 초등 저학년을 위한 출력 활동지 사이트입니다. [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
+1인 개발 RPG 나키온의 모험의 개발 과정과 영상을 올리는 naksuGames 게임 개발 사이트입니다(이전 활동지 사이트는 브랜치 backup/worksheets-before-game). [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
 
 ## 로컬 실행
 
@@ -17,7 +17,7 @@ pnpm preview
 
 ## 게시와 배포
 
-`pnpm new-post 글-이름`으로 활동지 게시글을 만듭니다. 게시글은 `src/content/posts/`에 둡니다. 활동지 제작 기준은 [AGENTS.md](AGENTS.md)를 참고하세요.
+`pnpm new-post 글-이름`으로 개발기 게시글을 만듭니다. 게시글은 `src/content/posts/`에 둡니다. 게시 기준은 [AGENTS.md](AGENTS.md)를 참고하세요.
 
 GitHub Pages의 게시 방식은 GitHub Actions입니다. 개발 브랜치와 PR에서도 빌드를 검증하며 `main`에서만 배포합니다. Jekyll 시기의 파일과 이력은 `backup/jekyll-before-fuwari`에서 확인할 수 있습니다.
 
