@@ -1,6 +1,6 @@
 # Project Instructions
 
-이 저장소는 naksuGames 게임 개발 사이트입니다(2026-11-26 낙수아빠 지시로 유아 활동지 사이트에서 전환. 이전 내용은 브랜치 `backup/worksheets-before-game`).
+이 저장소는 naksuGames 게임 개발 사이트입니다.
 
 ## 목적
 - 1인 개발 RPG **나키온의 모험**의 개발 과정·변경점·플레이 영상을 정리해 올린다.
