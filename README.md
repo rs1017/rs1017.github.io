@@ -1,50 +1,30 @@
-# Printable Playroom
+# naksuGames
 
-유아/초등 저학년을 위한 **출력 활동지 제작 저장소**입니다.
-
-이 프로젝트는 감상용 그림보다 **과제가 있는 활동지**를 우선합니다.
-
-## 사이트 방향
-
-- 홈: 기본 블로그 포스트 목록 구조 유지
-- 홈 목록: 대표 이미지가 눈에 띄게 보이도록 유지
-- 포스트: 한 활동 유형당 최소 10장 이미지
-- 이미지 타일: 이미지 1장 + 짧은 제목 1개
-- 설명문: 문제 풀이에 필요한 짧은 지시 외 장문 설명 금지
-- 색칠공부를 제외하면 선화, 흑백, 최소 채색 우선
-- 카테고리/태그/아카이브 같은 블로그 탐색 기능 유지
-
-## 현재 컬렉션
-
-- 반짝 요정 공주 색칠놀이
-- 아이돌 소녀 색칠놀이
-- 꽃 드레스 소녀 색칠놀이
-- 캐릭터 소녀 색칠놀이
-
-## 콘텐츠 제작 규칙
-
-- 숫자세기 / 영어 / 선긋기 / 미로 / 오려붙이기는 A4 한 장에 여러 학습 행동이 함께 들어가야 합니다.
-- 숨은그림은 기존 단순 배치형이 아니라 `월리를 찾아라`형 dense scene 탐색지로 다시 설계합니다.
-- 오려붙이기는 단순 오브젝트보다 paper doll / puppet / 캐릭터 조립형을 우선합니다.
-
-
-1. 한 포스트 = 한 활동 목적
-2. 제작 전 10페이지 활동 목록 먼저 작성
-3. 최종 그림 레이어는 반드시 ComfyUI 또는 ComfyUI 소스 기반 결과만 사용
-4. 텍스트, 박스, tracing 가이드, 정답칸 같은 학습지 레이아웃은 별도 조립 단계에서 넣을 수 있음
-5. 이미지마다 짧은 제목 부여
-6. 페이지는 텍스트 글이 아니라 바로 출력할 수 있는 활동 세트처럼 보여야 함
-
-상세 워크플로우는 `IMAGE_WORKFLOW.md`를 참고하세요.
+유아와 초등 저학년을 위한 출력 활동지 사이트입니다. [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
 
 ## 로컬 실행
 
-```bash
-bundle install
-bundle exec jekyll serve
+Node.js 24와 `package.json`에 고정된 pnpm을 사용합니다.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm check
+pnpm build
+pnpm preview
 ```
 
-## 라이선스
+검색 인덱스는 빌드에서 생성됩니다. 검색을 확인하려면 `pnpm preview`로 빌드 결과를 엽니다.
 
-별도 표기가 없는 파일은 MIT 라이선스를 따릅니다.
+## 게시와 배포
 
+`pnpm new-post 글-이름`으로 활동지 게시글을 만듭니다. 게시글은 `src/content/posts/`에 둡니다. 활동지 제작 기준은 [AGENTS.md](AGENTS.md)를 참고하세요.
+
+GitHub Pages의 게시 방식은 GitHub Actions입니다. 개발 브랜치와 PR에서도 빌드를 검증하며 `main`에서만 배포합니다. Jekyll 시기의 파일과 이력은 `backup/jekyll-before-fuwari`에서 확인할 수 있습니다.
+
+## 광고와 분석
+
+기존 공개 AdSense 게시자 ID와 `ads.txt`를 유지했습니다. 기존 사이트는 자동 광고를 사용했고 개별 광고 단위 ID는 없었습니다. Google Analytics 측정 ID와 유효한 Google Search Console 확인 값은 없었습니다.
+
+새 사이트는 기본값에서 광고와 분석 스크립트를 호출하지 않습니다. 광고를 시작하기 전에 GitHub Pages 및 AdSense 정책, 아동 대상 콘텐츠의 광고 설정, 해당 지역의 동의 요건을 검토하고 개인정보처리방침을 갱신합니다. 게시글용 광고 단위를 사용하려면 GitHub Actions 저장소 변수에 `PUBLIC_ADSENSE_ENABLED=true`와 `PUBLIC_ADSENSE_POST_SLOT`을 설정합니다.
+
+Fuwari 원본은 `6d39b0dec41282e7852e23e032998a5789abee28`입니다. MIT 고지는 [LICENSE](LICENSE)에 있습니다. UI 아이콘은 [Google Material Symbols](https://github.com/google/material-design-icons)와 Dave Gandy의 [Font Awesome](https://fontawesome.com/license/free)에서 가져왔습니다.

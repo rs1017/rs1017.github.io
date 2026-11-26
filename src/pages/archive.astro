@@ -1,0 +1,18 @@
+---
+import ArchivePanel from "@components/ArchivePanel.svelte";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getSortedPostsList } from "../utils/content-utils";
+
+const sortedPostsList = await getSortedPostsList();
+---
+
+<MainGridLayout title={i18n(I18nKey.archive)}>
+    <h1 class="sr-only">{i18n(I18nKey.archive)}</h1>
+    {sortedPostsList.length ? (
+        <ArchivePanel sortedPosts={sortedPostsList} client:only="svelte" />
+    ) : (
+        <p class="card-base px-6 py-8 text-75 md:px-9">아직 게시된 활동지가 없습니다.</p>
+    )}
+</MainGridLayout>
