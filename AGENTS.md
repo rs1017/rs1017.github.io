@@ -11,7 +11,7 @@ This repository is an activity-first preschool printable project.
 
 ## Content Direction
 
-- Keep the standard Jekyll blog structure working.
+- Keep the Astro/Fuwari blog structure working.
 - Do not turn the site into a text-heavy blog.
 - Images are the main content.
 - Each image should have one short title.
@@ -24,7 +24,7 @@ This repository is an activity-first preschool printable project.
 ## Visual Rules
 
 - Prefer large visuals over lists, summaries, or article-style layouts.
-- Keep the Chirpy blog home, categories, tags, and archives available unless the user explicitly asks to remove them.
+- Keep the blog home, categories, tags, and archives available unless the user explicitly asks to remove them.
 - The homepage can be a blog feed, but preview images should stay prominent.
 - One post preview should still favor one image + one short title.
 - Post pages should feel like image collections, not articles.

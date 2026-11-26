@@ -1,32 +1,31 @@
-# hidden files
-.*
-!.git*
-!.editorconfig
-!.nojekyll
-!.travis.yml
+# build output
+dist/
 
-# bundler cache
-_site
-vendor
+# generated types
+.astro/
 
-# rubygem
-*.gem
+# dependencies
+node_modules/
 
-# npm dependencies
-node_modules
-package-lock.json
-Gemfile.lock
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Automation Tools
-tools/bundle_agents.py
-agents_prompts.json
-.agent/workflow/
+# environment variables
 .env
+.env.production
 
-# Logs
-logs/
+# macOS-specific files
+.DS_Store
 
-# Windows special files
-nul
+.vercel
 
+package-lock.json
+bun.lockb
+yarn.lock
 
+# ide
+.idea
+*.iml

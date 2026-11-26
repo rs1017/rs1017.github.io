@@ -1,0 +1,56 @@
+---
+interface Props {
+	adSlot?: string;
+}
+
+const { adSlot = "" } = Astro.props;
+const client = "ca-pub-1093521347566226";
+const enabled =
+	import.meta.env.PROD &&
+	import.meta.env.PUBLIC_ADSENSE_ENABLED === "true" &&
+	/^\d+$/.test(adSlot);
+---
+{enabled && (
+	<aside aria-label="광고" class="mb-6 w-full" data-pagefind-ignore>
+		<ins
+			class="adsbygoogle"
+			style="display: block"
+			data-ad-client={client}
+			data-ad-slot={adSlot}
+			data-tag-for-age-treatment="1"
+			data-ad-format="auto"
+			data-full-width-responsive="true"
+		></ins>
+	</aside>
+)}
+
+<script>
+	function mountAds() {
+		for (const unit of document.querySelectorAll<HTMLElement>(
+			"ins.adsbygoogle[data-ad-client]:not([data-ad-queued])",
+		)) {
+			const client = unit.dataset.adClient;
+			if (!client) continue;
+			if (!document.getElementById("adsense-script")) {
+				const script = document.createElement("script");
+				script.id = "adsense-script";
+				script.async = true;
+				script.crossOrigin = "anonymous";
+				script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
+				document.head.append(script);
+			}
+			unit.dataset.adQueued = "true";
+			const google = window as Window & { adsbygoogle?: object[] };
+			(google.adsbygoogle ??= []).push({});
+		}
+	}
+
+	mountAds();
+	if (window.swup) {
+		window.swup.hooks.on("page:view", mountAds);
+	} else {
+		document.addEventListener("swup:enable", () => {
+			window.swup.hooks.on("page:view", mountAds);
+		}, { once: true });
+	}
+</script>
