@@ -37,7 +37,7 @@ const enabled =
 				script.async = true;
 				script.crossOrigin = "anonymous";
 				script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
-				document.head.append(script);
+				document.body.append(script);
 			}
 			unit.dataset.adQueued = "true";
 			const google = window as Window & { adsbygoogle?: object[] };

@@ -1,4 +1,4 @@
-# 프린터블 플레이룸
+# naksuGames
 
 유아와 초등 저학년을 위한 출력 활동지 사이트입니다. [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
 

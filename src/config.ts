@@ -8,7 +8,7 @@ import type {
 import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "프린터블 플레이룸",
+	title: "naksuGames",
 	subtitle: "유아와 초등 저학년을 위한 출력 활동지",
 	lang: "ko",
 	themeColor: { hue: 250, fixed: false },
@@ -28,7 +28,7 @@ export const navBarConfig: NavBarConfig = {
 
 export const profileConfig: ProfileConfig = {
 	avatar: "",
-	name: "Printable Playroom",
+	name: "naksuGames",
 	bio: "집과 교실에서 바로 출력해 쓰는 활동지",
 	links: [
 		{
