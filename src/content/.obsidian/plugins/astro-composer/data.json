@@ -1,0 +1,46 @@
+{
+  "defaultTemplate": "---\ntitle: \"{{title}}\"\npublished: {{date}}\ndescription: \"\"\ntags: []\ncategory: \"나키온의 모험\"\nimage: \"\"\ndraft: true\n---\n",
+  "autoInsertProperties": true,
+  "dateFormat": "YYYY-MM-DD",
+  "enableCopyHeadingLink": true,
+  "copyHeadingLinkFormat": "astro",
+  "addTrailingSlashToLinks": true,
+  "enableOpenTerminalCommand": true,
+  "terminalProjectRootPath": "../../",
+  "terminalApplicationName": "",
+  "enableTerminalDebugLogging": false,
+  "enableTerminalRibbonIcon": true,
+  "enableOpenConfigFileCommand": true,
+  "configFilePath": "../config.ts",
+  "enableConfigRibbonIcon": true,
+  "contentTypes": [
+    {
+      "id": "content-type-1773432108940-dman1akpr",
+      "name": "글",
+      "folder": "posts",
+      "linkBasePath": "/posts/",
+      "template": "---\ntitle: \"{{title}}\"\npublished: {{date}}\ndescription: \"\"\ntags: []\ncategory: \"나키온의 모험\"\nimage: \"\"\ndraft: true\n---\n",
+      "enabled": true,
+      "creationMode": "file",
+      "indexFileName": "index",
+      "ignoreSubfolders": false,
+      "enableUnderscorePrefix": false
+    }
+  ],
+  "migrationCompleted": true,
+  "helpButtonReplacement": {
+    "enabled": true,
+    "commandId": "astro-composer:edit-astro-config",
+    "iconId": "rocket"
+  },
+  "showMdxFilesInExplorer": false,
+  "processBackgroundFileChanges": true,
+  "syncDraftDate": false,
+  "draftDetectionMode": "property",
+  "draftProperty": "",
+  "draftLogic": "true-is-draft",
+  "publishDateField": "",
+  "renameOnTitleClick": false,
+  "updateModifiedDate": false,
+  "modifiedDateField": ""
+}
