@@ -20,6 +20,7 @@ const className = Astro.props.class;
 const style = Astro.props.style;
 ---
 
+{categories.length > 0 && (
 <WidgetLayout name={i18n(I18nKey.categories)} id="categories" isCollapsed={isCollapsed} collapsedHeight={COLLAPSED_HEIGHT}
                 class={className} style={style}
 >
@@ -27,9 +28,10 @@ const style = Astro.props.style;
         <ButtonLink
             url={c.url}
             badge={String(c.count)}
-            label={`View all posts in the ${c.name.trim()} category`}
+            label={`${c.name.trim()} 카테고리의 게시글 보기`}
         >
             {c.name.trim()}
         </ButtonLink>
     )}
 </WidgetLayout>
+)}
