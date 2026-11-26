@@ -33,5 +33,5 @@ yarn.lock
 # Obsidian(Vault CMS) 개인 작업 상태
 src/content/.obsidian/workspace*.json
 src/content/.obsidian/plugins/*/cache*
-src/content/.obsidian/plugins/omnisearch/
+src/content/.obsidian/plugins/omnisearch/*cache*
 .trash/
