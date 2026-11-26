@@ -29,7 +29,7 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: ProfileConfig = {
 	avatar: "",
 	name: "NaksuGames",
-	bio: "게임 서버 개발 19년, 은퇴 후 1인 게임 개발. 죽을 때까지 게임을 만들고 싶습니다.",
+	bio: "19년차 게임 서버 개발자(현업). 은퇴 후 AI와 함께 인디 게임을 만들고 출시하는 것이 목표입니다.",
 	links: [
 		{
 			name: "YouTube",
