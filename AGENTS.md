@@ -1,6 +1,6 @@
 # Project Instructions
 
-이 저장소는 naksuGames 게임 개발 사이트입니다.
+이 저장소는 NaksuGames 게임 개발 사이트입니다.
 
 ## 목적
 - 1인 개발 RPG **나키온의 모험**의 개발 과정·변경점·플레이 영상을 정리해 올린다.

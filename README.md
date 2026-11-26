@@ -1,6 +1,6 @@
-# naksuGames
+# NaksuGames
 
-1인 개발 RPG 나키온의 모험의 개발 과정과 영상을 올리는 naksuGames 게임 개발 사이트입니다. [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
+1인 개발 RPG 나키온의 모험의 개발 과정과 영상을 올리는 NaksuGames 게임 개발 사이트입니다. [Astro](https://astro.build/)와 [Fuwari](https://github.com/saicaca/fuwari)를 사용합니다. 운영 주소는 https://rs1017.github.io/ 입니다.
 
 ## 로컬 실행
 

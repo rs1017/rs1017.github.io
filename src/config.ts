@@ -8,7 +8,7 @@ import type {
 import { LinkPreset } from "./types/config";
 
 export const siteConfig: SiteConfig = {
-	title: "naksuGames",
+	title: "NaksuGames",
 	subtitle: "1인 개발 게임 · 나키온의 모험 개발기",
 	lang: "ko",
 	themeColor: { hue: 250, fixed: false },
@@ -28,8 +28,8 @@ export const navBarConfig: NavBarConfig = {
 
 export const profileConfig: ProfileConfig = {
 	avatar: "",
-	name: "naksuGames",
-	bio: "AI와 함께 만드는 1인 개발 RPG, 나키온의 모험",
+	name: "NaksuGames",
+	bio: "게임 서버 개발 19년, 은퇴 후 1인 게임 개발. 죽을 때까지 게임을 만들고 싶습니다.",
 	links: [
 		{
 			name: "YouTube",

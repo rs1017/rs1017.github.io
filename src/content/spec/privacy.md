@@ -2,7 +2,7 @@
 
 ## 운영자 및 문의
 
-naksuGames 운영자에게 개인정보에 관한 문의와 권리 행사 요청을 보내려면 [rs1017@naver.com](mailto:rs1017@naver.com)으로 연락해 주세요.
+NaksuGames 운영자에게 개인정보에 관한 문의와 권리 행사 요청을 보내려면 [rs1017@naver.com](mailto:rs1017@naver.com)으로 연락해 주세요.
 
 ## 방문 기록과 문의 처리
 
