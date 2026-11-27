@@ -1,0 +1,52 @@
+---
+import { getEntry, render } from "astro:content";
+import Markdown from "@components/misc/Markdown.astro";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+
+const credits = await getEntry("spec", "asset-credits");
+
+if (!credits) {
+	throw new Error("Asset credits page content not found");
+}
+
+const { Content } = await render(credits);
+---
+<MainGridLayout title="에셋 출처와 라이선스" description="나키온의 모험에 사용한 에셋, 보유 에셋의 출처와 라이선스, 무료 에셋 모음입니다.">
+    <article data-pagefind-body class="card-base w-full min-w-0 overflow-hidden px-6 md:px-9 py-6">
+        <Markdown class="asset-credits mt-2">
+            <Content />
+        </Markdown>
+    </article>
+</MainGridLayout>
+
+<style is:global>
+    .asset-credits details {
+        margin-block: 0.6rem;
+        border: 1px solid var(--line-divider);
+        border-radius: 0.75rem;
+    }
+
+    .asset-credits details details {
+        margin-inline: 0.75rem;
+    }
+
+    .asset-credits summary {
+        cursor: pointer;
+        padding: 0.65rem 0.85rem;
+        font-weight: 600;
+    }
+
+    .asset-credits th,
+    .asset-credits td:nth-child(2) {
+        white-space: nowrap;
+    }
+
+    .asset-credits td {
+        overflow-wrap: anywhere;
+    }
+
+    .asset-credits details > :is(ul, p) {
+        margin-inline: 0.85rem;
+        overflow-wrap: anywhere;
+    }
+</style>
